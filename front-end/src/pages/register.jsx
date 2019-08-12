@@ -4,6 +4,7 @@ import Main from './main'
 import {Row, Col, Card, Form, Button} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGooglePlusG, faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
+import { Link } from "react-router-dom";
 
 const styleTitle = {
     fontSize: '1.5rem',
@@ -23,7 +24,7 @@ const styleSignInTitle = {
     color: '#9da9bb'
 }
 
-class RegisterPage extends React.Component {
+class Register extends React.Component {
     render() {
         return (
             <Main>
@@ -44,7 +45,7 @@ class RegisterPage extends React.Component {
                                                 <p>
                                                     Have an account?
                                                 </p>
-                                                <Button variant="outline-light" className="px-2 py-1">Log In</Button>
+                                                <Link to="/login" className="btn btn-outline-light px-2 py-1">Log In</Link>
                                             </div>
                                     </Col>
                                     <Col md="7" className="flex-center">
@@ -110,4 +111,4 @@ class RegisterPage extends React.Component {
     }
 }
 
-export default RegisterPage
+export default Register

@@ -45,7 +45,7 @@ class Login extends React.Component {
                                                 <p>
                                                     Don't have an account?
                                                 </p>
-                                                <Button variant="outline-light" className="px-2 py-1">Register</Button>
+                                                <Link to="/register" className="btn btn-outline-light px-2 py-1">Register</Link>
                                             </div>
                                     </Col>
                                     <Col md="7" className="flex-center">
