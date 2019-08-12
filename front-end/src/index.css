@@ -7,6 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale; */
   font-family: 'Blinker', sans-serif;
   color: #5e6e82;
+  overflow: hidden;
+  background: #EDF2F9;
 }
 
 code {
