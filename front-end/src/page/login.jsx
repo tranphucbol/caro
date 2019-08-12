@@ -4,6 +4,7 @@ import Main from './main'
 import {Row, Col, Card, Form, Button} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGooglePlusG, faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
+import { Link } from "react-router-dom";
 
 const styleTitle = {
     fontSize: '1.5rem',
@@ -23,7 +24,7 @@ const styleSignInTitle = {
     color: '#9da9bb'
 }
 
-class LoginPage extends React.Component {
+class Login extends React.Component {
     render() {
         return (
             <Main>
@@ -36,7 +37,7 @@ class LoginPage extends React.Component {
                                         <div className="position-relative px-4 pt-4 pb-5">
                                             <div className="bg-holder bg-auth-card-shape" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/half-circle.png)`}}></div>
                                             <div className="position-relative z-index-1">
-                                                <a href="/" style={styleLogo} className="text-white font-weight-bold">caro</a>
+                                                <Link to="/" style={styleLogo} className="text-white font-weight-bold">caro</Link>
                                                 <p className="text-100 mt-3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                                             </div>
                                         </div>
@@ -96,4 +97,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage
+export default Login
