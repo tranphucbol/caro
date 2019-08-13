@@ -104,7 +104,7 @@
         {
             username: 'user123',
             avatar: 'http://localhost/images/user.jpg',
-            rate: '58.8%',
+            rate: 0.585,
             point: '120000'
         },
         ...
@@ -133,8 +133,8 @@
 
     username: 'user123',
     avatar: 'http://localhost/images/user.jpg',
-    rate: '50%',
-    point: '120000',
+    rate: 0.5,
+    point: 120000,
     countWinning: 100,
     countGame: 200
 }
