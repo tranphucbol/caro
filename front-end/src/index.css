@@ -206,7 +206,7 @@ input {
   top: 0;
   left: 0;
   transition: 0.5s ease all;
-  transform: translateX(-1000px)
+  transform: translateX(-1000px) scale(0.5)
 }
 
 .fade-enter,
@@ -216,11 +216,11 @@ input {
 
 .fade-exit,
 .fade-exit-active {
-  transform: translateX(1000px)
+  transform: translateX(1000px) scale(0.5)
 }
 
 .fade-enter-active {
   opacity: 1;
   z-index: 1;
-  transform: translateX(0)
+  transform: translateX(0) scale(1)
 }
