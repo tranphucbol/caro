@@ -83,7 +83,7 @@ class Register extends React.Component {
                                             </Form>
                                             <div className="w-100 position-relative mt-5">
                                                 <hr className="text-300"></hr>
-                                                <div className="position-absolute absolute-centered t-0 px-3 bg-white text-500 text-nowrap" style={styleSignInTitle}>or sign- with</div>
+                                                <div className="position-absolute absolute-centered t-0 px-3 bg-white text-500 text-nowrap" style={styleSignInTitle}>or sign-in with</div>
                                             </div>
                                             <div className="form-group mb-0">
                                                 <div className="row no-gutters">
