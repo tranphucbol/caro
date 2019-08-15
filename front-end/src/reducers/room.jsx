@@ -20,6 +20,8 @@ const generateTiles = (rows, cols) => {
   let state = {
     timeout: 15,
     opponent: initUser(),
+    userWin: 0,
+    opponentWin: 0,
     board: {
       rows,
       cols,
