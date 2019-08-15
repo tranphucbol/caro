@@ -224,3 +224,94 @@ input {
   z-index: 1;
   transform: translateX(0) scale(1)
 }
+
+.db{
+  border-radius: 0.375rem;
+  display: flex;
+  height: 45vmax;
+
+}
+
+.db-leftbar{
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.375rem;
+  width: 55vmax;
+}
+
+.db-title{
+  height: 12%;
+  text-align: center;
+  font-size: 5vmax;
+}
+
+.db-toolbar{
+  height: 12%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+}
+
+.db-toolbar-point{
+  margin-left: 5vmax;
+  flex-grow: 4;
+  height: 50%;
+  color: black;
+  display: flex;
+}
+
+.db-toolbar-create{
+  flex-grow: 3;
+  background-image: linear-gradient(-45deg,#0443a2,#009bde);
+  border: none;
+  border-radius: 0.375rem;
+  color: white;
+  font-size: 2vmax;
+  margin: 0 7vmax;
+}
+
+.db-toolbar-create:hover{
+  color:#0443a2;
+}
+
+.db-listroom{
+  border: #009bde;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.375rem;
+  height: 73%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 0.4vmax;
+}
+
+.db-profile{
+  border-style: solid;
+  border-width: 1px;
+  height: 20vmax;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+}
+
+.db-ranking{
+  border-style: solid;
+  border-width: 1px;
+  height: 25vmax;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+}
+
+
+
+.db-rightbar{
+  width: 20vmax;
+}
