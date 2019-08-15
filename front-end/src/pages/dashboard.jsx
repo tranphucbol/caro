@@ -1,5 +1,5 @@
-import React from 'react'
-import Main from './main'
+import React from "react";
+import Main from "./main";
 import { Link } from "react-router-dom";
 
 const DashBoard = () => (
@@ -8,6 +8,6 @@ const DashBoard = () => (
             <Link to="/login">login</Link>
         </div>
     </Main>
-)
+);
 
-export default DashBoard
+export default DashBoard;

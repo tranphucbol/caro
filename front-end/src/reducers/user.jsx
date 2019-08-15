@@ -1,18 +1,18 @@
 const initUser = () => {
     return {
-        username: 'Phuc dep trai',
+        username: "Phuc dep trai",
         avatar: `${process.env.PUBLIC_URL}/images/shocked.svg`,
         rank: 100,
-        ratioWinning: '50%',
+        ratioWinning: "50%",
         point: 100000
-    }
-}
+    };
+};
 
 const user = (state = initUser(), action) => {
-    switch(action.type) {
+    switch (action.type) {
         default:
-            return state
+            return state;
     }
-}
+};
 
-export default user
+export default user;
