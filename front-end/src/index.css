@@ -224,3 +224,126 @@ input {
   z-index: 1;
   transform: translateX(0) scale(1)
 }
+
+.tile {
+  border-right: 1px solid rgb(226, 227, 230);
+  cursor: pointer;
+}
+
+.tile:hover {
+  background: rgba(44, 123, 229, 0.5);
+}
+
+.tile:last-child {
+  border-right: none;
+}
+
+.last-tick {
+  border: 0.2rem solid rgba(44, 123, 229, 0.5);
+}
+
+.last-tick {
+  position: relative;
+  transition: 0.1s linear border;
+}
+
+.last-tick::before, .last-tick::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: #fff
+}
+
+.last-tick::before {
+  top: -0.2rem;
+  bottom: -0.2rem;
+  left: 0.2rem;
+  right: 0.2rem;
+}
+
+.last-tick::after {
+  top: 0.2rem;
+  bottom: 0.2rem;
+  left: -0.2rem;
+  right: -0.2rem;
+}
+
+.chess {
+  z-index: 1;
+}
+
+.row-board {
+  display: flex;
+  border: 1px solid rgb(226, 227, 230);
+  border-bottom: none;
+}
+
+.game-bar {
+  display: flex;
+  padding: 10px 20px;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: bold;
+  /* background: #f9fafd; */
+  border-top-left-radius: 0.375rem;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,.07);
+  border: 1px solid rgb(226, 227, 230);
+  border-right: none;
+}
+
+.game-point {
+  display: flex;
+  align-items: center;
+  color: rgb(211, 174, 72)
+}
+
+.game-right-side {
+  height: inherit; 
+  background: #f9fafd;
+  box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+  border-radius: 0 0.375rem 0.375rem 0;
+  z-index: 100;
+  border: 1px solid rgb(226, 227, 230);
+  border-left: none;
+  border-right: none;
+}
+
+.game-info {
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.bg-gradient {
+  background-image: -webkit-linear-gradient(135deg,#0443a2,#009bde);
+  background-image: -o-linear-gradient(135deg,#0443a2,#009bde);
+  background-image: linear-gradient(-45deg,#0443a2,#009bde);
+  background-position: center;
+}
+
+.game-time {
+  color: #2c7be5
+}
+
+.progress {
+  height: 5px;
+  border-radius: 0 0 0 0.375rem;
+  border-left: 1px solid rgb(226, 227, 230);
+}
+
+.game-user-info {
+  padding: 10px;
+  color: #fff;
+  display: flex;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.game-user-avatar img {
+  border-radius: 50px;
+  width: 60px;
+  border: 5px rgba(255, 255, 255, 0.3) solid;
+}
+
+.game-user-point {
+  color: rgb(241, 202, 93)
+}
