@@ -7,8 +7,9 @@
   - [Database Design](#database-design)
     - [MongoDB](#mongodb)
     - [Redis](#redis)
-    - [Restful API Specification](#restful-api-specification)
-    - [Game Flow](#game-flow)
+  - [Restful API Specification](#restful-api-specification)
+  - [Game Flow](#game-flow)
+  - [Sequence Diagram](#sequence-diagram)
 
 ## Các tính năng
 
@@ -47,12 +48,18 @@
     <img src="/docs/redis-schema.png" alt="caro" />
 </div>
 
-### Restful API Specification
+## Restful API Specification
 
 [Tham khảo](/docs/restful-api-specification.md)
 
-### Game Flow
+## Game Flow
 
 <div align="center">
     <img src="/docs/game-flow.jpg" alt="caro" />
+</div>
+
+## Sequence Diagram
+
+<div align="center">
+    <img src="/docs/Play.jpg" alt="caro"/>
 </div>
