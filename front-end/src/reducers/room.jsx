@@ -72,7 +72,6 @@ const onTick = (state, id) => {
 
 const onPushChat = (state, chat) => {
     state.chats = [...state.chats, chat]
-    console.log(chat)
     return state;
 };
 

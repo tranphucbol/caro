@@ -6,7 +6,7 @@ class GameBar extends React.Component {
         return (
             <div className="game-bar">
                 <div className="game-point">
-                    Point: 300000
+                    Pet: 300000
                     <img
                         src={`${process.env.PUBLIC_URL}/images/coin.gif`}
                         width="25px"

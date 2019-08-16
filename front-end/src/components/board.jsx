@@ -8,7 +8,7 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tileSize: Math.floor((window.innerHeight * 0.8) / this.props.rows)
+            tileSize: Math.floor((window.innerHeight * 0.7) / this.props.rows)
         };
     }
 
@@ -16,7 +16,7 @@ class Board extends React.Component {
         window.addEventListener("resize", () => {
             this.setState({
                 tileSize: Math.floor(
-                    (window.innerHeight * 0.8) / this.props.rows
+                    (window.innerHeight * 0.7) / this.props.rows
                 )
             });
         });

@@ -50,6 +50,7 @@ class Play extends React.Component {
                         </div>
                     </div>
                 </div>
+                
             </Container>
         );
     }
