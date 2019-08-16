@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import { faPlus, faSlidersH, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -26,11 +26,11 @@ class DBToolBar extends React.Component {
 		}
 
 		return (
-			<div className="db-toolbar px-3 my-4">
+			<div className="db-toolbar p-3">
 				<div className="d-flex align-items-center">
 					<h1 className="db-title">Caro Game</h1>
 
-					<Dropdown className="ml-4">
+					<Dropdown className="mx-3">
 						<Dropdown.Toggle className="db-tool-button" >
 							<FontAwesomeIcon icon={faSlidersH}></FontAwesomeIcon>
 						</Dropdown.Toggle>
