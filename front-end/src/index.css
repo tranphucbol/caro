@@ -233,85 +233,116 @@ input {
 }
 
 .db-leftbar{
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.375rem;
   width: 55vmax;
 }
 
 .db-title{
-  height: 12%;
+  color:#5e6e82;
   text-align: center;
-  font-size: 5vmax;
+  font-size: 2.5rem;
 }
 
 .db-toolbar{
-  height: 12%;
+  width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   color: white;
 
 }
 
 .db-toolbar-point{
-  margin-left: 5vmax;
-  flex-grow: 4;
-  height: 50%;
   color: black;
   display: flex;
+  align-items: center;
+  border-radius: 0.375rem;
+  background-color: #009bde;
+}
+
+.db-toolbar-point p{
+  color: gold;
+  font-weight: 800;
+  font-size: 1.75em;
+  width: 7vmax;
+  text-align: center;
 }
 
 .db-toolbar-create{
-  flex-grow: 3;
   background-image: linear-gradient(-45deg,#0443a2,#009bde);
   border: none;
   border-radius: 0.375rem;
   color: white;
-  font-size: 2vmax;
-  margin: 0 7vmax;
+  font-size: 1rem;
 }
 
 .db-toolbar-create:hover{
   color:#0443a2;
 }
 
-.db-listroom{
-  border: #009bde;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.375rem;
-  height: 73%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  margin: 0.4vmax;
-}
-
 .db-profile{
-  border-style: solid;
-  border-width: 1px;
   height: 20vmax;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
 }
 
 .db-ranking{
-  border-style: solid;
-  border-width: 1px;
   height: 25vmax;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.db-listroom{
+ 
+  display: flex;
+  flex-wrap: wrap;
+  color: white;
+  margin: 0.4vmax;
+  justify-content: space-evenly;
+}
+
+.db-listroomscroll{
+  height: 82%;
+  border: #1183b43a;
+  border-style: double;
+  border-width: 1px;
   border-radius: 0.375rem;
 }
 
+.db-room{
+  width: 50%;
+  border-bottom: 1px solid #d8e2ef!important;
+  border-right: 1px solid #d8e2ef!important;
+  border-color: #edf2f9!important;
+  color: #5e6e82;
+  display: flex;
+  font-weight: 400;
+  line-height: 1.5;
+  
+}
+
+.db-room-point{
+  color: #D3AE45;
+  font-size: 1.65rem;
+  font-weight: bold;
+
+}
 
 
 .db-rightbar{
   width: 20vmax;
+}
+
+
+.db-tool-button{
+  background-color: #fff;
+  color: #748194;
+  border-color: #fff;
+  box-shadow : 0 0 0 1px rgba(43,45,80,.1), 0 2px 5px 0 rgba(43,45,80,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08)
+
+}
+
+.dropdown-toggle::after {
+    display:none;
 }
