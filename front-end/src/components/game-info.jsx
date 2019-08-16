@@ -2,12 +2,13 @@ import React from "react";
 import GameUserInfo from "./game-user-info";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { CHESS_X, CHESS_O } from "../actions/room";
 
 class GameInfo extends React.Component {
     render() {
         return (
             <div className="game-info h-50 bg-gradient d-flex flex-column justify-content-between">
-                <GameUserInfo {...this.props.user} />
+                <GameUserInfo {...this.props.user} chess={this.props.chess} />
                 <div className="d-flex justify-content-between align-items-center px-3">
                     <h1 className="text-white">{this.props.userWin}</h1>
                     <img
@@ -17,7 +18,7 @@ class GameInfo extends React.Component {
                     />
                     <h1 className="text-white">{this.props.opponentWin}</h1>
                 </div>
-                <GameUserInfo right={true} {...this.props.opponent} />
+                <GameUserInfo right={true} {...this.props.opponent} chess={this.props.chess === CHESS_X ? CHESS_O : CHESS_X} />
             </div>
         );
     }
@@ -39,14 +40,16 @@ GameInfo.propTypes = {
         avatar: PropTypes.string.isRequired
     }).isRequired,
     userWin: PropTypes.number.isRequired,
-    opponentWin: PropTypes.number.isRequired
+    opponentWin: PropTypes.number.isRequired,
+    chess: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => ({
     user: state.user,
     opponent: state.room.opponent,
     userWin: state.room.userWin,
-    opponentWin: state.room.opponentWin
+    opponentWin: state.room.opponentWin,
+    chess: state.room.chess
 });
 
 export default connect(mapStateToProps)(GameInfo);

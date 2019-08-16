@@ -342,6 +342,24 @@ input {
   cursor: pointer;
 }
 
+.game-user-avatar {
+  position: relative;
+}
+
+.game-user-chess {
+  position: absolute;
+  right: 0;
+  bottom: 5%;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.3)
+}
+
 .game-user-avatar img {
   border-radius: 50px;
   width: 60px;
@@ -381,8 +399,8 @@ input {
 }
 
 .chat-body {
+  padding: 0 10px;
   overflow: auto;
-  padding: 10px;
 }
 
 .bubble-chat {
@@ -423,7 +441,6 @@ input {
 }
 
 .chat-input {
-  font-size: 1rem;
   border: none;
   border-radius: 0;
   outline: none;

@@ -1,14 +1,34 @@
-import { TICK, CHESS_X, CHESS_O, DESCREMENT_TIME } from "../actions/room";
+import {
+    TICK,
+    CHESS_X,
+    CHESS_O,
+    DESCREMENT_TIME,
+    PUSH_CHAT
+} from "../actions/room";
 
 const initUser = () => {
     return {
         username: "ViewSonic",
         avatar: `${process.env.PUBLIC_URL}/images/grinning.svg`,
-        rank: 100,
+        rank: 5,
         ratioWinning: "58%",
         point: 20000
     };
 };
+
+// const initChat = () => {
+//     let right = true;
+//     let chat = [];
+//     for (let i = 0; i < 15; i++) {
+//         chat.push({
+//             content: "hello boy",
+//             right: right,
+//             createdAt: new Date()
+//         });
+//         right = !right;
+//     }
+//     return chat;
+// };
 
 const generateTiles = (rows, cols) => {
     let tiles = [];
@@ -21,6 +41,7 @@ const generateTiles = (rows, cols) => {
         opponent: initUser(),
         userWin: 0,
         opponentWin: 0,
+        chess: CHESS_X,
         board: {
             rows,
             cols,
@@ -28,7 +49,8 @@ const generateTiles = (rows, cols) => {
             tiles: tiles,
             turn: CHESS_X,
             lastTick: -1
-        }
+        },
+        chats: []
     };
 
     return state;
@@ -48,6 +70,12 @@ const onTick = (state, id) => {
     return state;
 };
 
+const onPushChat = (state, chat) => {
+    state.chats = [...state.chats, chat]
+    console.log(chat)
+    return state;
+};
+
 const descrementTime = state => {
     state.board.time--;
     if (state.board.time < 0) state.board.time = state.timeout;
@@ -60,6 +88,8 @@ const room = (state = generateTiles(25, 30), action) => {
             return onTick({ ...state }, action.id);
         case DESCREMENT_TIME:
             return descrementTime({ ...state });
+        case PUSH_CHAT:
+            return onPushChat(state, action.chat);
         default:
             return state;
     }
