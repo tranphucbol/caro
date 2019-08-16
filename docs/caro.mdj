@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Flowchart1",
+			"name": "Game Flow",
 			"ownedElements": [
 				{
 					"_type": "FCFlowchartDiagram",
@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFsiLQ9SBuyumU="
 					},
-					"name": "FlowchartDiagram1",
+					"name": "Game Flow",
 					"ownedViews": [
 						{
 							"_type": "FCTerminatorView",
@@ -2029,7 +2029,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "StateMachine1",
+			"name": "MongoDB",
 			"ownedElements": [
 				{
 					"_type": "UMLStatechartDiagram",
@@ -4059,7 +4059,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Flowchart2",
+			"name": "Deployment",
 			"ownedElements": [
 				{
 					"_type": "FCFlowchartDiagram",
@@ -5283,7 +5283,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Model1",
+			"name": "Use Case",
 			"ownedElements": [
 				{
 					"_type": "UMLUseCaseDiagram",
@@ -5348,9 +5348,9 @@
 											"font": "Arial;13;0",
 											"left": -144,
 											"top": 176,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -5526,9 +5526,9 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -64,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -5719,9 +5719,9 @@
 											"font": "Arial;13;0",
 											"left": -144,
 											"top": -48,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -5918,9 +5918,9 @@
 											"font": "Arial;13;0",
 											"left": -144,
 											"top": -48,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -6117,9 +6117,9 @@
 											"font": "Arial;13;0",
 											"left": -112,
 											"top": -64,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -6316,9 +6316,9 @@
 											"font": "Arial;13;0",
 											"left": -160,
 											"top": -32,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -7860,9 +7860,9 @@
 											"font": "Arial;13;0",
 											"left": 48,
 											"top": 144,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -8154,9 +8154,9 @@
 											"font": "Arial;13;0",
 											"left": -48,
 											"top": -64,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
@@ -8622,9 +8622,9 @@
 											"font": "Arial;13;0",
 											"left": 400,
 											"top": -368,
-											"width": 80.9072265625,
+											"width": 95.34814453125,
 											"height": 13,
-											"text": "(from Model1)"
+											"text": "(from Use Case)"
 										},
 										{
 											"_type": "LabelView",
