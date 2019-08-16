@@ -351,3 +351,91 @@ input {
 .game-user-point {
   color: rgb(241, 202, 93)
 }
+
+.game-user-rank {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 3px 5px;
+  color: rgb(241, 202, 93);
+}
+
+.game-user-rank img {
+  width: 18px;
+  margin-right: 5px;
+}
+
+.chat {
+  background: #fff;
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
+.chat-header {
+  box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px;
+  /* background: #EDF2F9; */
+}
+
+.chat-body {
+  overflow: auto;
+  padding: 10px;
+}
+
+.bubble-chat {
+  border-radius: 0.375rem;
+  padding: 5px 10px;
+  margin: 5px 0;
+  max-width: 90%;
+}
+
+
+.bubble-left {
+  background-color: #edf2f9;
+}
+
+.bubble-right {
+  color: #fff;
+  background-color: #2c7be5
+}
+
+.chat-footer {
+  background: #fff;
+  border-top: 1px solid #d8e2ef;
+  border-radius: 0 0 0.375rem 0;
+}
+
+.btn-send {
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+  color: #9da9bb;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 0 10px 0 0;
+}
+
+.btn-send:hover {
+  color: #2c7be5;
+}
+
+.chat-input {
+  font-size: 1rem;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  padding: 5px 10px;
+  width: 100%;
+  color: #5e6e82;
+}
+
+.scrollbar-track {
+  background: #edf2f9!important;
+}
+
+.scrollbar-thumb {
+  background: #b6c1d2!important;
+}

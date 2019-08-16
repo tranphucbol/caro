@@ -16,7 +16,13 @@ class GameUserInfo extends React.Component {
                         this.props.right ? "align-items-end" : ""
                     } flex-column mx-2`}
                 >
-                    <div className="game-user-name">{this.props.username}</div>
+                    <div className={`d-flex${this.props.right ? ' flex-row-reverse' : '' }`}>
+                        <div className="game-user-name">{this.props.username}</div>
+                        <div className="game-user-rank">
+                            <img src={`${process.env.PUBLIC_URL}/images/crown.svg`} alt="caro" />
+                            {this.props.rank}
+                        </div>
+                    </div>
                     <div
                         className={`d-flex ${
                             this.props.right ? "flex-row-reverse" : ""

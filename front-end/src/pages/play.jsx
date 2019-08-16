@@ -6,6 +6,7 @@ import GameInfo from "../components/game-info";
 import { connect } from "react-redux";
 import { descrementTime } from "../actions/room";
 import TimeProgress from "../components/time-progress";
+import Chat from "../components/chat";
 
 class Play extends React.Component {
     constructor(props) {
@@ -45,6 +46,7 @@ class Play extends React.Component {
                             style={{ width: this.state.right }}
                         >
                             <GameInfo />
+                            <Chat />
                         </div>
                     </div>
                 </div>

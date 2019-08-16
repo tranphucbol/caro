@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 
 class GameInfo extends React.Component {
     render() {
-        console.log(this.props.user);
         return (
             <div className="game-info h-50 bg-gradient d-flex flex-column justify-content-between">
                 <GameUserInfo {...this.props.user} />
