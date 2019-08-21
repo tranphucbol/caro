@@ -20,7 +20,6 @@ class Chat extends React.Component {
         let heightHeader = document.querySelector(".chat-header").clientHeight
         let heightFooter = document.querySelector(".chat-footer").clientHeight
         let heightChat = document.querySelector(".chat").clientHeight
-        // this.scrollbar = Scrollbar.init(document.querySelector(".chat-body"))
         let heightBody = heightChat - (heightHeader + heightFooter)
         this.setState({
             heightBody: heightBody

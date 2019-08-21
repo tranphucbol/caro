@@ -1,10 +1,11 @@
 import React from "react";
 import TimeCounter from "./time-counter";
+import GameControlButton from "./game-control-button";
 
 class GameBar extends React.Component {
     render() {
         return (
-            <div className="game-bar">
+            <div className="game-bar position-relative">
                 <div className="game-point">
                     Pet: 300000
                     <img
@@ -13,7 +14,14 @@ class GameBar extends React.Component {
                         alt="caro"
                     />
                 </div>
-                <TimeCounter />
+                {this.props.lock ? (
+                    // <button onClick={this.props.onStartGame} className="btn btn-primary font-weight-bold rounded-soft">
+                    //     Start Game
+                    // </button>
+                    <GameControlButton onStartGame={this.props.onStartGame} status={this.props.status}/>
+                ) : (
+                    <TimeCounter time={this.props.time} />
+                )}
             </div>
         );
     }

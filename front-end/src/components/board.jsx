@@ -2,7 +2,7 @@ import React from "react";
 import Tile from "./tile";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { tickTile } from "../actions/room";
+import { tickTile, onCheckWin } from "../actions/room";
 
 class Board extends React.Component {
     constructor(props) {
@@ -22,6 +22,11 @@ class Board extends React.Component {
         });
     }
 
+    handleClick(id) {
+        this.props.onTick(id)
+        this.props.onCheckWin()
+    }
+
     generateRow(rowIndex) {
         let cols = [];
         for (let i = 0; i < this.props.cols; i++) {
@@ -29,7 +34,7 @@ class Board extends React.Component {
             cols.push(
                 <Tile
                     key={i}
-                    onClick={() => this.props.onTick(id)}
+                    onClick={() => this.handleClick(id)}
                     value={this.props.tiles[id].value}
                     lastTick={this.props.lastTick === id}
                     width={this.state.tileSize}
@@ -54,7 +59,7 @@ class Board extends React.Component {
     }
 
     render() {
-        return <div>{this.generateBoard()}</div>;
+        return <div className="board position-relative">{this.generateBoard()}</div>;
     }
 }
 
@@ -68,7 +73,8 @@ Board.propTypes = {
     ),
     turn: PropTypes.number.isRequired,
     lastTick: PropTypes.number.isRequired,
-    onTick: PropTypes.func.isRequired
+    onTick: PropTypes.func.isRequired,
+    onCheckWin: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -80,7 +86,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispacth => ({
-    onTick: id => dispacth(tickTile(id))
+    onTick: id => dispacth(tickTile(id)),
+    onCheckWin: () => dispacth(onCheckWin())
 });
 
 export default connect(

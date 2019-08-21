@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import DashBoard from "../pages/dashboard";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Play from "../pages/play";
+import PrivateRoute from "./private-route";
 
 class App extends React.Component {
     render() {
@@ -17,20 +18,20 @@ class App extends React.Component {
                             <CSSTransition
                                 key={location.pathname}
                                 classNames="fade"
-                                timeout={1000}
+                                timeout={600}
                             >
                                 <Switch location={location}>
-                                    <Route
+                                    <PrivateRoute
                                         exact
                                         path="/"
                                         component={DashBoard}
                                     />
+                                    <PrivateRoute path="/play" component={Play} />
                                     <Route path="/login" component={Login} />
                                     <Route
                                         path="/register"
                                         component={Register}
                                     />
-                                    <Route path="/play" component={Play} />
                                 </Switch>
                             </CSSTransition>
                         </TransitionGroup>

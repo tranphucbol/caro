@@ -1,8 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 class TimeCounter extends React.Component {
     render() {
@@ -15,12 +13,4 @@ class TimeCounter extends React.Component {
     }
 }
 
-TimeCounter.propTypes = {
-    time: PropTypes.number.isRequired
-};
-
-const mapStateToProps = state => ({
-    time: state.room.board.time
-});
-
-export default connect(mapStateToProps)(TimeCounter);
+export default TimeCounter

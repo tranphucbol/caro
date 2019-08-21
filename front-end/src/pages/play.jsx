@@ -4,9 +4,12 @@ import Board from "../components/board";
 import GameBar from "../components/game-bar";
 import GameInfo from "../components/game-info";
 import { connect } from "react-redux";
-import { descrementTime } from "../actions/room";
+import { descrementTime, onStartGame, initialSocketIO, RESULT_NONE, RESULT_WIN } from "../actions/room";
 import TimeProgress from "../components/time-progress";
 import Chat from "../components/chat";
+import ResultModal from "../components/result-modal";
+import Main from "./main";
+// import { Redirect } from "react-router-dom";
 
 class Play extends React.Component {
     constructor(props) {
@@ -22,6 +25,8 @@ class Play extends React.Component {
         });
 
         this.timerID = setInterval(() => this.props.descrementTime(), 1000);
+
+        this.props.initialSocketIO()
     }
 
     componentWillUnmount() {
@@ -29,17 +34,26 @@ class Play extends React.Component {
     }
 
     render() {
+        // if(this.props.roomId === '')
+        //     return <Redirect to="/" />
+        let {lock, time, status, onStartGame, rows, cols, result} = this.props;
         return (
+            <Main>
             <Container className="min-vh-100 flex-center">
                 <div className="card">
                     <div className=" d-flex">
                         <div className="game-left-side">
-                            <GameBar />
-                            <Board
-                                rows={this.props.rows}
-                                cols={this.props.cols}
+                            <GameBar
+                                lock={lock}
+                                time={time}
+                                status={status}
+                                onStartGame={onStartGame}
                             />
-                            <TimeProgress />
+                            <Board
+                                rows={rows}
+                                cols={cols}
+                            />
+                            <TimeProgress time={time} />
                         </div>
                         <div
                             className="game-right-side"
@@ -50,19 +64,27 @@ class Play extends React.Component {
                         </div>
                     </div>
                 </div>
-                
+                {result !== RESULT_NONE && <ResultModal winning={result === RESULT_WIN} />}
             </Container>
+            </Main>
         );
     }
 }
 
 const mapStateToProps = state => ({
     rows: state.room.board.rows,
-    cols: state.room.board.cols
+    cols: state.room.board.cols,
+    time: state.room.board.time,
+    lock: state.room.board.lock,
+    status: state.room.status,
+    roomId: state.room.id,
+    result: state.room.result
 });
 
 const mapDispatchToProps = dispatch => ({
-    descrementTime: () => dispatch(descrementTime())
+    descrementTime: () => dispatch(descrementTime()),
+    onStartGame: () => dispatch(onStartGame()),
+    initialSocketIO: () => dispatch(initialSocketIO())
 });
 
 export default connect(

@@ -1,5 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types'
+import { connect } from "react-redux";
 import Main from "./main";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,7 +8,10 @@ import {
     faGooglePlusG,
     faFacebookSquare
 } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { setJwtToStorage, setUsernameToStorage } from "../utils/utils";
+import { api } from "../api/api";
+import { receivedUserInfo } from "../actions/user";
 
 const styleTitle = {
     fontSize: "1.5rem",
@@ -28,7 +32,54 @@ const styleSignInTitle = {
 };
 
 class Login extends React.Component {
+    state = {
+        redirectToReferrer: false,
+        usernameInput: "",
+        passwordInput: ""
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+        api.post("/auth", {
+            username: this.state.usernameInput,
+            password: this.state.passwordInput
+        })
+            .then(res => {
+                setUsernameToStorage(res.data.data.username);
+                setJwtToStorage(res.data.token);
+                console.log(res.data.data)
+                this.props.updateUserInfo(res.data.data);
+                this.setState(() => ({
+                    redirectToReferrer: true
+                }));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    handleUsernameInput = e => {
+        this.setState({
+            usernameInput: e.target.value
+        });
+    };
+
+    handlePasswordInput = e => {
+        this.setState({
+            passwordInput: e.target.value
+        });
+    };
+
     render() {
+        const { from } = this.props.location.state || {
+            from: { pathname: "/" }
+        };
+        const { redirectToReferrer } = this.state;
+
+        if (redirectToReferrer === true) {
+            return <Redirect to={from} />;
+        }
+
         return (
             <Main>
                 <Row noGutters="true" className="min-vh-100 flex-center">
@@ -82,18 +133,38 @@ class Login extends React.Component {
                                             <h3 style={styleTitle}>
                                                 Account Login
                                             </h3>
-                                            <Form>
+                                            <Form onSubmit={this.handleSubmit}>
                                                 <Form.Group>
                                                     <Form.Label>
                                                         Username
                                                     </Form.Label>
-                                                    <Form.Control type="text" />
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={
+                                                            this.state
+                                                                .usernameInput
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .handleUsernameInput
+                                                        }
+                                                    />
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label>
                                                         Password
                                                     </Form.Label>
-                                                    <Form.Control type="password" />
+                                                    <Form.Control
+                                                        type="password"
+                                                        value={
+                                                            this.state
+                                                                .passwordInput
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .handlePasswordInput
+                                                        }
+                                                    />
                                                 </Form.Group>
                                                 {/* <Form.Group>
                                                     <Form.Check type="checkbox" label="Remember me"></Form.Check>
@@ -102,6 +173,7 @@ class Login extends React.Component {
                                                     <Button
                                                         className="btn-block"
                                                         variant="primary"
+                                                        type="sumbit"
                                                         style={styleButton}
                                                     >
                                                         Log in
@@ -171,4 +243,10 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = dispatch => ({
+    updateUserInfo: user => dispatch(receivedUserInfo(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,3 +1,5 @@
+import { USER_INFO } from "../actions/user";
+
 const initUser = () => {
     return {
         username: "Phuc dep trai",
@@ -10,6 +12,8 @@ const initUser = () => {
 
 const user = (state = initUser(), action) => {
     switch (action.type) {
+        case USER_INFO:
+            return action.user
         default:
             return state;
     }
