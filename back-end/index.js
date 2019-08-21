@@ -1,19 +1,27 @@
-let express = require('express');
-let bodyParser = require('body-parser');
+let express = require("express");
+let bodyParser = require("body-parser");
 let app = express();
-let User = require('./models/user')
-let database = require('./database')
+let http = require("http").createServer(app);
+let io = require("socket.io")(http);
+let config = require("./config");
 
-app.use(bodyParser.urlencoded({extended: false}));
+let cors = require("cors");
+let database = require("./database");
+let jwt = require("jsonwebtoken");
+let userService = require("./services/user");
+let roomService = require("./services/room");
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let authApi = require('./api/auth')
-let registerApi = require('./api/register')
-let userApi = require('./api/user')
+let authApi = require("./api/auth");
+let registerApi = require("./api/register");
+let userApi = require("./api/user");
 
-app.use('/api/auth', authApi)
-app.use('/api/register', registerApi)
-app.use('/api/users', userApi)
+app.use("/api/auth", authApi);
+app.use("/api/register", registerApi);
+app.use("/api/users", userApi);
 
 // app.get('/', (req, res) => {
 //     let user = new User({
@@ -33,10 +41,89 @@ app.use('/api/users', userApi)
 //         })
 // })
 
+io.use(async (socket, next) => {
+    let token = socket.handshake.query.token;
+    try {
+        let { sub } = jwt.verify(token, config.jwtSecret);
+        let user = await userService.getUserByUsername(sub);
+        if (!user) throw Error("authentication error");
+        socket.handshake.query.username = sub;
+        return next();
+    } catch (err) {
+        return next(new Error("authentication error"));
+    }
+});
 
+io.on("connection", function(socket) {
+    let username = socket.handshake.query.username;
+    console.log(`${username} connected`);
+    socket.join(username);
 
-app.set('port', process.env.PORT || 3001);
+    socket.on("disconnect", () => {
+        console.log(`${username} disconnected`);
+    });
 
-app.listen(app.get('port'), () => {
-    console.log('server is  listening on port ' + app.get('port'));
+    socket.on("CREATE_ROOM_REQUEST", data => {
+        let room = roomService.createRoom(data);
+        socket.join(room.roomId);
+        io.sockets
+            .in(room.roomId)
+            .emit("CREATE_ROOM_RESPONSE", { roomId: room.roomId });
+    });
+
+    socket.on("JOIN_ROOM_REQUEST", async data => {
+        try {
+            await roomService.joinRoom(data.roomId, data.guest);
+            let host = await userService.getUserByUsername(data.host);
+            let guest = await userService.getUserByUsername(data.guest);
+            socket.join(data.roomId);
+
+            //send to host
+            socket.to(data.host).emit("JOIN_ROOM_RESPONSE", {
+                roomId: data.roomId,
+                user: guest,
+                role: "ROOM.GUEST",
+                roomId: data.roomId
+            });
+
+            //send to guest
+            io.sockets.in(data.guest).emit("JOIN_ROOM_RESPONSE", {
+                roomId: data.roomId,
+                user: host,
+                role: "ROOM.HOST",
+                roomId: data.roomId
+            });
+        } catch (err) {
+            io.sockets.in(data.guest).emit("JOIN_ROOM_ERROR", err);
+        }
+    });
+
+    socket.on("START_GAME_REQUEST", async data => {
+        try {
+            let room = await roomService.getValidGame(data.roomId, username);
+            io.sockets.in(room.roomId).emit("START_GAME_RESPONSE", {});
+        } catch (err) {
+            io.sockets.in(username).emit("START_GAME_ERROR", err);
+        }
+    });
+
+    socket.on("RESULT_REQUEST", data => {
+        let clients = io.sockets.adapter.rooms[data.roomId]
+        console.log(clients)
+        console.log(socket.id)
+        socket.to(data.roomId).emit("RESULT_RESPONSE", data)
+    })  
+
+    socket.on("TICK_REQUEST", data => {
+        socket.to(data.roomId).emit("TICK_RESPONSE", data);
+        let clients = io.sockets.adapter.rooms[data.roomId]
+        console.log(clients)
+        console.log(socket.id)
+    });
+});
+
+app.set("port", process.env.PORT || 3001);
+
+http.listen(app.get("port"), () => {
+    console.log("server is listening on port " + app.get("port"));
 });

@@ -2,7 +2,6 @@ let passport = require("passport");
 let JwtStrategy = require("passport-jwt").Strategy;
 let ExtractJwt = require("passport-jwt").ExtractJwt;
 let User = require('../models/user')
-let jwt = require('jsonwebtoken')
 let config = require('../config')
 
 let opts = {}

@@ -1,9 +1,11 @@
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
+let redisClient = require('../redis')
 
 let userSchema = new mongoose.Schema({
     username: { type: String, unique: true },
     password: String,
+    avatar: String,
     winningCount: Number,
     gameCount: Number,
     point: Number
@@ -12,9 +14,14 @@ let userSchema = new mongoose.Schema({
 userSchema.pre("save", function(next) {
     let user = this;
 
+    // if(user.isModified("point")) {
+    //     redisClient.zadd('leader_board', user.username, user.point)
+    // }
+
     if (!user.isModified("password")) {
         return next();
     }
+
 
     bcrypt.hash(user.password, bcrypt.genSaltSync(10)).then(
         hashedPassword => {

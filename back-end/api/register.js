@@ -1,8 +1,6 @@
 let express = require('express')
 let router = express.Router()
-let UserService = require('../services/user')
-
-let userService = new UserService()
+let userService = require('../services/user')
 
 router.post('/', async (req, res) => {
     try {

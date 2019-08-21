@@ -1,8 +1,9 @@
 let User = require("../models/user");
 let jwt = require('jsonwebtoken')
 let config = require('../config')
+let UserDTO = require('../dto/user-dto')
 
-module.exports = class UserService {
+class UserService {
     async auth(username, password) {
         let user = await User.findOne({ username: username });
         let isMatch = await user.comparePassword(password);
@@ -14,9 +15,9 @@ module.exports = class UserService {
                 },
                 config.jwtSecret
             );
-            return {token}
+            return {token, data: new UserDTO(user)}
         } else {
-            throw {code: 403, error: "Wrong username or password"}
+            return Promise.reject({code: 403, error: "Wrong username or password"})
         }
     }
 
@@ -27,11 +28,12 @@ module.exports = class UserService {
             rePassword: rePassword,
             winningCount: 0,
             gameCount: 0,
-            point: 30000
+            point: 30000,
+            avatar: '/images/shocked.svg'
         })
     
         if(password.trim().length !== 0 && password !== rePassword) {
-            throw {code: 400, error: 'Password and re-password do not match'}
+            return Promise.reject({code: 400, error: 'Password and re-password do not match'})
         }
     
         try {
@@ -40,10 +42,9 @@ module.exports = class UserService {
                 exp: Math.floor(Date.now() / 1000) + (60 * 60),
                 sub: doc.username
             }, config.jwtSecret);
-            return {token}
+            return {token, data: new UserDTO(user)}
         } catch (err) {
-            console.log(err)
-            throw {code: 400, error: 'username existed'}
+            return Promise.reject({code: 400, error: 'username existed'})
         }
     }
 
@@ -52,9 +53,11 @@ module.exports = class UserService {
             username: username
         })
         if(user) {
-            return user
+            return new UserDTO(user)
         } else {
-            throw {code: 400, error: "Username not found"}
+            return Promise.reject({code: 400, error: "Username not found"})
         }
     }
 }
+
+module.exports = new UserService()

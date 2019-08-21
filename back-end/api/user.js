@@ -1,9 +1,7 @@
 let express = require('express')
 let router = express.Router()
-let UserService = require('../services/user')
+let userService = require('../services/user')
 let passport = require('../middlewares/passport')
-
-let userService = new UserService()
 
 router.get('/:username', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try {
