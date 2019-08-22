@@ -2,7 +2,6 @@ let User = require("../models/user");
 let jwt = require('jsonwebtoken')
 let config = require('../config')
 let UserDTO = require('../dto/user-dto')
-let roomService = require('./room')
 let rankService = require('./rank')
 
 class UserService {
@@ -74,7 +73,7 @@ class UserService {
             }
             user.gameCount++
 
-            roomService.updatePointInLeaderBoard(user.username, user.point)
+            rankService.updatePointInLeaderBoard(user.username, user.point)
             
             await user.save()
             return user

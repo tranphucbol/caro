@@ -40,6 +40,28 @@ class Room {
         }
     }
 
+    async quitRoom(roomId, username) {
+        try {
+            const roomKey = `room:${roomId}`; 
+            const room = await this.getRoomById(roomId);
+            if(room.host === username) {
+                if(room.guest === undefined) {
+                    redisClient.del(roomKey);
+                } else {
+                    room.host = room.guest;
+                    redisClient.hdel(roomKey, 'guest')
+                }
+            } else if (room.guest === username) {
+                redisClient.hdel(roomKey, 'guest')
+            } else {
+                Promise.reject({error: 'User is not room'})
+            }
+        } catch(err) {
+            return Promise.reject(err)
+        }
+       
+    }
+
     async getRoomById(roomId) {
         const roomKey = `room:${roomId}`;
         const room = await redisClient.hgetallAsync(roomKey);

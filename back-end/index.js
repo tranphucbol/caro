@@ -43,12 +43,13 @@ io.on("connection", function(socket) {
     console.log(`${username} connected`);
     socket.join(username);
 
-    socket.once("disconnecting", () => {
+    socket.once("disconnecting", async () => {
         let rooms = socket.rooms
         for(let room in rooms) {
-            console.log(username, room)
+            await roomService.quitRoom(room, username)
             socket.to(room).emit("USER_DISCONNECT_RESPONSE", {})
         }
+        
     })
 
     socket.on("disconnect", () => {
