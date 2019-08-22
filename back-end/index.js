@@ -18,28 +18,12 @@ app.use(bodyParser.json());
 let authApi = require("./api/auth");
 let registerApi = require("./api/register");
 let userApi = require("./api/user");
+let leaderBoardApi = require("./api/leader-board");
 
 app.use("/api/auth", authApi);
 app.use("/api/register", registerApi);
 app.use("/api/users", userApi);
-
-// app.get('/', (req, res) => {
-//     let user = new User({
-//         username: 'tranphucbol',
-//         password: '123456',
-//         winningCount: 1,
-//         gameCount: 2,
-//         point: 1000
-//     })
-
-//     user.save()
-//         .then(doc => {
-//             res.json(doc)
-//         })
-//         .catch(err => {
-//             res.json(err)
-//         })
-// })
+app.use("/api/leader-boards", leaderBoardApi);
 
 io.use(async (socket, next) => {
     let token = socket.handshake.query.token;
@@ -122,7 +106,7 @@ io.on("connection", function(socket) {
     socket.on("RESULT_LOSE_REQUEST", async data => {
         let room = await roomService.getRoomById(data.roomId);
         let point = parseInt(room.point);
-        await userService.updateGame(username, point + 100);
+        await userService.updateGame(username, point + 100, 0);
         let usernameOpponent = username === room.host ? room.guest : room.host;
         await userService.updateGame(usernameOpponent, -point);
         socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);

@@ -1,6 +1,5 @@
 const uuidv1 = require("uuid/v1");
 const redisClient = require("../redis");
-const userService = require("./user");
 
 class Room {
     createRoom({ username, pet, name }) {
@@ -49,10 +48,6 @@ class Room {
             return Promise.reject({ error: "Room not found" });
         }
         return room;
-    }
-
-    updatePointInLeaderBoard(username, point) {
-        redisClient.zadd("leader_board", parseFloat(point), username);
     }
 
     async getValidGame(roomId, username) {

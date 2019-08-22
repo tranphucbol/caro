@@ -3,6 +3,7 @@ let jwt = require('jsonwebtoken')
 let config = require('../config')
 let UserDTO = require('../dto/user-dto')
 let roomService = require('./room')
+let rankService = require('./rank')
 
 class UserService {
     async auth(username, password) {
@@ -54,6 +55,7 @@ class UserService {
             username: username
         })
         if(user) {
+            user.rank = await rankService.getRankByUsername(username)
             return new UserDTO(user)
         } else {
             return Promise.reject({code: 400, error: "Username not found"})

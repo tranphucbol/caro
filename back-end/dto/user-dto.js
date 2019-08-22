@@ -6,7 +6,7 @@ class UserDTO {
         this.ratioWinning = `${user.gameCount === 0 ? 0 : (user.winningCount / user.gameCount).toFixed(2) * 100}%`;
         this.avatar = user.avatar;
         this.point = user.point;
-        this.rank = 0;
+        this.rank = user.rank;
     }
 }
 
