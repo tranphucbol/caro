@@ -59,8 +59,16 @@ io.on("connection", function(socket) {
     console.log(`${username} connected`);
     socket.join(username);
 
+    socket.once("disconnecting", () => {
+        let rooms = socket.rooms
+        for(let room in rooms) {
+            console.log(username, room)
+            socket.to(room).emit("USER_DISCONNECT_RESPONSE", {})
+        }
+    })
+
     socket.on("disconnect", () => {
-        console.log(`${username} disconnected`);
+        console.log(`${username} disconnected`);        
     });
 
     socket.on("CREATE_ROOM_REQUEST", data => {
@@ -68,14 +76,17 @@ io.on("connection", function(socket) {
         socket.join(room.roomId);
         io.sockets
             .in(room.roomId)
-            .emit("CREATE_ROOM_RESPONSE", { roomId: room.roomId });
+            .emit("CREATE_ROOM_RESPONSE", {
+                roomId: room.roomId,
+                pet: data.pet
+            });
     });
 
     socket.on("JOIN_ROOM_REQUEST", async data => {
         try {
-            await roomService.joinRoom(data.roomId, data.guest);
             let host = await userService.getUserByUsername(data.host);
             let guest = await userService.getUserByUsername(data.guest);
+            let room = await roomService.joinRoom(data.roomId, guest);
             socket.join(data.roomId);
 
             //send to host
@@ -83,7 +94,7 @@ io.on("connection", function(socket) {
                 roomId: data.roomId,
                 user: guest,
                 role: "ROOM.GUEST",
-                roomId: data.roomId
+                pet: room.point
             });
 
             //send to guest
@@ -91,9 +102,10 @@ io.on("connection", function(socket) {
                 roomId: data.roomId,
                 user: host,
                 role: "ROOM.HOST",
-                roomId: data.roomId
+                pet: room.point
             });
         } catch (err) {
+            console.log(err)
             io.sockets.in(data.guest).emit("JOIN_ROOM_ERROR", err);
         }
     });
@@ -107,18 +119,26 @@ io.on("connection", function(socket) {
         }
     });
 
-    socket.on("RESULT_REQUEST", data => {
-        let clients = io.sockets.adapter.rooms[data.roomId]
-        console.log(clients)
-        console.log(socket.id)
-        socket.to(data.roomId).emit("RESULT_RESPONSE", data)
-    })  
+    socket.on("RESULT_LOSE_REQUEST", async data => {
+        let room = await roomService.getRoomById(data.roomId);
+        let point = parseInt(room.point);
+        await userService.updateGame(username, point + 100);
+        let usernameOpponent = username === room.host ? room.guest : room.host;
+        await userService.updateGame(usernameOpponent, -point);
+        socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);
+    });
 
     socket.on("TICK_REQUEST", data => {
         socket.to(data.roomId).emit("TICK_RESPONSE", data);
-        let clients = io.sockets.adapter.rooms[data.roomId]
-        console.log(clients)
-        console.log(socket.id)
+    });
+
+    socket.on("PLAY_AGAIN_REQUEST", data => {
+        console.log("PLAY_AGAIN_REQUEST", data.roomId);
+        socket.to(data.roomId).emit("PLAY_AGAIN_RESPONSE", data);
+    });
+
+    socket.on("CHAT_REQUEST", data => {
+        socket.to(data.roomId).emit("CHAT_RESPONSE", data);
     });
 });
 

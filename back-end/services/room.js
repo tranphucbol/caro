@@ -23,38 +23,53 @@ class Room {
         };
     }
 
-    async joinRoom(roomId, username) {
-        const roomKey = `room:${roomId}`;
-        const existed = await redisClient.existsAsync(roomKey);
-        const point = await redisClient.hget(roomKey, "point");
-        const user = await userService.getUserByUsername(username);
+    async joinRoom(roomId, user) {
+        try {
+            const roomKey = `room:${roomId}`;
+            const room = await this.getRoomById(roomId);
 
-        if (existed) {
-            if(user.point < point) {
-                return Promise.reject({error: "Your point is not enough"})
+            if (user.point < room.point) {
+                return Promise.reject({ error: "Your point is not enough" });
             }
-            return redisClient.hsetnxAsync(roomKey, "guest", username);
-        } else {
-            return Promise.reject({error: "Room does not exist"})
+            if (redisClient.hsetnxAsync(roomKey, "guest", user.username)) {
+                return room;
+            } else {
+                return Promise.reject({ error: "Room is full" });
+            }
+        } catch (err) {
+            return Promise.reject(err);
         }
-        return false;
     }
 
-    async getValidGame(roomId, username) {
+    async getRoomById(roomId) {
         const roomKey = `room:${roomId}`;
         const room = await redisClient.hgetallAsync(roomKey);
 
-        if(room === {}) {
-            return Promise.reject({error: "Room not found"})
+        if (room === {}) {
+            return Promise.reject({ error: "Room not found" });
         }
+        return room;
+    }
 
-        if (room.host === username) {
-            if ("guest" in room) {
-                return room;
+    updatePointInLeaderBoard(username, point) {
+        redisClient.zadd("leader_board", parseFloat(point), username);
+    }
+
+    async getValidGame(roomId, username) {
+        try {
+            const room = await this.getRoomById(roomId);
+            console.log(room);
+
+            if (room.host === username) {
+                if ("guest" in room) {
+                    return room;
+                }
+                return Promise.reject({ error: "The room is not enough" });
+            } else {
+                return Promise.reject({ error: "You are not host" });
             }
-            return Promise.reject({error: "The room is not enough"});
-        } else {
-            return Promise.reject({error: "You are not host"});
+        } catch (err) {
+            return Promise.reject(err);
         }
     }
 }

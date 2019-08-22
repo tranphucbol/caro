@@ -2,6 +2,7 @@ let User = require("../models/user");
 let jwt = require('jsonwebtoken')
 let config = require('../config')
 let UserDTO = require('../dto/user-dto')
+let roomService = require('./room')
 
 class UserService {
     async auth(username, password) {
@@ -10,7 +11,7 @@ class UserService {
         if (user && isMatch) {
             let token = jwt.sign(
                 {
-                    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                    exp: Math.floor(Date.now() / 1000) + 12 * 60 * 60,
                     sub: username
                 },
                 config.jwtSecret
@@ -39,7 +40,7 @@ class UserService {
         try {
             let doc = await user.save()
             let token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                exp: Math.floor(Date.now() / 1000) + (12 * 60 * 60),
                 sub: doc.username
             }, config.jwtSecret);
             return {token, data: new UserDTO(user)}
@@ -54,6 +55,27 @@ class UserService {
         })
         if(user) {
             return new UserDTO(user)
+        } else {
+            return Promise.reject({code: 400, error: "Username not found"})
+        }
+    }
+
+    async updateGame(username, point, result) {
+        const user = await User.findOne({
+            username
+        })
+        if(user) {
+            user.point += point
+
+            if(result === 0) {
+                user.winningCount++
+            }
+            user.gameCount++
+
+            roomService.updatePointInLeaderBoard(user.username, user.point)
+            
+            await user.save()
+            return user
         } else {
             return Promise.reject({code: 400, error: "Username not found"})
         }
