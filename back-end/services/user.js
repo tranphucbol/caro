@@ -3,6 +3,7 @@ let jwt = require('jsonwebtoken')
 let config = require('../config')
 let UserDTO = require('../dto/user-dto')
 let rankService = require('./rank')
+let roomService = require('./room')
 
 class UserService {
     async auth(username, password) {
@@ -79,6 +80,22 @@ class UserService {
             return user
         } else {
             return Promise.reject({code: 400, error: "Username not found"})
+        }
+    }
+
+    async handleResult(roomId, winner) {
+        try {
+            let room = await roomService.getRoomById(roomId);
+            if(room.status === 'ROOM_WAITING') return Promise.reject({error: 'Status of room is ROOM_WAITING'})
+            let point = parseInt(room.point);
+            await this.updateGame(winner, point + 100, 0);
+            console.log('inc', winner)
+            let loser =
+                winner === room.host ? room.guest : room.host;
+            await this.updateGame(loser, -point);
+            console.log('des', loser)
+        } catch (err) {
+            return Promise.reject(err);
         }
     }
 }

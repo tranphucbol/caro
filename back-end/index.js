@@ -44,38 +44,42 @@ io.on("connection", function(socket) {
     socket.join(username);
 
     socket.once("disconnecting", async () => {
-        let rooms = socket.rooms
-        for(let room in rooms) {
-            await roomService.quitRoom(room, username)
-            socket.to(room).emit("USER_DISCONNECT_RESPONSE", {})
+        let rooms = socket.rooms;
+        for (let roomId in rooms) {
+            try {
+                console.log(roomId)
+                let room = await roomService.getRoomById(roomId)
+                await userService.handleResult(roomId, username === room.host ? room.guest : room.host)
+                await roomService.quitRoom(roomId, username);
+                socket.to(roomId).emit("USER_DISCONNECT_RESPONSE", {});
+            } catch (err) {
+                // console.log(err)
+            }
         }
-        
-    })
+    });
 
     socket.on("disconnect", () => {
-        console.log(`${username} disconnected`);        
+        console.log(`${username} disconnected`);
     });
 
     socket.on("CREATE_ROOM_REQUEST", data => {
         let room = roomService.createRoom(data);
         socket.join(room.roomId);
-        io.sockets
-            .in(room.roomId)
-            .emit("CREATE_ROOM_RESPONSE", {
-                roomId: room.roomId,
-                pet: data.pet
-            });
+        io.sockets.in(room.roomId).emit("CREATE_ROOM_RESPONSE", {
+            roomId: room.roomId,
+            pet: data.pet
+        });
     });
 
     socket.on("JOIN_ROOM_REQUEST", async data => {
         try {
-            let host = await userService.getUserByUsername(data.host);
             let guest = await userService.getUserByUsername(data.guest);
             let room = await roomService.joinRoom(data.roomId, guest);
+            let host = await userService.getUserByUsername(room.host);
             socket.join(data.roomId);
 
             //send to host
-            socket.to(data.host).emit("JOIN_ROOM_RESPONSE", {
+            socket.to(data.roomId).emit("JOIN_ROOM_RESPONSE", {
                 roomId: data.roomId,
                 user: guest,
                 role: "ROOM.GUEST",
@@ -90,7 +94,7 @@ io.on("connection", function(socket) {
                 pet: room.point
             });
         } catch (err) {
-            console.log(err)
+            console.log(err);
             io.sockets.in(data.guest).emit("JOIN_ROOM_ERROR", err);
         }
     });
@@ -98,6 +102,7 @@ io.on("connection", function(socket) {
     socket.on("START_GAME_REQUEST", async data => {
         try {
             let room = await roomService.getValidGame(data.roomId, username);
+            roomService.changeStatus(data.roomId, 'ROOM_PLAYING')
             io.sockets.in(room.roomId).emit("START_GAME_RESPONSE", {});
         } catch (err) {
             io.sockets.in(username).emit("START_GAME_ERROR", err);
@@ -105,11 +110,8 @@ io.on("connection", function(socket) {
     });
 
     socket.on("RESULT_LOSE_REQUEST", async data => {
-        let room = await roomService.getRoomById(data.roomId);
-        let point = parseInt(room.point);
-        await userService.updateGame(username, point + 100, 0);
-        let usernameOpponent = username === room.host ? room.guest : room.host;
-        await userService.updateGame(usernameOpponent, -point);
+        await userService.handleResult(data.roomId, username)
+        roomService.changeStatus(data.roomId, 'ROOM_WAITING')   
         socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);
     });
 
