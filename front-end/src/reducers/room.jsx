@@ -33,20 +33,6 @@ const initUser = () => {
     };
 };
 
-// const initChat = () => {
-//     let right = true;
-//     let chat = [];
-//     for (let i = 0; i < 15; i++) {
-//         chat.push({
-//             content: "hello boy",
-//             right: right,
-//             createdAt: new Date()
-//         });
-//         right = !right;
-//     }
-//     return chat;
-// };
-
 const initTiles = (rows, cols) => {
     let tiles = [];
     for (let i = 0; i < rows * cols; i++) {
@@ -81,6 +67,7 @@ const initState = (rows, cols, isHost) => {
         status: STATUS_WATTING,
         result: RESULT_NONE,
         chats: [],
+        opponentQuit: false,
         guestContinue: false
     };
 
@@ -99,7 +86,8 @@ const restartState = state => {
     state.status =
         state.guestContinue && state.key ? STATUS_START_GAME : STATUS_WATTING;
     state.guestContinue = false;
-    state.chess = state.result === RESULT_WIN ? CHESS_O : CHESS_X;
+    state.chess = state.result === RESULT_WIN && !state.opponentQuit ? CHESS_O : CHESS_X;
+    state.opponentQuit = false;
     state.result = RESULT_NONE;
     return state;
 };
@@ -153,13 +141,33 @@ const onJoinRoom = (state, { roomId, role, user, pet }) => {
         state.chess = CHESS_O;
     } else {
         state.chess = CHESS_X;
-        state.status = STATUS_START_GAME;
+        if(state.status === STATUS_PLAY_AGAIN) {
+            state.guestContinue = true;
+        } else {
+            state.status = STATUS_START_GAME;
+        }
     }
     state.roomId = roomId;
     state.opponent = user;
     state.pet = parseInt(pet);
     return state;
 };
+
+const onUserDisconnect = state => {
+    state.key = true
+    state.userWin = 0
+    state.opponentWin = 0
+    state.opponent = initUser()
+    state.opponentQuit = true;
+    if(state.status === STATUS_PLAYING) {
+        state.board = { ...state.board, lock: true }
+        state.status = STATUS_PLAY_AGAIN;
+        state.result = RESULT_WIN; 
+    } else if (state.status === STATUS_START_GAME) {
+        state.status = STATUS_WATTING
+    }
+    return state
+}
 
 const room = (state = initState(25, 30, true), action) => {
     switch (action.type) {
@@ -214,7 +222,7 @@ const room = (state = initState(25, 30, true), action) => {
                 guestContinue: state.status === STATUS_PLAY_AGAIN
             };
         case USER_DISCONNECT:
-            return state;
+            return onUserDisconnect({...state})
         default:
             return state;
     }

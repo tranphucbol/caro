@@ -28,7 +28,7 @@ class DashBoard extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        this.props.onJoinRoom(this.state.input, 'tranphucbol')
+        this.props.onJoinRoom(this.state.input)
     }
 
     render() {
@@ -59,7 +59,7 @@ class DashBoard extends React.Component {
 const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => ({
     onCreateRoom: (pet, name) => dispatch(createRoom(pet, name)),
-    onJoinRoom: (roomId, host) => dispatch(joinRoom(roomId, host))
+    onJoinRoom: (roomId) => dispatch(joinRoom(roomId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);

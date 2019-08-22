@@ -370,10 +370,10 @@ export const createRoom = (pet, name) => {
     };
 };
 
-export const joinRoom = (roomId, host) => {
+export const joinRoom = (roomId) => {
+    // console.log("JOIN_ROOM_REQUEST: ", host)
     store.getState().room.socket.emit("JOIN_ROOM_REQUEST", {
         roomId,
-        host,
         guest: getUsernameFromStorage()
     });
     return {
@@ -395,10 +395,8 @@ export const onStartGame = () => {
 export const onPlayAgain = () => {
     let key = store.getState().room.key;
     if (!key) {
-        console.log("PLAY_AGAIN_REQUEST");
         let socket = store.getState().room.socket;
         let roomId = store.getState().room.roomId;
-        console.log("room: ", roomId);
         socket.emit("PLAY_AGAIN_REQUEST", {
             roomId
         });
