@@ -3,7 +3,7 @@ import Login from "../pages/login";
 import Register from "../pages/register";
 // import Main from '../page/main'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import DashBoard from "../pages/dashboard";
+import DashBoard from "../pages/dashboard-test";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Play from "../pages/play";
 import PrivateRoute from "./private-route";

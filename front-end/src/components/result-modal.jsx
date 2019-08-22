@@ -5,14 +5,14 @@ import confetti from "canvas-confetti";
 
 class ResultModal extends React.Component {
     componentDidMount() {
-        $("[data-remodal-id=modal-result]")
+        this.modal = $("[data-remodal-id=modal-result]")
             .remodal()
-            .open();
+        this.modal.open()
         if (this.props.winning) {
             let end = Date.now() + 60 * 1000;
-            let interval = setInterval(function() {
+            this.confettiId = setInterval(function() {
                 if (Date.now() > end) {
-                    return clearInterval(interval);
+                    return clearInterval(this.confettiId);
                 }
 
                 confetti({
@@ -28,6 +28,11 @@ class ResultModal extends React.Component {
                 });
             }, 200);
         }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.confettiId)
+        this.modal.destroy()
     }
 
     render() {

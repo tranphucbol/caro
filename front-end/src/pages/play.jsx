@@ -4,7 +4,7 @@ import Board from "../components/board";
 import GameBar from "../components/game-bar";
 import GameInfo from "../components/game-info";
 import { connect } from "react-redux";
-import { descrementTime, onStartGame, initialSocketIO, RESULT_NONE, RESULT_WIN } from "../actions/room";
+import { descrementTime, onStartGame, initialSocketIO, RESULT_NONE, RESULT_WIN, onPlayAgain } from "../actions/room";
 import TimeProgress from "../components/time-progress";
 import Chat from "../components/chat";
 import ResultModal from "../components/result-modal";
@@ -36,7 +36,7 @@ class Play extends React.Component {
     render() {
         // if(this.props.roomId === '')
         //     return <Redirect to="/" />
-        let {lock, time, status, onStartGame, rows, cols, result} = this.props;
+        let {lock, time, status, onStartGame, onPlayAgain, rows, cols, result, pet} = this.props;
         return (
             <Main>
             <Container className="min-vh-100 flex-center">
@@ -48,6 +48,8 @@ class Play extends React.Component {
                                 time={time}
                                 status={status}
                                 onStartGame={onStartGame}
+                                onPlayAgain={onPlayAgain}
+                                pet={pet}
                             />
                             <Board
                                 rows={rows}
@@ -64,7 +66,7 @@ class Play extends React.Component {
                         </div>
                     </div>
                 </div>
-                {result !== RESULT_NONE && <ResultModal winning={result === RESULT_WIN} />}
+                {result !== RESULT_NONE && <div><ResultModal winning={result === RESULT_WIN} /></div>}
             </Container>
             </Main>
         );
@@ -78,12 +80,14 @@ const mapStateToProps = state => ({
     lock: state.room.board.lock,
     status: state.room.status,
     roomId: state.room.id,
-    result: state.room.result
+    result: state.room.result,
+    pet: state.room.pet
 });
 
 const mapDispatchToProps = dispatch => ({
     descrementTime: () => dispatch(descrementTime()),
     onStartGame: () => dispatch(onStartGame()),
+    onPlayAgain: () => dispatch(onPlayAgain()),
     initialSocketIO: () => dispatch(initialSocketIO())
 });
 

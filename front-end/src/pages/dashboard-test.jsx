@@ -14,7 +14,7 @@ class DashBoard extends React.Component {
 
     handleClick = () => {
         console.log("CREATE ROOM")
-        this.props.onCreateRoom(30000, 'Test room');
+        this.props.onCreateRoom(1000, 'Test room');
         this.setState({
             redirect: true
         })

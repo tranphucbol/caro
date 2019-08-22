@@ -16,6 +16,12 @@ class Chat extends React.Component {
         }
     }
 
+    formatTime(date) {
+        let hours = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`;
+        let mins = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
+        return `${hours}:${mins}`
+    }
+
     componentDidMount() {
         let heightHeader = document.querySelector(".chat-header").clientHeight
         let heightFooter = document.querySelector(".chat-footer").clientHeight
@@ -43,7 +49,7 @@ class Chat extends React.Component {
             let chat = {
                 content: input,
                 right: true,
-                createdAt: new Date()
+                createdAt: this.formatTime(new Date())
             }
             this.props.onPushChat(chat)
             this.setState({
@@ -79,7 +85,7 @@ Chat.propTypes = {
         PropTypes.shape({
             content: PropTypes.string.isRequired,
             right: PropTypes.bool.isRequired,
-            createdAt: PropTypes.instanceOf(Date).isRequired
+            createdAt: PropTypes.string.isRequired
         }).isRequired
     ).isRequired,
     onPushChat: PropTypes.func.isRequired

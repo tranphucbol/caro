@@ -318,6 +318,7 @@ input {
 }
 
 .game-info {
+  padding: 10px;
   border-radius: 0.375rem 0.375rem 0 0;
 }
 
@@ -339,7 +340,6 @@ input {
 }
 
 .game-user-info {
-  padding: 10px;
   color: #fff;
   display: flex;
   font-size: 1rem;
@@ -375,6 +375,22 @@ input {
   color: rgb(241, 202, 93)
 }
 
+.game-user-point span {
+  display: block;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-user-name {
+  display: block; 
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .game-user-rank {
   display: flex;
   align-items: center;
@@ -400,11 +416,13 @@ input {
   font-weight: bold;
   font-size: 1.1rem;
   padding: 10px;
+  position: relative;
+  z-index: 1;
   /* background: #EDF2F9; */
 }
 
 .chat-body {
-  padding: 0 10px;
+  padding: 10px;
   overflow: auto;
 }
 
@@ -413,6 +431,16 @@ input {
   padding: 5px 10px;
   margin: 5px 0;
   max-width: 90%;
+}
+
+.bubble-chat p {
+  margin: 0;
+}
+
+.bubble-chat small {
+  display: block;
+  opacity: 0.8;
+  text-align: right;
 }
 
 
@@ -544,4 +572,8 @@ input {
   color: #fff;
   background-color: #2c7be5;
   border-color: #2c7be5;
+}
+
+.btn-back {
+  color: #2c7be5;
 }

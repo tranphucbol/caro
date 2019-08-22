@@ -18,10 +18,17 @@ class GameControlButton extends React.Component {
         }
     }
 
-    hanlePositiveClick = () => {
-        if(this.props.status === STATUS_START_GAME) {
+    handlePositiveClick = () => {
+        let {status} = this.props
+        if(status === STATUS_START_GAME) {
             this.props.onStartGame()
+        } else if (status === STATUS_PLAY_AGAIN) {
+            this.props.onPlayAgain()
         }
+    }
+
+    handleNegativeClick = () => {
+        this.props.onQuit()
     }
 
     render() {
@@ -30,10 +37,10 @@ class GameControlButton extends React.Component {
             return null
         return (
             <div>
-                <button onClick={this.hanlePositiveClick} className="btn btn-primary font-weight-bold" disabled={status === STATUS_WATTING}>{this.getTitle(status)}</button>
+                <button onClick={this.handlePositiveClick} className="btn btn-primary font-weight-bold" disabled={status === STATUS_WATTING}>{this.getTitle(status)}</button>
                 {
                     status === STATUS_PLAY_AGAIN &&
-                    <button className="btn btn-danger font-weight-bold ml-2">Quit</button>
+                    <button onClick={this.handleNegativeClick} className="btn btn-danger font-weight-bold ml-2">Quit</button>
                 }
             </div>
         )

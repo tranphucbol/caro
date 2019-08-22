@@ -27,7 +27,7 @@ class GameUserInfo extends React.Component {
                     } flex-column mx-2`}
                 >
                     <div
-                        className={`d-flex${
+                        className={`d-flex align-items-center ${
                             this.props.right ? " flex-row-reverse" : ""
                         }`}
                     >
@@ -49,7 +49,7 @@ class GameUserInfo extends React.Component {
                             this.props.right ? "flex-row-reverse" : ""
                         }`}
                     >
-                        <div className="game-user-point d-flex align-items-center mx-2">
+                        <div className="game-user-point d-flex align-items-center">
                             <img
                                 src={`${
                                     process.env.PUBLIC_URL
@@ -57,9 +57,9 @@ class GameUserInfo extends React.Component {
                                 width="20px"
                                 alt="caro"
                             />
-                            {this.props.point}
+                            <span>{this.props.point}</span>
                         </div>
-                        <div className="game-user-rating d-flex align-items-center">
+                        <div className="game-user-rating mx-2 d-flex align-items-center">
                             <img
                                 className="mr-1"
                                 src={`${

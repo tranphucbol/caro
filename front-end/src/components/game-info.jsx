@@ -8,7 +8,14 @@ class GameInfo extends React.Component {
     render() {
         return (
             <div className="game-info h-50 bg-gradient d-flex flex-column justify-content-between">
+                <div className="d-flex justify-content-between">
                 <GameUserInfo {...this.props.user} chess={this.props.chess} />
+                <div className="text-white">
+                <i className="fas fa-power-off"></i>
+                </div>
+       
+                </div>
+                
                 <div className="d-flex justify-content-between align-items-center px-3">
                     <h1 className="text-white">{this.props.userWin}</h1>
                     <img

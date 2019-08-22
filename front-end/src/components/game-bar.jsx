@@ -7,7 +7,7 @@ class GameBar extends React.Component {
         return (
             <div className="game-bar position-relative">
                 <div className="game-point">
-                    Pet: 300000
+                    Pet: {this.props.pet}
                     <img
                         src={`${process.env.PUBLIC_URL}/images/coin.gif`}
                         width="25px"
@@ -18,7 +18,11 @@ class GameBar extends React.Component {
                     // <button onClick={this.props.onStartGame} className="btn btn-primary font-weight-bold rounded-soft">
                     //     Start Game
                     // </button>
-                    <GameControlButton onStartGame={this.props.onStartGame} status={this.props.status}/>
+                    <GameControlButton
+                        onStartGame={this.props.onStartGame}
+                        onPlayAgain={this.props.onPlayAgain}
+                        status={this.props.status}
+                    />
                 ) : (
                     <TimeCounter time={this.props.time} />
                 )}
