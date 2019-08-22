@@ -4,14 +4,14 @@ class Leaderboard extends React.Component {
     render() {
         return (
             <div className="db-ranking-item">
-                <p className="db-ranking-item-rank">
+                <div className="db-ranking-item-rank">
                     <img
                         className="db-ranking-item-rankbg"
                         src={`${process.env.PUBLIC_URL}/images/rank-number.svg`}
                         alt="numberanking"
                     />
-                    <p> {this.props.rank}</p>
-                </p>
+                    <p>{this.props.rank}</p>
+                </div>
                 <div className="db-ranking-item-a">
                     <p className="db-ranking-item-username">
                         {this.props.username}
