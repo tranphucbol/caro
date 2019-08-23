@@ -1,18 +1,14 @@
-import { VIEW_CLOSECREATEROOM, VIEW_CREATEROOM } from "../actions/listRoom";
+import { LROM_LOAD } from "../actions/listRoom";
 
-const initView = () => ({
-    createRoom: false
+const initListRoom = () => ({
+    filter: "",
+    rooms: []
 });
 
-const listRoom = (state = initView(), action) => {
+const listRoom = (state = initListRoom(), action) => {
     switch (action.type) {
-        case VIEW_CLOSECREATEROOM:
-            return { ...state, createRoom: false };
-        case VIEW_CREATEROOM:
-            return {
-                ...state,
-                createRoom: true
-            };
+        case LROM_LOAD:
+            return { ...state, rooms: action.data };
         default:
             return state;
     }

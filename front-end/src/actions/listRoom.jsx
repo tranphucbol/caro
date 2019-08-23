@@ -1,10 +1,14 @@
-export const VIEW_CREATEROOM = "VIEW_CREATEROOM";
-export const VIEW_CLOSECREATEROOM = "VIEW_CLOSECREATEROOm";
+import { api } from "../api/api";
 
-export const openRemodalCreateRoom = () => ({
-    type: VIEW_CREATEROOM
+export const LROM_LOAD = "LROM_LOAD";
+
+const reload_room = data => ({
+    type: LROM_LOAD,
+    data
 });
 
-export const closeRemodalCreateRoom = () => ({
-    type: VIEW_CLOSECREATEROOM
-});
+export const listroom_load = () => dispatch => {
+    api.get(`/rooms`).then(res => {
+        dispatch(reload_room(res.data));
+    });
+};
