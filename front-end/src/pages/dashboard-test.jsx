@@ -20,11 +20,11 @@ class DashBoard extends React.Component {
         this.props.onCreateRoom(1000, 'Test room');
     }
 
-    handleInput = (e) => {
+    handleInput = e => {
         this.setState({
             input: e.target.value
-        })
-    }
+        });
+    };
 
     handleSubmit = (e) => {
         e.preventDefault()
@@ -42,14 +42,24 @@ class DashBoard extends React.Component {
                     <Link to="/play">login</Link>
                     <div className="d-flex">
                         <div className="mx-3">
-                            <button className="btn btn-primary" onClick={this.handleClick}>Create Room</button>
+                            <button
+                                className="btn btn-primary"
+                                onClick={this.handleClick}
+                            >
+                                Create Room
+                            </button>
                         </div>
                         <form onSubmit={this.handleSubmit}>
-                            <input value={this.state.input} onChange={this.handleInput} className="form-control mb-3" />
-                            <button type="submit" className="btn btn-primary">Mock Join Room</button>
+                            <input
+                                value={this.state.input}
+                                onChange={this.handleInput}
+                                className="form-control mb-3"
+                            />
+                            <button type="submit" className="btn btn-primary">
+                                Mock Join Room
+                            </button>
                         </form>
                     </div>
- 
                 </div>
             </Main>
         );
@@ -65,4 +75,7 @@ const mapDispatchToProps = dispatch => ({
     initialSocketIO: () => dispatch(initialSocketIO())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DashBoard);

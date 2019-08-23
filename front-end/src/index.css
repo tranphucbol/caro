@@ -12,12 +12,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro,
-  Menlo,
-  Monaco,
-  Consolas,
-  "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
 
 .bg {
@@ -214,80 +210,81 @@ input {
 }
 
 .fade-enter {
-  /* transform: scale(0.5); */
-  position: absolute;
-  left: -1000px;
-  opacity: 0;
+    /* transform: scale(0.5); */
+    position: absolute;
+    left: -1000px;
+    opacity: 0;
 }
 
 .fade-enter-active {
-  opacity: 1;
-  position: absolute;
-  /* transform: scale(1); */
-  left: 0;
-  transition: all 0.6s ease
+    opacity: 1;
+    position: absolute;
+    /* transform: scale(1); */
+    left: 0;
+    transition: all 0.6s ease;
 }
 
 .fade-exit {
-  opacity: 1;
-  position: absolute;
-  /* transform: scale(1); */
-  left: 0;
+    opacity: 1;
+    position: absolute;
+    /* transform: scale(1); */
+    left: 0;
 }
 
 .fade-exit-active {
-  opacity: 0;
-  position: absolute;
-  left: 1000px;
-  /* transform: scale(0.5); */
-  transition: all 0.6s ease
+    opacity: 0;
+    position: absolute;
+    left: 1000px;
+    /* transform: scale(0.5); */
+    transition: all 0.6s ease;
 }
 
 .tile {
-  border-right: 1px solid rgb(226, 227, 230);
-  cursor: pointer;
+    border-right: 1px solid rgb(226, 227, 230);
+    cursor: pointer;
 }
 
 .tile:hover {
-  background: rgba(44, 123, 229, 0.5);
+    background: rgba(44, 123, 229, 0.5);
 }
 
 .tile:last-child {
-  border-right: none;
+    border-right: none;
 }
 
 .last-tick {
-  border: 0.2rem solid rgba(44, 123, 229, 0.5);
+    border: 0.2rem solid rgba(44, 123, 229, 0.5);
 }
 
 .last-tick {
-  position: relative;
-  transition: 0.1s linear border;
+    position: relative;
+    transition: 0.1s linear border;
 }
 
-.last-tick::before, .last-tick::after {
-  content: '';
-  display: block;
-  position: absolute;
-  background: #fff
+.last-tick::before,
+.last-tick::after {
+    content: "";
+    display: block;
+    position: absolute;
+    background: #fff;
 }
 
 .last-tick::before {
-  top: -0.2rem;
-  bottom: -0.2rem;
-  left: 0.2rem;
-  right: 0.2rem;
+    top: -0.2rem;
+    bottom: -0.2rem;
+    left: 0.2rem;
+    right: 0.2rem;
 }
 
 .last-tick::after {
-  top: 0.2rem;
-  bottom: 0.2rem;
-  left: -0.2rem;
-  right: -0.2rem;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    left: -0.2rem;
+    right: -0.2rem;
 }
 
 .chess {
-  z-index: 1;
+    z-index: 1;
 }
 
 .db {
@@ -298,6 +295,7 @@ input {
 
 .db-leftbar {
     width: 55vmax;
+    position: relative;
 }
 
 .db-title {
@@ -351,6 +349,7 @@ input {
     align-items: center;
     justify-content: center;
     background-image: linear-gradient(-45deg, #0443a2, #009bde);
+    border-radius: 0.375rem 0.375rem 0 0;
 }
 
 .db-ranking {
@@ -458,6 +457,7 @@ input {
 .db-profile {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .db-profile-logout {
     right: -0.3rem;
@@ -476,15 +476,15 @@ input {
     position: relative;
     display: flex;
     justify-content: center;
-    max-width: 55%;
-    max-height: 55%;
+    max-width: 45%;
+    margin-top: 0.375rem;
 }
 
 .db-profile-avatar img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: rgba(255, 255, 255, 0.245k) 2px solid;
+    border: rgba(255, 255, 255, 0.245) 5px solid;
 }
 
 .db-profile-avatar-rank {
@@ -497,7 +497,7 @@ input {
 
 .db-profile span {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 600;
 }
 
@@ -533,11 +533,12 @@ input {
 }
 
 .db-ranking-item-rank {
+    width: 30%;
     position: relative;
     font-weight: 800;
     font-size: 1.3rem;
     text-align: center;
-    margin: 0 0.5rem;
+    margin: 0 0rem;
 }
 
 .db-ranking-item-rank p {
@@ -552,13 +553,14 @@ input {
 
 .db-ranking-item-a {
     display: flex;
-    width: 80%;
+    width: 70%;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .db-ranking-item-b {
     display: none;
-    width: 80%;
+    width: 70%;
     justify-content: space-evenly;
     align-items: center;
 }
@@ -575,7 +577,7 @@ input {
 .db-ranking-item-username {
     font-size: 1.1rem;
     font-weight: 600;
-    margin: 0 0 0 1rem;
+    margin: 0;
 }
 
 .db-ranking-item:hover .db-ranking-item-a {
@@ -610,12 +612,12 @@ input {
     color: #636e72;
     height: 5%;
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1),
         0 3px 6px 0 rgba(0, 0, 0, 0.07);
     border: 0 solid #edf2f9;
-    border-radius: 0.375rem;
 }
 
 .db-ranking-header img {
@@ -628,7 +630,7 @@ input {
     position: absolute;
     right: 0rem;
     margin-right: 0.8rem;
-    font-size: 1.35rem;
+    font-size: 1rem;
     opacity: 0.245;
 }
 
@@ -642,139 +644,139 @@ input {
 
 .db-ranking-header p {
     font-weight: 900;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     margin: 0;
 }
 
-
 .row-board {
-  display: flex;
-  border: 1px solid rgb(226, 227, 230);
-  border-bottom: none;
+    display: flex;
+    border: 1px solid rgb(226, 227, 230);
+    border-bottom: none;
 }
 
 .game-bar {
-  display: flex;
-  padding: 10px 20px;
-  justify-content: space-between;
-  font-size: 1.2rem;
-  font-weight: bold;
-  /* background: #f9fafd; */
-  border-top-left-radius: 0.375rem;
-  box-shadow: 0 3px 6px 0 rgba(0,0,0,.07);
-  border: 1px solid rgb(226, 227, 230);
-  border-right: none;
+    display: flex;
+    padding: 10px 20px;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+    /* background: #f9fafd; */
+    border-top-left-radius: 0.375rem;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+    border: 1px solid rgb(226, 227, 230);
+    border-right: none;
 }
 
 .game-point {
-  display: flex;
-  align-items: center;
-  color: rgb(211, 174, 72)
+    display: flex;
+    align-items: center;
+    color: rgb(211, 174, 72);
 }
 
 .game-right-side {
-  height: inherit; 
-  background: #f9fafd;
-  box-shadow: 0 7px 14px 0 rgba(59,65,94,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  border-radius: 0 0.375rem 0.375rem 0;
-  z-index: 100;
-  border: 1px solid rgb(226, 227, 230);
-  border-left: none;
-  border-right: none;
+    height: inherit;
+    background: #f9fafd;
+    box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1),
+        0 3px 6px 0 rgba(0, 0, 0, 0.07);
+    border-radius: 0 0.375rem 0.375rem 0;
+    z-index: 100;
+    border: 1px solid rgb(226, 227, 230);
+    border-left: none;
+    border-right: none;
 }
 
 .game-info {
-  padding: 10px;
-  border-radius: 0.375rem 0.375rem 0 0;
+    padding: 10px;
+    border-radius: 0.375rem 0.375rem 0 0;
 }
 
 .bg-gradient {
-  background-image: -webkit-linear-gradient(135deg,#0443a2,#009bde);
-  background-image: -o-linear-gradient(135deg,#0443a2,#009bde);
-  background-image: linear-gradient(-45deg,#0443a2,#009bde);
-  background-position: center;
+    background-image: -webkit-linear-gradient(135deg, #0443a2, #009bde);
+    background-image: -o-linear-gradient(135deg, #0443a2, #009bde);
+    background-image: linear-gradient(-45deg, #0443a2, #009bde);
+    background-position: center;
 }
 
 .game-time {
-  color: #2c7be5
+    color: #2c7be5;
 }
 
 .progress {
-  height: 5px;
-  border-radius: 0 0 0 0.375rem;
-  border-left: 1px solid rgb(226, 227, 230);
+    height: 5px;
+    border-radius: 0 0 0 0.375rem;
+    border-left: 1px solid rgb(226, 227, 230);
 }
 
 .game-user-info {
-  color: #fff;
-  display: flex;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
+    color: #fff;
+    display: flex;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .game-user-avatar {
-  position: relative;
+    position: relative;
 }
 
 .game-user-chess {
-  position: absolute;
-  right: 0;
-  bottom: 5%;
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 3px rgba(0,0,0,0.3)
+    position: absolute;
+    right: 0;
+    bottom: 5%;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
 }
 
 .game-user-avatar img {
-  border-radius: 50px;
-  width: 60px;
-  border: 5px rgba(255, 255, 255, 0.3) solid;
+    border-radius: 50px;
+    width: 60px;
+    border: 5px rgba(255, 255, 255, 0.3) solid;
 }
 
 .game-user-point {
-  color: rgb(241, 202, 93)
+    color: rgb(241, 202, 93);
 }
 
 .game-user-point span {
-  display: block;
-  max-width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-user-name {
-  display: block; 
-  max-width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-user-rank {
-  display: flex;
-  align-items: center;
-  margin: 0 10px;
-  border-radius: 0.375rem;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 3px 5px;
-  color: rgb(241, 202, 93);
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    border-radius: 0.375rem;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 3px 5px;
+    color: rgb(241, 202, 93);
 }
 
 .game-user-rank img {
-  width: 18px;
-  margin-right: 5px;
+    width: 18px;
+    margin-right: 5px;
 }
 
 .chat {
-  background: #fff;
-  border-radius: 0 0 0.375rem 0.375rem;
+    background: #fff;
+    border-radius: 0 0 0.375rem 0.375rem;
 }
 
 .chat-header {
@@ -788,8 +790,8 @@ input {
 }
 
 .chat-body {
-  padding: 10px;
-  overflow: auto;
+    padding: 10px;
+    overflow: auto;
 }
 
 .bubble-chat {
@@ -802,144 +804,136 @@ input {
 }
 
 .bubble-chat p {
-  margin: 0;
+    margin: 0;
 }
 
 .bubble-chat small {
-  display: block;
-  opacity: 0.8;
-  text-align: right;
+    display: block;
+    opacity: 0.8;
+    text-align: right;
 }
 
-
 .bubble-left {
-  background-color: #edf2f9;
+    background-color: #edf2f9;
 }
 
 .bubble-right {
-  color: #fff;
-  background-color: #2c7be5
+    color: #fff;
+    background-color: #2c7be5;
 }
 
 .chat-footer {
-  background: #fff;
-  border-top: 1px solid #d8e2ef;
-  border-radius: 0 0 0.375rem 0;
+    background: #fff;
+    border-top: 1px solid #d8e2ef;
+    border-radius: 0 0 0.375rem 0;
 }
 
 .btn-send {
-  background-color: transparent;
-  padding-left: 0;
-  padding-right: 0;
-  color: #9da9bb;
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin: 0 10px 0 0;
+    background-color: transparent;
+    padding-left: 0;
+    padding-right: 0;
+    color: #9da9bb;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0 10px 0 0;
 }
 
 .btn-send:hover {
-  color: #2c7be5;
+    color: #2c7be5;
 }
 
 .chat-input {
-  border: none;
-  border-radius: 0;
-  outline: none;
-  padding: 5px 10px;
-  width: 100%;
-  color: #5e6e82;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    padding: 5px 10px;
+    width: 100%;
+    color: #5e6e82;
 }
 
 .scrollbar-track {
-  background: #edf2f9!important;
+    background: #edf2f9 !important;
 }
 
 .scrollbar-thumb {
-  background: #b6c1d2!important;
+    background: #b6c1d2 !important;
 }
 
 .rounded-soft {
-  border-radius: .375rem!important;
+    border-radius: 0.375rem !important;
 }
 
 .remodal-overlay {
-  background: rgba(11,23,39,.8);
+    background: rgba(11, 23, 39, 0.8);
 }
 
-.remodal-overlay, .remodal-wrapper {
-  position: absolute;
-  z-index: 90;
+.remodal-overlay,
+.remodal-wrapper {
+    position: absolute;
+    z-index: 90;
 }
 
 .remodal-wrapper {
-  padding: 10px 30px;
+    padding: 10px 30px;
 }
 
 .remodal {
-  padding: 20px;
-  background: transparent;
+    padding: 20px;
+    /* background: transparent; */
 }
 
 .modal-result {
-  font-family: 'Varela Round', sans-serif;
-  font-size: 3.5rem;
-  font-weight: bold;
+    font-family: "Varela Round", sans-serif;
+    font-size: 3.5rem;
+    font-weight: bold;
 }
 
 .winner {
-  color: rgb(241, 202, 93);
-  text-shadow: 0 1px 0 rgb(212, 177, 79),
-               0 2px 0 rgb(184, 152, 63),
-               0 3px 0 rgb(189, 158, 72),
-               0 4px 0 rgb(189, 158, 73),
-               0 5px 0 rgb(173, 145, 65),
-               0 6px 1px rgba(212, 177, 79, .1),
-               0 0 5px rgba(212, 177, 79,.1),
-               0 1px 3px rgba(212, 177, 79,.3),
-               0 3px 5px rgba(212, 177, 79,.2),
-               0 5px 10px rgba(212, 177, 79,.25),
-               0 10px 10px rgba(212, 177, 79,.2),
-               0 20px 20px rgba(212, 177, 79,.15);
+    color: rgb(241, 202, 93);
+    text-shadow: 0 1px 0 rgb(212, 177, 79), 0 2px 0 rgb(184, 152, 63),
+        0 3px 0 rgb(189, 158, 72), 0 4px 0 rgb(189, 158, 73),
+        0 5px 0 rgb(173, 145, 65), 0 6px 1px rgba(212, 177, 79, 0.1),
+        0 0 5px rgba(212, 177, 79, 0.1), 0 1px 3px rgba(212, 177, 79, 0.3),
+        0 3px 5px rgba(212, 177, 79, 0.2), 0 5px 10px rgba(212, 177, 79, 0.25),
+        0 10px 10px rgba(212, 177, 79, 0.2),
+        0 20px 20px rgba(212, 177, 79, 0.15);
 }
 
 .loser {
-  color: rgb(173, 172, 168);
-  text-shadow: 0 1px 0 rgb(151, 149, 142),
-               0 2px 0 rgb(124, 123, 116),
-               0 3px 0 rgb(105, 104, 102),
-               0 4px 0 rgb(97, 96, 94),
-               0 5px 0 rgb(83, 83, 82),
-               0 6px 1px rgba(173, 172, 168,.1),
-               0 0 5px rgba(173, 172, 168,.1),
-               0 1px 3px rgba(173, 172, 168,.3),
-               0 3px 5px rgba(173, 172, 168,.2),
-               0 5px 10px rgba(173, 172, 168,.25),
-               0 10px 10px rgba(173, 172, 168,.2),
-               0 20px 20px rgba(173, 172, 168,.15);
+    color: rgb(173, 172, 168);
+    text-shadow: 0 1px 0 rgb(151, 149, 142), 0 2px 0 rgb(124, 123, 116),
+        0 3px 0 rgb(105, 104, 102), 0 4px 0 rgb(97, 96, 94),
+        0 5px 0 rgb(83, 83, 82), 0 6px 1px rgba(173, 172, 168, 0.1),
+        0 0 5px rgba(173, 172, 168, 0.1), 0 1px 3px rgba(173, 172, 168, 0.3),
+        0 3px 5px rgba(173, 172, 168, 0.2), 0 5px 10px rgba(173, 172, 168, 0.25),
+        0 10px 10px rgba(173, 172, 168, 0.2),
+        0 20px 20px rgba(173, 172, 168, 0.15);
 }
 
 .btn-danger {
-  color: #fff;
-  background-color: #e63757;
-  border-color: #e63757;
+    color: #fff;
+    background-color: #e63757;
+    border-color: #e63757;
 }
 
-.btn-danger.disabled, .btn-danger:disabled {
-  color: #fff;
-  background-color: #e63757;
-  border-color: #e63757;
+.btn-danger.disabled,
+.btn-danger:disabled {
+    color: #fff;
+    background-color: #e63757;
+    border-color: #e63757;
 }
 
 .btn-danger:hover {
-  color: #fff;
-  background-color: #db1b3f;
-  border-color: #d01a3b;
+    color: #fff;
+    background-color: #db1b3f;
+    border-color: #d01a3b;
 }
 
-.btn-primary.disabled, .btn-primary:disabled {
-  color: #fff;
-  background-color: #2c7be5;
-  border-color: #2c7be5;
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #2c7be5;
+    border-color: #2c7be5;
 }
 
 .btn-quit-text {
@@ -955,4 +949,65 @@ input {
 
 .bg-chat {
   width: 50%;
+}
+
+.db-newroom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.db-newroom h3 {
+    position: relative;
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 0.745rem;
+}
+
+.db-newroom > div {
+    display: flex;
+    margin: 0.455rem 0;
+}
+
+.db-newroom-input img {
+    height: 1.5rem;
+}
+
+.db-newroom-input input {
+    padding: 0 0.65rem;
+    width: 12rem;
+    transition: transform 0.1s;
+    /* text-align: center; */
+}
+
+.db-newroom-input input:hover {
+    transform: scale(1.075);
+}
+
+.db-newroom-btn {
+    transition: transform 0.25s;
+}
+
+.db-newroom-btn > button {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.db-newroom-btn:hover {
+    transform: scale(1.15);
+}
+
+.db-close {
+    font-size: 2rem;
+    color: #c0392b;
+    position: absolute;
+    top: 0.155rem;
+    right: 0.755rem;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.db-close:hover {
+    transform: scale(1.3);
 }
