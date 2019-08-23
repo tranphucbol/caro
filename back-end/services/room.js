@@ -60,8 +60,8 @@ class Room {
                 } else {
                     redisClient.hset(roomKey, "host", room.guest);
                     redisClient.hdel(roomKey, "guest");
+                    redisClient.hset(roomKey, "status", ROOM_WAITING);
                 }
-                redisClient.hset(roomKey, "status", ROOM_WAITING);
             } else if (room.guest === username) {
                 redisClient.hdel(roomKey, "guest");
                 redisClient.hset(roomKey, "status", ROOM_WAITING);
@@ -81,6 +81,12 @@ class Room {
             return Promise.reject({ error: "Room not found" });
         }
         return room;
+    }
+
+    async getAllRooms() {
+        const roomKeys = await redisClient.keysAsync('room:*')
+        const promises = roomKeys.map(roomKey => redisClient.hgetallAsync(roomKey))
+        return Promise.all(promises)
     }
 
     async getValidGame(roomId, username) {

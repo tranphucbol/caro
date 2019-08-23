@@ -19,11 +19,13 @@ let authApi = require("./api/auth");
 let registerApi = require("./api/register");
 let userApi = require("./api/user");
 let leaderBoardApi = require("./api/leader-board");
+let roomApi = require("./api/room");
 
 app.use("/api/auth", authApi);
 app.use("/api/register", registerApi);
 app.use("/api/users", userApi);
 app.use("/api/leader-boards", leaderBoardApi);
+app.use("/api/rooms", roomApi);
 
 io.use(async (socket, next) => {
     let token = socket.handshake.query.token;
@@ -47,11 +49,15 @@ io.on("connection", function(socket) {
         let rooms = socket.rooms;
         for (let roomId in rooms) {
             try {
-                console.log(roomId)
-                let room = await roomService.getRoomById(roomId)
-                await userService.handleResult(roomId, username === room.host ? room.guest : room.host)
-                await roomService.quitRoom(roomId, username);
                 socket.to(roomId).emit("USER_DISCONNECT_RESPONSE", {});
+                let room = await roomService.getRoomById(roomId);
+                try {
+                    await userService.handleResult(
+                        roomId,
+                        username === room.host ? room.guest : room.host
+                    );
+                } catch (err) {}
+                await roomService.quitRoom(roomId, username);
             } catch (err) {
                 // console.log(err)
             }
@@ -102,7 +108,7 @@ io.on("connection", function(socket) {
     socket.on("START_GAME_REQUEST", async data => {
         try {
             let room = await roomService.getValidGame(data.roomId, username);
-            roomService.changeStatus(data.roomId, 'ROOM_PLAYING')
+            roomService.changeStatus(data.roomId, "ROOM_PLAYING");
             io.sockets.in(room.roomId).emit("START_GAME_RESPONSE", {});
         } catch (err) {
             io.sockets.in(username).emit("START_GAME_ERROR", err);
@@ -110,8 +116,8 @@ io.on("connection", function(socket) {
     });
 
     socket.on("RESULT_LOSE_REQUEST", async data => {
-        await userService.handleResult(data.roomId, username)
-        roomService.changeStatus(data.roomId, 'ROOM_WAITING')   
+        await userService.handleResult(data.roomId, username);
+        roomService.changeStatus(data.roomId, "ROOM_WAITING");
         socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);
     });
 
@@ -127,6 +133,22 @@ io.on("connection", function(socket) {
     socket.on("CHAT_REQUEST", data => {
         socket.to(data.roomId).emit("CHAT_RESPONSE", data);
     });
+
+    socket.on("USER_QUIT_REQUEST", async data => {
+        try {
+            socket.to(data.roomId).emit("USER_QUIT_RESPONSE", {})
+            let room = await roomService.getRoomById(data.roomId);
+            try {
+                await userService.handleResult(
+                    data.roomId,
+                    username === room.host ? room.guest : room.host
+                );
+            } catch (err) {}
+            await roomService.quitRoom(data.roomId, username);
+        } catch (err) {
+            // console.log(err)
+        }
+    })
 });
 
 app.set("port", process.env.PORT || 3001);
