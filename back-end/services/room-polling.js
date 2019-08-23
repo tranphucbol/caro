@@ -7,7 +7,6 @@ module.exports = new (class RoomPollingService {
             roomId,
             modified
         });
-        console.log(roomId, modified);
     }
 
     async getAllRooms() {
@@ -18,10 +17,12 @@ module.exports = new (class RoomPollingService {
         const roomsDelete = roomPollings.filter(
             room => room.modified === "DELETE"
         );
-        const promises = roomPollings
-            .filter(room => room.modified === "UPDATE")
-            .map(room => redisClient.hgetallAsync(`room:${room.roomId}`));
-        const roomsUpdate = await Promise.all(promises);
+
+        const roomsUpdate = await Promise.all(
+            roomPollings
+                .filter(room => room.modified === "UPDATE")
+                .map(room => redisClient.hgetallAsync(`room:${room.roomId}`))
+        );
         return [
             ...roomsDelete,
             ...roomsUpdate.map(room => ({ ...room, modified: "UPDATE" }))
@@ -30,6 +31,6 @@ module.exports = new (class RoomPollingService {
 
     async clearRoomPolling() {
         const roomPollingKeys = await redisClient.keysAsync("room_polling:*");
-        redisClient.del(roomPollingKeys)
+        redisClient.del(roomPollingKeys);
     }
 })();

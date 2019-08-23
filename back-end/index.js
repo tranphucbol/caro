@@ -42,7 +42,7 @@ io.use(async (socket, next) => {
 });
 
 setInterval(async () => {
-    console.log('polling ...')
+    // console.log('polling ...')
     let rooms = await roomPollingService.getAllRooms()
     if(rooms.length !== 0) {
         io.of('/').emit('ROOM_POLLING_RESPONSE', rooms)
