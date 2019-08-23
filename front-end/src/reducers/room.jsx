@@ -20,7 +20,8 @@ import {
     PLAY_AGAIN,
     GUEST_PLAY_AGAIN,
     RESULT_LOSE,
-    USER_DISCONNECT
+    USER_DISCONNECT,
+    QUIT
 } from "../actions/room";
 
 const initUser = () => {
@@ -86,7 +87,8 @@ const restartState = state => {
     state.status =
         state.guestContinue && state.key ? STATUS_START_GAME : STATUS_WATTING;
     state.guestContinue = false;
-    state.chess = state.result === RESULT_WIN && !state.opponentQuit ? CHESS_O : CHESS_X;
+    state.chess =
+        state.result === RESULT_WIN && !state.opponentQuit ? CHESS_O : CHESS_X;
     state.opponentQuit = false;
     state.result = RESULT_NONE;
     return state;
@@ -141,7 +143,7 @@ const onJoinRoom = (state, { roomId, role, user, pet }) => {
         state.chess = CHESS_O;
     } else {
         state.chess = CHESS_X;
-        if(state.status === STATUS_PLAY_AGAIN) {
+        if (state.status === STATUS_PLAY_AGAIN) {
             state.guestContinue = true;
         } else {
             state.status = STATUS_START_GAME;
@@ -154,20 +156,21 @@ const onJoinRoom = (state, { roomId, role, user, pet }) => {
 };
 
 const onUserDisconnect = state => {
-    state.key = true
-    state.userWin = 0
-    state.opponentWin = 0
-    state.opponent = initUser()
+    state.key = true;
+    state.userWin = 0;
+    state.opponentWin = 0;
+    state.opponent = initUser();
     state.opponentQuit = true;
-    if(state.status === STATUS_PLAYING) {
-        state.board = { ...state.board, lock: true }
+    if (state.status === STATUS_PLAYING) {
+        state.board = { ...state.board, lock: true };
         state.status = STATUS_PLAY_AGAIN;
-        state.result = RESULT_WIN; 
+        state.result = RESULT_WIN;
     } else if (state.status === STATUS_START_GAME) {
-        state.status = STATUS_WATTING
+        state.status = STATUS_WATTING;
+        state.opponentQuit = false;
     }
-    return state
-}
+    return state;
+};
 
 const room = (state = initState(25, 30, true), action) => {
     switch (action.type) {
@@ -207,7 +210,11 @@ const room = (state = initState(25, 30, true), action) => {
                     state.opponentWin + (action.result === RESULT_LOSE ? 1 : 0),
                 opponent: {
                     ...state.opponent,
-                    point: state.opponent.point + (action.result === RESULT_WIN ? -state.pet : (state.pet + 100))
+                    point:
+                        state.opponent.point +
+                        (action.result === RESULT_WIN
+                            ? -state.pet
+                            : state.pet + 100)
                 }
             };
         case PLAY_AGAIN:
@@ -222,7 +229,9 @@ const room = (state = initState(25, 30, true), action) => {
                 guestContinue: state.status === STATUS_PLAY_AGAIN
             };
         case USER_DISCONNECT:
-            return onUserDisconnect({...state})
+            return onUserDisconnect({ ...state });
+        case QUIT:
+            return Object.assign({}, state, initState(25, 30, true));
         default:
             return state;
     }

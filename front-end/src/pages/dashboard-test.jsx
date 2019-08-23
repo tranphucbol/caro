@@ -1,23 +1,23 @@
 import React from "react";
 import Main from "./main";
 import { Link } from "react-router-dom";
-import { createRoom, joinRoom } from "../actions/room";
+import { createRoom, joinRoom, initialSocketIO } from "../actions/room";
 import {connect} from "react-redux"
-// import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 class DashBoard extends React.Component {
 
+    componentDidMount() {
+        this.props.initialSocketIO()
+    }
+
     state = {
         input: '',
-        redirect: false
     }
 
     handleClick = () => {
         console.log("CREATE ROOM")
         this.props.onCreateRoom(1000, 'Test room');
-        this.setState({
-            redirect: true
-        })
     }
 
     handleInput = (e) => {
@@ -32,8 +32,8 @@ class DashBoard extends React.Component {
     }
 
     render() {
-        if(this.state.redirect) {
-            // return <Redirect to="/play"/>
+        if(this.props.roomId !== '') {
+            return <Redirect to="/play"/>
         }
         return (
             <Main>
@@ -56,10 +56,13 @@ class DashBoard extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    roomId: state.room.roomId
+})
 const mapDispatchToProps = dispatch => ({
     onCreateRoom: (pet, name) => dispatch(createRoom(pet, name)),
-    onJoinRoom: (roomId) => dispatch(joinRoom(roomId))
+    onJoinRoom: (roomId) => dispatch(joinRoom(roomId)),
+    initialSocketIO: () => dispatch(initialSocketIO())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
