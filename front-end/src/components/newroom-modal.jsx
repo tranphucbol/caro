@@ -20,22 +20,37 @@ class NewroomModal extends React.Component {
         let name = randomName[ofset];
         let point = (props.point / 4) >> 0;
         this.state = {
-            inputPoint: point,
+            inputPoint: 0,
             inputName: name
         };
     }
 
-    // componentDidMount() {
-    //     console.log(this.props);
-    //     let point = (this.props.point / 4) >> 0;
-    //     this.setState({
-    //         inputPoint: point
-    //     });
-    // }
+    onChangePoint = event => {
+        let point = event.target.value;
+        if (point < 0) {
+            point = 0;
+        }
+        if (point > this.props.point) {
+            point = this.props.point;
+        }
+        this.setState({
+            inputPoint: point
+        });
+    };
+
+    onChangeName = event => {
+        this.setState({
+            inputName: event.target.value
+        });
+    };
 
     render() {
         return (
-            <Modal id="newroom" className="remodal" parentsClass=".db-leftbar">
+            <Modal
+                custom="db-modal-newroom"
+                id="newroom"
+                parentsClass=".db-leftbar"
+            >
                 <div className="db-newroom ">
                     <div className="db-close" data-remodal-action="close">
                         <FontAwesomeIcon icon={faWindowClose}></FontAwesomeIcon>
@@ -54,7 +69,8 @@ class NewroomModal extends React.Component {
                         <input
                             className="form-control"
                             type="text"
-                            // value={this.state.inputName}
+                            value={this.state.inputName}
+                            onChange={this.onChangeName}
                         />
                     </div>
                     <div className="db-newroom-input">
@@ -69,12 +85,13 @@ class NewroomModal extends React.Component {
                         <input
                             className="form-control"
                             type="number"
-                            // value={this.state.inputPoint}
+                            value={this.state.inputPoint}
+                            onChange={this.onChangePoint}
                         />
                     </div>
 
                     <div className="db-newroom-btn">
-                        <button className="btn btn-success">create room</button>
+                        <button className="btn btn-primary">create room</button>
                     </div>
                 </div>
             </Modal>

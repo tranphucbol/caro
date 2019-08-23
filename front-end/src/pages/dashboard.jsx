@@ -8,6 +8,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import Profile from "../components/profile";
 import Leaderboard from "../components/leaderboard";
 import NewroomModal from "../components/newroom-modal";
+import ListRoom from "../components/listRoom";
 // import { connect } from "react-redux";
 // const containerStyle = {
 //     display: 'inline',
@@ -57,9 +58,7 @@ class DashBoard extends React.Component {
                                 <DBToolBar />
                                 <div className="db-listroomscroll position-relative">
                                     <PerfectScrollbar>
-                                        <div className="db-listroom">
-                                            {listRoom}
-                                        </div>
+                                        <ListRoom></ListRoom>
                                     </PerfectScrollbar>
                                 </div>
                                 <div
