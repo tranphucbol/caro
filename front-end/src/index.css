@@ -624,7 +624,7 @@ input {
     margin: 0 1.12rem;
 }
 
-.db-ranking-header svg {
+.db-ranking-header a {
     transition: transform 0.4s ease-in-out;
     position: absolute;
     right: 0rem;
@@ -633,7 +633,7 @@ input {
     opacity: 0.245;
 }
 
-.db-ranking-header:hover svg {
+.db-ranking-header:hover a {
     opacity: 1;
 }
 
