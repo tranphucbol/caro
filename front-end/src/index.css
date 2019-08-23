@@ -882,10 +882,11 @@ input {
     /* background: transparent; */
 }
 
-.modal-result {
+.remodal-result {
     font-family: "Varela Round", sans-serif;
     font-size: 3.5rem;
     font-weight: bold;
+    background: transparent;
 }
 
 .winner {

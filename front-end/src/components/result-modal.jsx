@@ -38,7 +38,7 @@ class ResultModal extends React.Component {
     render() {
         let { winning } = this.props;
         return (
-            <Modal id="modal-result" parentsClass=".board">
+            <Modal custom="remodal-result" id="modal-result" parentsClass=".board">
                 <div className={`modal-result ${winning ? "winner" : "loser"}`}>
                     <i className={`fa${winning ? "s" : "r"} fa-star`} />
                     <span className="px-1">{winning ? "Winner" : "Loser"}</span>
