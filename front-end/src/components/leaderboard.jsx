@@ -1,47 +1,85 @@
 import React from "react";
+import { connect } from "react-redux";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { load_leaderboard } from "../actions/rank";
 
 class Leaderboard extends React.Component {
-    render() {
-        return (
-            <div className="db-ranking-item">
-                <div className="db-ranking-item-rank">
-                    <img
-                        className="db-ranking-item-rankbg"
-                        src={`${process.env.PUBLIC_URL}/images/rank-number.svg`}
-                        alt="numberanking"
-                    />
-                    <p>{this.props.rank}</p>
-                </div>
-                <div className="db-ranking-item-a">
-                    <p className="db-ranking-item-username">
-                        {this.props.username}
-                    </p>
-                    <div className="db-ranking-item-info">
-                        <img
-                            src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                            alt="caro"
-                        />
-                        {this.props.point}
-                    </div>
-                </div>
-                <div className="db-ranking-item-b">
-                    <img
-                        className="db-ranking-item-avatar"
-                        alt=""
-                        src={`${process.env.PUBLIC_URL}/images/avatar.svg`}
-                    />
+    componentDidMount() {
+        this.props.loadMyInfo();
+    }
 
-                    <div className="db-ranking-item-info">
+    render() {
+        var list_userLeaderBoard = [];
+
+        this.props.leaderboard.forEach((element, index) => {
+            list_userLeaderBoard.push(
+                <div className="db-ranking-item" key={index}>
+                    <div className="db-ranking-item-rank">
                         <img
-                            src={`${process.env.PUBLIC_URL}/images/trophy.gif`}
-                            alt="caro"
+                            className="db-ranking-item-rankbg"
+                            src={`${process.env.PUBLIC_URL}/images/rank-number.svg`}
+                            alt="numberanking"
                         />
-                        <span>89%</span>
+                        <p>{element.rank}</p>
                     </div>
+                    <div className="db-ranking-item-a">
+                        <p className="db-ranking-item-username">
+                            {element.username}
+                        </p>
+                        <div className="db-ranking-item-info">
+                            <img
+                                src={`${process.env.PUBLIC_URL}/images/coin.png`}
+                                alt="caro"
+                            />
+                            {element.point}
+                        </div>
+                    </div>
+                    <div className="db-ranking-item-b">
+                        <img
+                            className="db-ranking-item-avatar"
+                            alt=""
+                            src={element.avatar}
+                        />
+
+                        <div className="db-ranking-item-info">
+                            <img
+                                src={`${process.env.PUBLIC_URL}/images/trophy.gif`}
+                                alt="caro"
+                            />
+                            <span>{element.ratioWinning}</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        return (
+            <div>
+                <div className="db-ranking-header">
+                    <p>TOP RANK</p>
+                    <FontAwesomeIcon icon={faSyncAlt} />
+                </div>
+                <div className="db-listranking">
+                    <PerfectScrollbar>
+                        <div>{list_userLeaderBoard}</div>
+                    </PerfectScrollbar>
                 </div>
             </div>
         );
     }
 }
 
-export default Leaderboard;
+const mapStateToProps = state => ({
+    leaderboard: [...state.rank]
+});
+
+const mapDispatchToProps = dispatch => ({
+    loadMyInfo: () => dispatch(load_leaderboard())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Leaderboard);

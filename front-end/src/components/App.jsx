@@ -8,7 +8,6 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Play from "../pages/play";
 import PrivateRoute from "./private-route";
 
-
 class App extends React.Component {
     render() {
         return (
@@ -27,7 +26,10 @@ class App extends React.Component {
                                         path="/"
                                         component={DashBoard}
                                     />
-                                    <PrivateRoute path="/play" component={Play} />
+                                    <PrivateRoute
+                                        path="/play"
+                                        component={Play}
+                                    />
                                     <Route path="/login" component={Login} />
                                     <Route
                                         path="/register"

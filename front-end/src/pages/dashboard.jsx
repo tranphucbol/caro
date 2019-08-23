@@ -7,8 +7,8 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import Profile from "../components/profile";
 import Leaderboard from "../components/leaderboard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import NewroomModal from "../components/newroom-modal";
+// import { connect } from "react-redux";
 // const containerStyle = {
 //     display: 'inline',
 //     'align-items': 'center',
@@ -35,23 +35,17 @@ class DashBoard extends React.Component {
         });
     }
 
+    clickCreateRoom = () => {
+        this.setState({
+            newroom: true
+        });
+    };
+
     render() {
-        const listRoom = [];
+        let listRoom = [];
 
         for (let i = 0; i < 20; i++) {
             listRoom.push(<Room key={i}></Room>);
-        }
-
-        const listRanking = [];
-        for (let i = 0; i < 50; i++) {
-            listRanking.push(
-                <Leaderboard
-                    key={i}
-                    rank={i + 1}
-                    username={"Pla ple plum"}
-                    point={2000 - i * 100}
-                />
-            );
         }
 
         return (
@@ -75,22 +69,19 @@ class DashBoard extends React.Component {
                             </div>
                             <div className="db-rightbar">
                                 <Profile></Profile>
-                                <div className="db-ranking-header ">
-                                    <p>TOP RANK</p>
-                                    <FontAwesomeIcon icon={faSyncAlt} />
-                                </div>
-                                <div className="db-listranking">
-                                    <PerfectScrollbar>
-                                        <div>{listRanking}</div>
-                                    </PerfectScrollbar>
-                                </div>
+                                <Leaderboard></Leaderboard>
                             </div>
                         </div>
                     </div>
+                    <NewroomModal></NewroomModal>
                 </Container>
             </Main>
         );
     }
 }
+
+// const mapStateToProps = state => ({
+//     createRoom: state.view.createRoom
+// });
 
 export default DashBoard;

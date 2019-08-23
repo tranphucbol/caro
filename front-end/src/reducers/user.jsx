@@ -13,7 +13,7 @@ const initUser = () => {
 const user = (state = initUser(), action) => {
     switch (action.type) {
         case USER_INFO:
-            return action.user
+            return action.user;
         default:
             return state;
     }
