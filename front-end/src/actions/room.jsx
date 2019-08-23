@@ -2,6 +2,7 @@ import { getJwtFromStorage, getUsernameFromStorage } from "../utils/utils";
 import socketIOClient from "socket.io-client";
 import { store } from "../index";
 import { api } from "../api/api";
+import { onRoomPolling } from "./list-room";
 
 export const TICK = "ROOM.TICK";
 export const TIME_UP = "ROOM.TIME_UP";
@@ -338,7 +339,7 @@ export const initialSocketIO = () => {
     })
 
     socket.on("ROOM_POLLING_RESPONSE", data => {
-        console.log(data)
+        store.dispatch(onRoomPolling(data))
     })
 
     return {

@@ -2,23 +2,22 @@ import React from "react";
 import Main from "./main";
 import { Link } from "react-router-dom";
 import { createRoom, joinRoom, initialSocketIO } from "../actions/room";
-import {connect} from "react-redux"
-import { Redirect } from "react-router-dom"
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class DashBoard extends React.Component {
-
     componentDidMount() {
-        this.props.initialSocketIO()
+        this.props.initialSocketIO();
     }
 
     state = {
-        input: '',
-    }
+        input: ""
+    };
 
     handleClick = () => {
-        console.log("CREATE ROOM")
-        this.props.onCreateRoom(1000, 'Test room');
-    }
+        console.log("CREATE ROOM");
+        this.props.onCreateRoom(1000, "Test room");
+    };
 
     handleInput = e => {
         this.setState({
@@ -26,14 +25,14 @@ class DashBoard extends React.Component {
         });
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.props.onJoinRoom(this.state.input)
-    }
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.onJoinRoom(this.state.input);
+    };
 
     render() {
-        if(this.props.roomId !== '') {
-            return <Redirect to="/play"/>
+        if (this.props.roomId !== "") {
+            return <Redirect to="/play" />;
         }
         return (
             <Main>
@@ -60,6 +59,13 @@ class DashBoard extends React.Component {
                             </button>
                         </form>
                     </div>
+                    <ul>
+                        {this.props.rooms.map(room => (
+                            <li key={room.roomId}>
+                                {`${room.name}-${room.host}-${room.point}`}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </Main>
         );
@@ -67,13 +73,14 @@ class DashBoard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    roomId: state.room.roomId
-})
+    roomId: state.room.roomId,
+    rooms: state.listRoom
+});
 const mapDispatchToProps = dispatch => ({
     onCreateRoom: (pet, name) => dispatch(createRoom(pet, name)),
-    onJoinRoom: (roomId) => dispatch(joinRoom(roomId)),
+    onJoinRoom: roomId => dispatch(joinRoom(roomId)),
     initialSocketIO: () => dispatch(initialSocketIO())
-})
+});
 
 export default connect(
     mapStateToProps,
