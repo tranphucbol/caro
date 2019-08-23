@@ -22,7 +22,6 @@ module.exports = new (class RoomPollingService {
             .filter(room => room.modified === "UPDATE")
             .map(room => redisClient.hgetallAsync(`room:${room.roomId}`));
         const roomsUpdate = await Promise.all(promises);
-        console.log(roomsUpdate);
         return [
             ...roomsDelete,
             ...roomsUpdate.map(room => ({ ...room, modified: "UPDATE" }))
