@@ -783,7 +783,7 @@ input {
   font-size: 1.1rem;
   padding: 10px;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   /* background: #EDF2F9; */
 }
 
@@ -793,6 +793,8 @@ input {
 }
 
 .bubble-chat {
+  position: relative;
+  z-index: 2;
   border-radius: 0.375rem;
   padding: 5px 10px;
   margin: 5px 0;
@@ -940,6 +942,17 @@ input {
   border-color: #2c7be5;
 }
 
-.btn-back {
-  color: #2c7be5;
+.btn-quit-text {
+  color: #fff;
+  transition: all ease 0.4s;
+  cursor: pointer;
+}
+
+.btn-quit-text:hover {
+  text-shadow: 0px 3px 6px rgba(0,0,0,0.3)
+}
+
+
+.bg-chat {
+  width: 50%;
 }

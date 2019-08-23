@@ -29,6 +29,7 @@ export const RESULT_NONE = "ROOM.RESULT_NONE";
 export const PLAY_AGAIN = "ROOM.PLAY_AGAIN";
 export const GUEST_PLAY_AGAIN = "ROOM.GUEST_PLAY_AGAIN";
 export const USER_DISCONNECT = "ROOM.USER_DISCONNECT"
+export const QUIT = "ROOM.QUIT"
 
 export const tickTile = id => {
     let { roomId, socket, chess } = store.getState().room;
@@ -330,6 +331,16 @@ export const initialSocketIO = () => {
         });
     })
 
+    socket.on("USER_QUIT_RESPONSE", data => {
+        store.dispatch({
+            type: USER_DISCONNECT
+        });
+    })
+
+    socket.on("ROOM_POLLING_RESPONSE", data => {
+        console.log(data)
+    })
+
     return {
         type: SOCKET_FETCHED,
         socket
@@ -370,10 +381,10 @@ export const createRoom = (pet, name) => {
     };
 };
 
-export const joinRoom = (roomId, host) => {
+export const joinRoom = (roomId) => {
+    // console.log("JOIN_ROOM_REQUEST: ", host)
     store.getState().room.socket.emit("JOIN_ROOM_REQUEST", {
         roomId,
-        host,
         guest: getUsernameFromStorage()
     });
     return {
@@ -395,10 +406,8 @@ export const onStartGame = () => {
 export const onPlayAgain = () => {
     let key = store.getState().room.key;
     if (!key) {
-        console.log("PLAY_AGAIN_REQUEST");
         let socket = store.getState().room.socket;
         let roomId = store.getState().room.roomId;
-        console.log("room: ", roomId);
         socket.emit("PLAY_AGAIN_REQUEST", {
             roomId
         });
@@ -407,3 +416,12 @@ export const onPlayAgain = () => {
         type: PLAY_AGAIN
     };
 };
+
+export const onQuit = () => {
+    let socket = store.getState().room.socket;
+    let roomId = store.getState().room.roomId;
+    socket.emit("USER_QUIT_REQUEST", {roomId})
+    return {
+        type: QUIT
+    }
+}

@@ -21,6 +21,7 @@ class GameBar extends React.Component {
                     <GameControlButton
                         onStartGame={this.props.onStartGame}
                         onPlayAgain={this.props.onPlayAgain}
+                        onQuit={this.props.onQuit}
                         status={this.props.status}
                     />
                 ) : (

@@ -2,7 +2,7 @@ import React from "react";
 import GameUserInfo from "./game-user-info";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { CHESS_X, CHESS_O } from "../actions/room";
+import { CHESS_X, CHESS_O, onQuit } from "../actions/room";
 
 class GameInfo extends React.Component {
     render() {
@@ -10,8 +10,8 @@ class GameInfo extends React.Component {
             <div className="game-info h-50 bg-gradient d-flex flex-column justify-content-between">
                 <div className="d-flex justify-content-between">
                 <GameUserInfo {...this.props.user} chess={this.props.chess} />
-                <div className="text-white">
-                <i className="fas fa-power-off"></i>
+                <div onClick={() => this.props.onQuit()} className="btn-quit-text">
+                    <i className="fas fa-power-off"></i>
                 </div>
        
                 </div>
@@ -48,7 +48,8 @@ GameInfo.propTypes = {
     }).isRequired,
     userWin: PropTypes.number.isRequired,
     opponentWin: PropTypes.number.isRequired,
-    chess: PropTypes.number.isRequired
+    chess: PropTypes.number.isRequired,
+    onQuit: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -59,4 +60,8 @@ const mapStateToProps = state => ({
     chess: state.room.chess
 });
 
-export default connect(mapStateToProps)(GameInfo);
+const mapDispatchToProps = dispatch => ({
+    onQuit: () => dispatch(onQuit())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameInfo);
