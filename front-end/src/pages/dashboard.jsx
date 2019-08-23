@@ -1,6 +1,5 @@
 import React from "react";
 import Main from "./main";
-import { Container } from "react-bootstrap";
 import Room from "../components/Room";
 import DBToolBar from "../components/dashboard-toolbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -9,13 +8,10 @@ import Profile from "../components/profile";
 import Leaderboard from "../components/leaderboard";
 import NewroomModal from "../components/newroom-modal";
 import ListRoom from "../components/listRoom";
-// import { connect } from "react-redux";
-// const containerStyle = {
-//     display: 'inline',
-//     'align-items': 'center',
-//     'margin-top': 'auto',
-//     'margin-bottom': 'auto',
-// }
+import { initialSocketIO } from "../actions/room";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import BackgroundIcon from "../components/background-icon";
 
 class DashBoard extends React.Component {
     constructor(props) {
@@ -26,61 +22,65 @@ class DashBoard extends React.Component {
     }
 
     componentDidMount() {
-        let height = document.querySelector(".db-leftbar").clientHeight;
-        let heightToolbar = document.querySelector(".db-toolbar").clientHeight;
-        let heightListRoom = document.querySelector(".db-listroomscroll")
-            .clientHeight;
+        this.props.initialSocketIO();
+        // let height = document.querySelector(".db-leftbar").clientHeight;
+        // let heightToolbar = document.querySelector(".db-toolbar").clientHeight;
+        // let heightListRoom = document.querySelector(".db-listroomscroll")
+        //     .clientHeight;
 
-        this.setState({
-            heightFooter: height - (heightToolbar + heightListRoom)
-        });
+        // this.setState({
+        //     heightFooter: height - (heightToolbar + heightListRoom)
+        // });
     }
-
-    clickCreateRoom = () => {
-        this.setState({
-            newroom: true
-        });
-    };
 
     render() {
         let listRoom = [];
 
         for (let i = 0; i < 20; i++) {
-            listRoom.push(<Room key={i}></Room>);
+            listRoom.push(<Room key={i} />);
         }
 
         return (
             <Main>
-                <Container className="min-vh-100 flex-center">
+                <div className="min-vh-100 flex-center">
                     <div className="card db-border">
                         <div className="db ">
                             <div className="db-leftbar">
                                 <DBToolBar />
                                 <div className="db-listroomscroll position-relative">
+                                   <BackgroundIcon name="swords-bg.svg" color="#00333333"/>
                                     <PerfectScrollbar>
-                                        <ListRoom></ListRoom>
+                                        <ListRoom />
                                     </PerfectScrollbar>
                                 </div>
-                                <div
+                                {/* <div
                                     className="db-leftbar-footer"
                                     style={{ height: this.state.heightFooter }}
-                                ></div>
+                                ></div> */}
                             </div>
                             <div className="db-rightbar">
-                                <Profile></Profile>
-                                <Leaderboard></Leaderboard>
+                                <Profile />
+                                <Leaderboard />
                             </div>
                         </div>
                     </div>
-                    <NewroomModal></NewroomModal>
-                </Container>
+                    <NewroomModal />
+                </div>
+                {this.props.roomId !== "" && <Redirect to="/play" />}
             </Main>
         );
     }
 }
 
-// const mapStateToProps = state => ({
-//     createRoom: state.view.createRoom
-// });
+const mapStateToProps = state => ({
+    roomId: state.room.roomId
+});
 
-export default DashBoard;
+const mapDispatchToProps = dispatch => ({
+    initialSocketIO: () => dispatch(initialSocketIO())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DashBoard);

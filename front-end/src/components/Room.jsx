@@ -25,7 +25,7 @@ class Room extends React.Component {
         let { point, host, name } = this.props.data;
 
         return (
-            <div className="db-room px-3 py-4 hover-shadow position-relative">
+            <div onDoubleClick={() => this.props.onJoinRoom(this.props.data.roomId)} className="db-room px-3 py-4 hover-shadow position-relative">
                 <div
                     className="bg-holder bg-card"
                     style={{
@@ -38,7 +38,7 @@ class Room extends React.Component {
                 <div className="db-room-info">
                     <div className="db-room-name">{name}</div>
                     <div className="d-flex">
-                        <div className="db-room-host-name">
+                        <div className="db-room-host-name d-flex align-items-center">
                             <img
                                 src={`${process.env.PUBLIC_URL}/images/gaming.svg`}
                                 alt="caro"

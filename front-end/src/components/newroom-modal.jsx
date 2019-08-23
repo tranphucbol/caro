@@ -4,6 +4,7 @@ import Modal from "./modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
+import { createRoom } from "../actions/room";
 // import { closeRemodalCreateRoom } from "../actions/view";
 
 class NewroomModal extends React.Component {
@@ -18,7 +19,7 @@ class NewroomModal extends React.Component {
         ];
         let ofset = Math.floor(Math.random() * randomName.length);
         let name = randomName[ofset];
-        let point = (props.point / 4) >> 0;
+        // let point = (props.point / 4) >> 0;
         this.state = {
             inputPoint: 0,
             inputName: name
@@ -43,6 +44,12 @@ class NewroomModal extends React.Component {
             inputName: event.target.value
         });
     };
+
+    onCreateRoom = () => {
+        let point = parseInt(this.state.inputPoint)
+        let name = this.state.inputName
+        this.props.onCreateRoom(point, name);
+    }
 
     render() {
         return (
@@ -91,7 +98,7 @@ class NewroomModal extends React.Component {
                     </div>
 
                     <div className="db-newroom-btn">
-                        <button className="btn btn-primary">create room</button>
+                        <button onClick={this.onCreateRoom} className="btn btn-primary">create room</button>
                     </div>
                 </div>
             </Modal>
@@ -103,8 +110,8 @@ const mapStateToProps = state => ({
     point: state.user.point
 });
 
-// const mapDispatchToProps = dispatch => ({
-//     closeModal: () => dispatch(closeRemodalCreateRoom())
-// });
+const mapDispatchToProps = dispatch => ({
+    onCreateRoom: (point, name) => dispatch(createRoom(point, name))
+});
 
-export default connect(mapStateToProps)(NewroomModal);
+export default connect(mapStateToProps, mapDispatchToProps)(NewroomModal);

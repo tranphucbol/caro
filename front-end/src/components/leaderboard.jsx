@@ -4,68 +4,39 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { load_leaderboard } from "../actions/rank";
+import LeaderBoardItem from "./leader-board-item";
+import BackgroundIcon from './background-icon'
 
 class Leaderboard extends React.Component {
+
+    state = {
+        height: 0
+    }
+
     componentDidMount() {
         this.props.loadMyInfo();
+        let dbRankingHeaderHeight = document.querySelector('.db-ranking-header').clientHeight;
+        let dbRankingHeight = document.querySelector('.db-ranking').clientWidth
+        this.setState({
+            height: dbRankingHeight - dbRankingHeaderHeight
+        })
     }
 
     render() {
-        var list_userLeaderBoard = [];
-
-        this.props.leaderboard.forEach((element, index) => {
-            list_userLeaderBoard.push(
-                <div className="db-ranking-item" key={index}>
-                    <div className="db-ranking-item-rank">
-                        <img
-                            className="db-ranking-item-rankbg"
-                            src={`${process.env.PUBLIC_URL}/images/rank-number.svg`}
-                            alt="numberanking"
-                        />
-                        <p>{element.rank}</p>
-                    </div>
-                    <div className="db-ranking-item-a">
-                        <p className="db-ranking-item-username">
-                            {element.username}
-                        </p>
-                        <div className="db-ranking-item-info">
-                            <img
-                                src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                                alt="caro"
-                            />
-                            {element.point}
-                        </div>
-                    </div>
-                    <div className="db-ranking-item-b">
-                        <img
-                            className="db-ranking-item-avatar"
-                            alt=""
-                            src={element.avatar}
-                        />
-
-                        <div className="db-ranking-item-info">
-                            <img
-                                src={`${process.env.PUBLIC_URL}/images/trophy.gif`}
-                                alt="caro"
-                            />
-                            <span>{element.ratioWinning}</span>
-                        </div>
-                    </div>
-                </div>
-            );
-        });
-
         return (
-            <div>
+            <div className="db-ranking">
                 <div className="db-ranking-header">
-                    <p>TOP RANK</p>
-                    <a onClick={() => this.props.loadMyInfo()}>
+                    <h4>TOP RANK</h4>
+                    <a onClick={() => this.props.loadMyInfo()} href="#1">
                         <FontAwesomeIcon icon={faSyncAlt} />
                     </a>
                 </div>
-                <div className="db-listranking">
+                <div className="db-listranking position-relative" style={{height: this.state.height}}>
+                    <BackgroundIcon name="crown-solid.svg"/>
                     <PerfectScrollbar>
-                        <div>{list_userLeaderBoard}</div>
+                        {this.props.leaderboard.map((element, index) => (
+                            <LeaderBoardItem key={index} {...element}/>
+                        ))}
                     </PerfectScrollbar>
                 </div>
             </div>

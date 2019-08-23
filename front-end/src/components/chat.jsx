@@ -69,9 +69,8 @@ class Chat extends React.Component {
                 <div className="chat-header">Chat</div>
                 <div className="position-relative">
                     <img
-                        className="bg-chat position-absolute absolute-centered"
+                        className="bg-icon position-absolute absolute-centered"
                         src={`${process.env.PUBLIC_URL}/images/chat.svg`}
-                        color="#cccccc"
                         alt="caro"
                     />
                     <PerfectScrollbar

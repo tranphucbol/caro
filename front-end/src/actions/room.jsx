@@ -277,7 +277,7 @@ export const initialSocketIO = () => {
     if (store.getState().room.socket !== undefined) return { type: EMPTY };
     console.log("connection");
     const jwt = getJwtFromStorage();
-    const socket = socketIOClient("http://127.0.0.1:3001", {
+    const socket = socketIOClient("http://localhost:3001", {
         query: `token=${jwt}`
     });
     socket.on("TICK_RESPONSE", data => {

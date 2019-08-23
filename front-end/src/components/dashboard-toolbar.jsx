@@ -50,7 +50,7 @@ class DBToolBar extends React.Component {
                     <Button className="">{btnOrder}</Button>
                 </div>
                 <div data-remodal-target="newroom" href="#">
-                    <Button>
+                    <Button className="font-weight-bold">
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
                         Create Room
                     </Button>

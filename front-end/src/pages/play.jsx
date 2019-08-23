@@ -1,5 +1,4 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import Board from "../components/board";
 import GameBar from "../components/game-bar";
 import GameInfo from "../components/game-info";
@@ -53,7 +52,7 @@ class Play extends React.Component {
         } = this.props;
         return (
             <Main>
-                <Container className="min-vh-100 flex-center">
+                <div className="min-vh-100 flex-center">
                     <div className="card">
                         <div className=" d-flex">
                             <div className="game-left-side">
@@ -83,7 +82,7 @@ class Play extends React.Component {
                             <ResultModal winning={result === RESULT_WIN} />
                         </div>
                     )}
-                </Container>
+                </div>
                 {this.props.roomId === "" && <Redirect to="/" /> }
             </Main>
         );

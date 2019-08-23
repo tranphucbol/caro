@@ -4,9 +4,10 @@ import $ from "jquery";
 class Modal extends React.Component {
     componentDidMount() {
         let parentsClass = this.props.parentsClass;
-        $(document).on("opening", ".remodal", function() {
+        $(document).on("opening", `[data-remodal-id=${this.props.id}]`, function() {
             let overlay = document.querySelector(".remodal-overlay");
             let wrapper = document.querySelector(".remodal-wrapper");
+            console.log(`${parentsClass}`)
             let board = document.querySelector(`${parentsClass}`);
             overlay.style.top = "0px";
             overlay.style.right = "0px";
