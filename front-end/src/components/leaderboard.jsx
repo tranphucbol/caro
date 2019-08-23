@@ -59,9 +59,9 @@ class Leaderboard extends React.Component {
             <div>
                 <div className="db-ranking-header">
                     <p>TOP RANK</p>
-                    <a onClick={() => this.props.loadMyInfo()}>
+                    <div onClick={() => this.props.loadMyInfo()}>
                         <FontAwesomeIcon icon={faSyncAlt} />
-                    </a>
+                    </div>
                 </div>
                 <div className="db-listranking">
                     <PerfectScrollbar>

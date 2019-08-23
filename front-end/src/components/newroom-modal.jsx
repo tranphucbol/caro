@@ -18,7 +18,7 @@ class NewroomModal extends React.Component {
         ];
         let ofset = Math.floor(Math.random() * randomName.length);
         let name = randomName[ofset];
-        let point = (props.point / 4) >> 0;
+        // let point = (props.point / 4) >> 0;
         this.state = {
             inputPoint: 0,
             inputName: name

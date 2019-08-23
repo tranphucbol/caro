@@ -5,13 +5,21 @@ import { connect } from "react-redux";
 
 class ListRoom extends React.Component {
     componentDidMount() {
-        this.props.load();
+        // this.props.load();
     }
 
     render() {
         let list = [];
-        console.log(this.props.listroom);
-        this.props.listroom.forEach((element, index) => {
+        var { listroom, filter } = this.props;
+
+        let order = filter.order === "asc" ? 1 : -1;
+        let attribute = filter.attribute;
+
+        listroom = listroom.sort((a, b) =>
+            a[attribute] > b[attribute] ? order : -order
+        );
+
+        listroom.forEach((element, index) => {
             list.push(<Room key={index} data={element}></Room>);
         });
 
@@ -20,7 +28,8 @@ class ListRoom extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    listroom: [...state.listRoom.rooms]
+    listroom: [...state.listRoom.rooms],
+    filter: state.filter
 });
 
 const mapDispatchToProps = dispacth => ({

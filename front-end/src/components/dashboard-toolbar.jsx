@@ -7,8 +7,9 @@ import {
     faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { openRemodalCreateRoom } from "../actions/listRoom";
-// import { connect } from "react-redux";
+import { change_filter } from "../actions/filter";
+import { listroom_load } from "../actions/listRoom";
+import { connect } from "react-redux";
 
 class DBToolBar extends React.Component {
     constructor(props) {
@@ -19,10 +20,21 @@ class DBToolBar extends React.Component {
         };
     }
 
+    onClickOrder = () => {
+        let order = this.props.order === "asc" ? "des" : "asc";
+        let attribute = this.props.attribute;
+        this.props.change_filter(attribute, order);
+    };
+
+    onSelectKey = attribute => {
+        let order = this.props.order;
+        this.props.change_filter(attribute, order);
+    };
+
     render() {
         let btnOrder;
 
-        if (this.state.order === "asc") {
+        if (this.props.order === "asc") {
             btnOrder = <FontAwesomeIcon icon={faChevronUp} />;
         } else {
             btnOrder = <FontAwesomeIcon icon={faChevronDown} />;
@@ -31,8 +43,7 @@ class DBToolBar extends React.Component {
         return (
             <div className="db-toolbar p-3">
                 <div className="d-flex align-items-center">
-                    <h1 className="db-title">Caro Game</h1>
-
+                    <h1 className="db-title">Caro Game</h1>key
                     <Dropdown className="mx-3">
                         <Dropdown.Toggle className="db-tool-button">
                             <FontAwesomeIcon
@@ -41,13 +52,33 @@ class DBToolBar extends React.Component {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item>Point</Dropdown.Item>
-                            <Dropdown.Item>Name</Dropdown.Item>
-                            <Dropdown.Item>Host</Dropdown.Item>
+                            <Dropdown.Item
+                                active={this.props.attribute === "point"}
+                                onClick={() => {
+                                    this.onSelectKey("point");
+                                }}
+                            >
+                                Point
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                active={this.props.attribute === "name"}
+                                onClick={() => {
+                                    this.onSelectKey("name");
+                                }}
+                            >
+                                Name
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                active={this.props.attribute === "host"}
+                                onClick={() => {
+                                    this.onSelectKey("host");
+                                }}
+                            >
+                                Host
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
-                    <Button className="">{btnOrder}</Button>
+                    <Button onClick={this.onClickOrder}>{btnOrder}</Button>
                 </div>
                 <div data-remodal-target="newroom" href="#">
                     <Button>
@@ -60,8 +91,17 @@ class DBToolBar extends React.Component {
     }
 }
 
-// const mapDispatchToProps = dispatch => ({
-//     openRemodalCreateRoom: () => dispatch(openRemodalCreateRoom())
-// });
+const mapStateToProps = state => ({
+    attribute: state.filter.attribute,
+    order: state.filter.order
+});
 
-export default DBToolBar;
+const mapDispatchToProps = dispatch => ({
+    change_filter: (key, order) => dispatch(change_filter(key, order)),
+    reload: () => dispatch(listroom_load())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DBToolBar);
