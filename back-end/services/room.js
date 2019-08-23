@@ -4,6 +4,8 @@ const redisClient = require("../redis");
 const ROOM_PLAYING = "ROOM_PLAYING";
 const ROOM_WAITING = "ROOM_WAITING";
 
+const roomPollingService = require("./room-polling")
+
 class Room {
     createRoom({ username, pet, name }) {
         const roomId = uuidv1();
@@ -17,6 +19,7 @@ class Room {
             guestWin: 0,
             status: ROOM_WAITING
         });
+        roomPollingService.setRoomPolling(roomId, 'UPDATE')
         return {
             roomId: roomId,
             name,
@@ -36,6 +39,7 @@ class Room {
                 return Promise.reject({ error: "Your point is not enough" });
             }
             if (redisClient.hsetnxAsync(roomKey, "guest", user.username)) {
+                roomPollingService.setRoomPolling(roomId, 'DELETE')
                 return room;
             } else {
                 return Promise.reject({ error: "Room is full" });
@@ -57,14 +61,17 @@ class Room {
             if (room.host === username) {
                 if (room.guest === undefined) {
                     redisClient.del(roomKey);
+                    roomPollingService.setRoomPolling(roomId, 'DELETE')
                 } else {
                     redisClient.hset(roomKey, "host", room.guest);
                     redisClient.hdel(roomKey, "guest");
                     redisClient.hset(roomKey, "status", ROOM_WAITING);
+                    roomPollingService.setRoomPolling(roomId, 'UPDATE')
                 }
             } else if (room.guest === username) {
                 redisClient.hdel(roomKey, "guest");
                 redisClient.hset(roomKey, "status", ROOM_WAITING);
+                roomPollingService.setRoomPolling(roomId, 'UPDATE')
             } else {
                 return Promise.reject({ error: "User is not room" });
             }
@@ -96,6 +103,7 @@ class Room {
 
             if (room.host === username) {
                 if ("guest" in room) {
+                    roomPollingService.setRoomPolling(roomId, 'DELETE')
                     return room;
                 }
                 return Promise.reject({ error: "The room is not enough" });

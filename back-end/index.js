@@ -10,6 +10,7 @@ let database = require("./database");
 let jwt = require("jsonwebtoken");
 let userService = require("./services/user");
 let roomService = require("./services/room");
+let roomPollingService = require("./services/room-polling");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,6 +40,15 @@ io.use(async (socket, next) => {
         return next(new Error("authentication error"));
     }
 });
+
+setInterval(async () => {
+    console.log('polling ...')
+    let rooms = await roomPollingService.getAllRooms()
+    if(rooms.length !== 0) {
+        io.of('/').emit('ROOM_POLLING_RESPONSE', rooms)
+        await roomPollingService.clearRoomPolling()
+    }
+}, 10000)
 
 io.on("connection", function(socket) {
     let username = socket.handshake.query.username;
