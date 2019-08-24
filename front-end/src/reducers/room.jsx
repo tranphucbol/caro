@@ -237,7 +237,7 @@ const room = (state = initState(25, 30, true), action) => {
         case USER_DISCONNECT:
             return onUserDisconnect({ ...state });
         case QUIT:
-            return Object.assign({}, state, initState(25, 30, true));
+            return Object.assign({}, state, initState(25, 30, true), {authenticated: 2});
         case AUTHENTICATION_ERROR:
             return { ...state, authenticated: 1 };
         case AUTHENTICATION_RESPONSE:

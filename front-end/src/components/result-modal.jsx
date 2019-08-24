@@ -32,7 +32,7 @@ class ResultModal extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.confettiId)
-        this.modal.destroy()
+        // this.modal.destroy()
     }
 
     render() {

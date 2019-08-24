@@ -16,7 +16,7 @@ class Leaderboard extends React.Component {
     componentDidMount() {
         this.props.loadMyInfo();
         let dbRankingHeaderHeight = document.querySelector('.db-ranking-header').clientHeight;
-        let dbRankingHeight = document.querySelector('.db-ranking').clientWidth
+        let dbRankingHeight = document.querySelector('.db-ranking').clientHeight
         this.setState({
             height: dbRankingHeight - dbRankingHeaderHeight
         })

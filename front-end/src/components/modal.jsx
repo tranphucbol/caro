@@ -7,7 +7,6 @@ class Modal extends React.Component {
         $(document).on("opening", `[data-remodal-id=${this.props.id}]`, function() {
             let overlay = document.querySelector(".remodal-overlay");
             let wrapper = document.querySelector(".remodal-wrapper");
-            console.log(`${parentsClass}`)
             let board = document.querySelector(`${parentsClass}`);
             overlay.style.top = "0px";
             overlay.style.right = "0px";
@@ -16,6 +15,11 @@ class Modal extends React.Component {
             board.appendChild(overlay);
             board.appendChild(wrapper);
         });
+    }
+
+    componentWillUnmount() {
+        document.querySelector(".remodal-overlay").remove();
+        document.querySelector(".remodal-wrapper").remove();
     }
 
     render() {
