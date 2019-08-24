@@ -12,6 +12,7 @@ let jwt = require("jsonwebtoken");
 let userService = require("./services/user");
 let roomService = require("./services/room");
 let roomPollingService = require("./services/room-polling");
+let rankService = require('./services/rank')
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,24 +24,23 @@ let userApi = require("./api/user");
 let leaderBoardApi = require("./api/leader-board");
 let roomApi = require("./api/room");
 
+let redisClient = require('./redis')
+
 app.use("/api/auth", authApi);
 app.use("/api/register", registerApi);
 app.use("/api/users", userApi);
 app.use("/api/leader-boards", leaderBoardApi);
 app.use("/api/rooms", roomApi);
 
-// io.use(async (socket, next) => {
-//     let token = socket.handshake.query.token;
-//     try {
-//         let { sub } = jwt.verify(token, config.jwtSecret);
-//         let user = await userService.getUserByUsername(sub);
-//         if (!user) throw Error("authentication error");
-//         socket.handshake.query.username = sub;
-//         return next();
-//     } catch (err) {
-//         return next(new Error("authentication error"));
-//     }
-// });
+(async () => {
+    let users = await userService.getPointAllUser()
+    let points = [];
+    users.forEach(user => {
+        points.push(user.point)
+        points.push(user.username)
+    })
+    redisClient.zadd('leader_board', points)
+})()
 
 setInterval(async () => {
     // console.log('polling ...')
@@ -60,10 +60,6 @@ _.each(io.nsps, function(nsp) {
 });
 
 io.on("connection", function(socket) {
-    // let username = socket.handshake.query.username;
-    // console.log(`${username} connected`);
-    // socket.join(username);
-
     socket.auth = false;
     socket.on("AUTHENTICATION_REQUEST", async data => {
         try {
@@ -140,7 +136,7 @@ io.on("connection", function(socket) {
             });
 
             //send to guest
-            io.sockets.in(data.guest).emit("JOIN_ROOM_RESPONSE", {
+            socket.emit("JOIN_ROOM_RESPONSE", {
                 roomId: data.roomId,
                 user: host,
                 role: "ROOM.HOST",
@@ -148,7 +144,7 @@ io.on("connection", function(socket) {
             });
         } catch (err) {
             console.log(err);
-            io.sockets.in(data.guest).emit("JOIN_ROOM_ERROR", err);
+            socket.emit("JOIN_ROOM_ERROR", err);
         }
     });
 
@@ -156,9 +152,9 @@ io.on("connection", function(socket) {
         try {
             let room = await roomService.getValidGame(data.roomId, socket.username);
             roomService.changeStatus(data.roomId, "ROOM_PLAYING");
-            io.sockets.in(room.roomId).emit("START_GAME_RESPONSE", {});
+            io.of('/').in(room.roomId).emit("START_GAME_RESPONSE", {});
         } catch (err) {
-            io.sockets.in(socket.username).emit("START_GAME_ERROR", err);
+            socket.emit("START_GAME_ERROR", err);
         }
     });
 

@@ -98,6 +98,11 @@ class UserService {
             return Promise.reject(err);
         }
     }
+
+    async getPointAllUser() {
+        let users = await User.find();
+        return users.map(user => ({username: user.username, point: user.point}))
+    }
 }
 
 module.exports = new UserService()

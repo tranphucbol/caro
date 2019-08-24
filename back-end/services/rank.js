@@ -1,4 +1,5 @@
 const redisClient = require("../redis");
+const userService = require('./user')
 
 module.exports =  new class RankService {
     updatePointInLeaderBoard(username, point) {
