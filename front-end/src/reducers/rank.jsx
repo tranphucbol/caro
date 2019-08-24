@@ -1,9 +1,21 @@
-import { RANK_LOAD } from "../actions/rank";
+import { RANK_LOAD, RANK_LOADING } from "../actions/rank";
 
-const rank = (state = [], action) => {
+const rank = (
+    state = {
+        list: [],
+        load: false
+    },
+    action
+) => {
     switch (action.type) {
+        case RANK_LOADING:
+            return {
+                ...state,
+                load: true
+            };
+
         case RANK_LOAD:
-            return action.data;
+            return { ...state, list: action.data, load: false };
         default:
             return state;
     }
