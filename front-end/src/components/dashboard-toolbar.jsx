@@ -4,7 +4,8 @@ import {
     faPlus,
     faSlidersH,
     faChevronUp,
-    faChevronDown
+    faChevronDown,
+    faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { change_filter } from "../actions/filter";
@@ -44,8 +45,11 @@ class DBToolBar extends React.Component {
             <div className="db-toolbar p-3">
                 <div className="d-flex align-items-center">
                     <h1 className="db-title">Caro Game</h1>key
-                    <Dropdown className="mx-3">
-                        <Dropdown.Toggle className="db-tool-button">
+                    <Dropdown className="mx-2">
+                        <Dropdown.Toggle
+                            variant="outline-primary"
+                            className="db-tool-button"
+                        >
                             <FontAwesomeIcon
                                 icon={faSlidersH}
                             ></FontAwesomeIcon>
@@ -78,8 +82,22 @@ class DBToolBar extends React.Component {
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Button onClick={this.onClickOrder}>{btnOrder}</Button>
+                    <Button
+                        className="mx-2"
+                        variant="outline-primary"
+                        onClick={this.onClickOrder}
+                    >
+                        {btnOrder}
+                    </Button>
+                    <Button
+                        onClick={() => this.props.reload()}
+                        className="mx-3"
+                        variant="outline-primary"
+                    >
+                        <FontAwesomeIcon icon={faSyncAlt} />
+                    </Button>
                 </div>
+
                 <div data-remodal-target="newroom" href="#">
                     <Button>
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
