@@ -2,6 +2,7 @@ import React from "react";
 import Room from "../components/room";
 import { listroom_load } from "../actions/list-room";
 import { connect } from "react-redux";
+import { joinRoom } from "../actions/room";
 
 class ListRoom extends React.Component {
     componentDidMount() {
@@ -20,7 +21,13 @@ class ListRoom extends React.Component {
         );
 
         listroom.forEach((element, index) => {
-            list.push(<Room key={index} data={element}></Room>);
+            list.push(
+                <Room
+                    onJoinRoom={this.props.onJoinRoom}
+                    key={index}
+                    data={element}
+                ></Room>
+            );
         });
 
         return <div className="db-listroom">{list}</div>;
@@ -33,7 +40,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispacth => ({
-    load: id => dispacth(listroom_load())
+    load: id => dispacth(listroom_load()),
+    onJoinRoom: id => dispacth(joinRoom(id))
 });
 
 export default connect(
