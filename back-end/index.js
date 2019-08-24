@@ -4,6 +4,7 @@ let app = express();
 let http = require("http").createServer(app);
 let io = require("socket.io")(http);
 let config = require("./config");
+let _ = require("underscore");
 
 let cors = require("cors");
 let database = require("./database");
@@ -28,32 +29,68 @@ app.use("/api/users", userApi);
 app.use("/api/leader-boards", leaderBoardApi);
 app.use("/api/rooms", roomApi);
 
-io.use(async (socket, next) => {
-    let token = socket.handshake.query.token;
-    try {
-        let { sub } = jwt.verify(token, config.jwtSecret);
-        let user = await userService.getUserByUsername(sub);
-        if (!user) throw Error("authentication error");
-        socket.handshake.query.username = sub;
-        return next();
-    } catch (err) {
-        return next(new Error("authentication error"));
-    }
-});
+// io.use(async (socket, next) => {
+//     let token = socket.handshake.query.token;
+//     try {
+//         let { sub } = jwt.verify(token, config.jwtSecret);
+//         let user = await userService.getUserByUsername(sub);
+//         if (!user) throw Error("authentication error");
+//         socket.handshake.query.username = sub;
+//         return next();
+//     } catch (err) {
+//         return next(new Error("authentication error"));
+//     }
+// });
 
 setInterval(async () => {
     // console.log('polling ...')
-    let rooms = await roomPollingService.getAllRooms()
-    if(rooms.length !== 0) {
-        io.of('/').emit('ROOM_POLLING_RESPONSE', rooms)
-        await roomPollingService.clearRoomPolling()
+    let rooms = await roomPollingService.getAllRooms();
+    if (rooms.length !== 0) {
+        io.of("/").emit("ROOM_POLLING_RESPONSE", rooms);
+        await roomPollingService.clearRoomPolling();
     }
-}, 10000)
+}, 10000);
+
+_.each(io.nsps, function(nsp) {
+    nsp.on("connect", function(socket) {
+        if (!socket.auth) {
+            delete nsp.connected[socket.id];
+        }
+    });
+});
 
 io.on("connection", function(socket) {
-    let username = socket.handshake.query.username;
-    console.log(`${username} connected`);
-    socket.join(username);
+    // let username = socket.handshake.query.username;
+    // console.log(`${username} connected`);
+    // socket.join(username);
+
+    socket.auth = false;
+    socket.on("AUTHENTICATION_REQUEST", async data => {
+        try {
+            
+            let { sub } = jwt.verify(data.token, config.jwtSecret);
+            let user = await userService.getUserByUsername(sub);
+            if (user) {
+                socket.emit('AUTHENTICATION_RESPONSE', {})
+                socket.username = sub;
+                socket.auth = true;
+                _.each(io.nsps, function(nsp) {
+                    if (_.findWhere(nsp.sockets, { id: socket.id })) {
+                        nsp.connected[socket.id] = socket;
+                    }
+                });
+            }
+        } catch (err) {
+            // return next(new Error("authentication error"));
+        }
+    });
+
+    setTimeout(() => {
+        if (!socket.auth) {
+            socket.emit('AUTHENTICATION_ERROR', {error: 'eng'})
+            socket.disconnect("unauthorized");
+        }
+    }, 1000);
 
     socket.once("disconnecting", async () => {
         let rooms = socket.rooms;
@@ -64,10 +101,10 @@ io.on("connection", function(socket) {
                 try {
                     await userService.handleResult(
                         roomId,
-                        username === room.host ? room.guest : room.host
+                        socket.username === room.host ? room.guest : room.host
                     );
                 } catch (err) {}
-                await roomService.quitRoom(roomId, username);
+                await roomService.quitRoom(roomId, socket.username);
             } catch (err) {
                 // console.log(err)
             }
@@ -75,7 +112,7 @@ io.on("connection", function(socket) {
     });
 
     socket.on("disconnect", () => {
-        console.log(`${username} disconnected`);
+        console.log(`${socket.username} disconnected`);
     });
 
     socket.on("CREATE_ROOM_REQUEST", data => {
@@ -117,16 +154,16 @@ io.on("connection", function(socket) {
 
     socket.on("START_GAME_REQUEST", async data => {
         try {
-            let room = await roomService.getValidGame(data.roomId, username);
+            let room = await roomService.getValidGame(data.roomId, socket.username);
             roomService.changeStatus(data.roomId, "ROOM_PLAYING");
             io.sockets.in(room.roomId).emit("START_GAME_RESPONSE", {});
         } catch (err) {
-            io.sockets.in(username).emit("START_GAME_ERROR", err);
+            io.sockets.in(socket.username).emit("START_GAME_ERROR", err);
         }
     });
 
     socket.on("RESULT_LOSE_REQUEST", async data => {
-        await userService.handleResult(data.roomId, username);
+        await userService.handleResult(data.roomId, socket.username);
         roomService.changeStatus(data.roomId, "ROOM_WAITING");
         socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);
     });
@@ -146,19 +183,19 @@ io.on("connection", function(socket) {
 
     socket.on("USER_QUIT_REQUEST", async data => {
         try {
-            socket.to(data.roomId).emit("USER_QUIT_RESPONSE", {})
+            socket.to(data.roomId).emit("USER_QUIT_RESPONSE", {});
             let room = await roomService.getRoomById(data.roomId);
             try {
                 await userService.handleResult(
                     data.roomId,
-                    username === room.host ? room.guest : room.host
+                    socket.username === room.host ? room.guest : room.host
                 );
             } catch (err) {}
-            await roomService.quitRoom(data.roomId, username);
+            await roomService.quitRoom(data.roomId, socket.username);
         } catch (err) {
             // console.log(err)
         }
-    })
+    });
 });
 
 app.set("port", process.env.PORT || 3001);
