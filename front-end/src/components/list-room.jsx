@@ -1,5 +1,5 @@
 import React from "react";
-import Room from "../components/Room";
+import Room from "./room";
 import { listroom_load } from "../actions/listRoom";
 import { connect } from "react-redux";
 import { joinRoom } from "../actions/room";

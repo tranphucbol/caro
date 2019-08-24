@@ -7,6 +7,7 @@ import {
     faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import $ from 'jquery'
 // import { openRemodalCreateRoom } from "../actions/listRoom";
 // import { connect } from "react-redux";
 
@@ -15,8 +16,20 @@ class DBToolBar extends React.Component {
         super(props);
         this.state = {
             filter: "Default",
-            order: "asc"
+            order: "asc",
+            showing: false
         };
+    }
+
+    componentDidMount() {
+        let com = this;
+        $(document).on("opening", "[data-remodal-id=newroom]", function() {
+            com.setState({ showing: true });
+        });
+
+        $(document).on("closing", "[data-remodal-id=newroom]", function() {
+            com.setState({ showing: false });
+        });
     }
 
     render() {
@@ -50,8 +63,17 @@ class DBToolBar extends React.Component {
                     <Button className="">{btnOrder}</Button>
                 </div>
                 <div data-remodal-target="newroom" href="#">
-                    <Button className="font-weight-bold">
-                        <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                    <Button className={`font-weight-bold d-flex align-items-center${this.state.showing ? ' disabled' : ''}`}>
+                        {this.state.showing ? (
+                            <div
+                                className="spinner-border text-white spinner-border-sm mr-1"
+                                role="status"
+                            >
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        ) : (
+                            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                        )}
                         Create Room
                     </Button>
                 </div>

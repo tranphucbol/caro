@@ -383,7 +383,7 @@ input {
 }
 
 .db-rightbar {
-    width: 20vw;
+    width: 15vw;
 }
 
 .db-tool-button {
@@ -539,13 +539,14 @@ input {
 }
 
 .db-ranking-item-rank {
-    width: 5%;
+    width: 15%;
     font-weight: bold;
     font-size: 1.3rem;
     text-align: center;
     color: #f5a532;
     font-weight: bolder;
     font-size: 1.7rem;
+    margin: 0;
 }
 
 .db-ranking-item-a {
@@ -572,9 +573,12 @@ input {
 }
 
 .db-ranking-item-username {
+
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: bold;
     margin: 0;
+    width: 55%;
+    padding-right: 5px;
 }
 
 /* .db-ranking-item:hover .db-ranking-item-a {
@@ -593,11 +597,18 @@ input {
     );
 } */
 
+.db-ranking-item-username, .db-ranking-item-info, .db-ranking-item-rank {
+
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; /* text-overflow: clip; */
+}
+
 .db-ranking-item-info {
+    width: 40%;
     color: gold;
     font-size: 1.25rem;
     font-weight: 800;
-    margin-right: 0.5rem;
 }
 
 .db-ranking-item-info img {
@@ -971,14 +982,18 @@ input {
     height: 1.5rem;
 }
 
+.db-newroom-input {
+    transition: transform 0.1s;
+}
+
 .db-newroom-input input {
     padding: 0 0.65rem;
     width: 12rem;
-    transition: transform 0.1s;
+
     /* text-align: center; */
 }
 
-.db-newroom-input input:hover {
+.db-newroom-input:hover {
     transform: scale(1.075);
 }
 

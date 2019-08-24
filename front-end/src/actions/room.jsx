@@ -1,4 +1,4 @@
-import { getJwtFromStorage, getUsernameFromStorage } from "../utils/utils";
+import { getJwtFromStorage, getUsernameFromStorage, clearStorage } from "../utils/utils";
 import socketIOClient from "socket.io-client";
 import { store } from "../index";
 import { api } from "../api/api";
@@ -29,8 +29,12 @@ export const RESULT_LOSE = "ROOM.RESULT_LOSE";
 export const RESULT_NONE = "ROOM.RESULT_NONE";
 export const PLAY_AGAIN = "ROOM.PLAY_AGAIN";
 export const GUEST_PLAY_AGAIN = "ROOM.GUEST_PLAY_AGAIN";
-export const USER_DISCONNECT = "ROOM.USER_DISCONNECT"
-export const QUIT = "ROOM.QUIT"
+export const USER_DISCONNECT = "ROOM.USER_DISCONNECT";
+export const QUIT = "ROOM.QUIT";
+export const AUTHENTICATION_ERROR = 'ROOM.AUTHENTICATION_ERROR'
+export const AUTHENTICATION_RESPONSE = 'ROOM.AUTHENTICATION_RESPONSE'
+export const LOGOUT = 'ROOM.LOGOUT';
+export const RESTART = 'ROOM.RESTART'
 
 export const tickTile = id => {
     let { roomId, socket, chess } = store.getState().room;
@@ -277,8 +281,23 @@ export const initialSocketIO = () => {
     if (store.getState().room.socket !== undefined) return { type: EMPTY };
     console.log("connection");
     const jwt = getJwtFromStorage();
-    const socket = socketIOClient("http://localhost:3001", {
-        query: `token=${jwt}`
+    const socket = socketIOClient("http://localhost:3001");
+
+    socket.on("connect", function() {
+        socket.emit("AUTHENTICATION_REQUEST", { token: jwt });
+    });
+
+    socket.on("AUTHENTICATION_RESPONSE", data => {
+        console.log('hello')
+        store.dispatch({type: AUTHENTICATION_RESPONSE})
+    })
+
+    socket.on("AUTHENTICATION_ERROR", error => {
+        store.dispatch({type: AUTHENTICATION_ERROR, error: error})
+    });
+
+    socket.on("disconnect", data => {
+        console.log(data);
     });
     socket.on("TICK_RESPONSE", data => {
         console.log("TICK_RESPONSE:", data);
@@ -291,7 +310,7 @@ export const initialSocketIO = () => {
     });
 
     socket.on("JOIN_ROOM_RESPONSE", data => {
-        console.log(data)
+        console.log(data);
         store.dispatch({ type: JOIN_ROOM, data });
     });
 
@@ -319,28 +338,27 @@ export const initialSocketIO = () => {
     });
 
     socket.on("CHAT_RESPONSE", data => {
-        
         store.dispatch({
             type: PUSH_CHAT,
-            chat: {...data.chat, right: false}
-        })
-    })
+            chat: { ...data.chat, right: false }
+        });
+    });
 
     socket.on("USER_DISCONNECT_RESPONSE", data => {
         store.dispatch({
             type: USER_DISCONNECT
         });
-    })
+    });
 
     socket.on("USER_QUIT_RESPONSE", data => {
         store.dispatch({
             type: USER_DISCONNECT
         });
-    })
+    });
 
     socket.on("ROOM_POLLING_RESPONSE", data => {
-        store.dispatch(onRoomPolling(data))
-    })
+        store.dispatch(onRoomPolling(data));
+    });
 
     return {
         type: SOCKET_FETCHED,
@@ -382,7 +400,7 @@ export const createRoom = (pet, name) => {
     };
 };
 
-export const joinRoom = (roomId) => {
+export const joinRoom = roomId => {
     // console.log("JOIN_ROOM_REQUEST: ", host)
     store.getState().room.socket.emit("JOIN_ROOM_REQUEST", {
         roomId,
@@ -421,8 +439,19 @@ export const onPlayAgain = () => {
 export const onQuit = () => {
     let socket = store.getState().room.socket;
     let roomId = store.getState().room.roomId;
-    socket.emit("USER_QUIT_REQUEST", {roomId})
+    socket.emit("USER_QUIT_REQUEST", { roomId });
     return {
         type: QUIT
+    };
+};
+
+export const onLogOut = () => {
+    clearStorage()
+    return {
+        type: LOGOUT
     }
 }
+
+export const onRestart = () => ({
+    type: RESTART
+})

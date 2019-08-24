@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { loadMyInfo } from "../actions/user";
 
@@ -8,14 +6,13 @@ class Profile extends React.Component {
     componentDidMount() {
         this.props.loadMyInfo();
     }
-
     render() {
         return (
-            <div className="db-profile">
-                <FontAwesomeIcon
-                    className="db-profile-logout"
-                    icon={faPowerOff}
-                />
+            <div className="db-profile position-relative">
+                <div onClick={() => this.props.onLogOut()} className="btn-quit-text position-absolute" style={{top: 0, right: 0, margin: '10px'}}>
+                    <i className="fas fa-power-off"></i>
+                </div>
+       
                 <span>{this.props.username}</span>
                 <div className="db-profile-avatar">
                     <img id="avatar-profile" alt="" src={this.props.avatar} />

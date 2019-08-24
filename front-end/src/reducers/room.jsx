@@ -21,7 +21,11 @@ import {
     GUEST_PLAY_AGAIN,
     RESULT_LOSE,
     USER_DISCONNECT,
-    QUIT
+    QUIT,
+    AUTHENTICATION_ERROR,
+    AUTHENTICATION_RESPONSE,
+    LOGOUT,
+    RESTART
 } from "../actions/room";
 
 const initUser = () => {
@@ -48,6 +52,8 @@ const initState = (rows, cols, isHost) => {
     const CHESS = isHost ? CHESS_X : CHESS_O;
 
     let state = {
+        authenticated: 0,
+        logout: false,
         roomId: "",
         timeout: 15,
         opponent: initUser(),
@@ -232,6 +238,14 @@ const room = (state = initState(25, 30, true), action) => {
             return onUserDisconnect({ ...state });
         case QUIT:
             return Object.assign({}, state, initState(25, 30, true));
+        case AUTHENTICATION_ERROR:
+            return { ...state, authenticated: 1 };
+        case AUTHENTICATION_RESPONSE:
+            return { ...state, authenticated: 2 };
+        case LOGOUT:
+            return { ...state, authenticated: 0, logout: true };
+        case RESTART:
+            return Object.assign({}, initState(25, 30, true));
         default:
             return state;
     }

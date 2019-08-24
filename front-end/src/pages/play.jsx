@@ -18,17 +18,17 @@ import Main from "./main";
 import { Redirect } from "react-router-dom";
 
 class Play extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            right: Math.floor(window.innerWidth * 0.2)
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         right: Math.floor(window.innerWidth * 0.2)
+    //     };
+    // }
 
     componentDidMount() {
-        window.addEventListener("resize", () => {
-            this.setState({ right: Math.floor(window.innerWidth * 0.2) });
-        });
+        // window.addEventListener("resize", () => {
+        //     this.setState({ right: Math.floor(window.innerWidth * 0.2) });
+        // });
 
         this.timerID = setInterval(() => this.props.descrementTime(), 1000);
     }
@@ -70,7 +70,7 @@ class Play extends React.Component {
                             </div>
                             <div
                                 className="game-right-side"
-                                style={{ width: this.state.right }}
+                                style={{ width: '15vw' }}
                             >
                                 <GameInfo />
                                 <Chat />

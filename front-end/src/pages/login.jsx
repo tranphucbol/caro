@@ -12,6 +12,7 @@ import { Link, Redirect } from "react-router-dom";
 import { setJwtToStorage, setUsernameToStorage } from "../utils/utils";
 import { api } from "../api/api";
 import { receivedUserInfo } from "../actions/user";
+import { onRestart } from "../actions/room";
 
 const styleTitle = {
     fontSize: "1.5rem",
@@ -38,6 +39,10 @@ class Login extends React.Component {
         passwordInput: ""
     };
 
+    componentDidMount() {
+        this.props.onRestart()
+    }
+
     handleSubmit = e => {
         e.preventDefault();
         api.post("/auth", {
@@ -47,7 +52,6 @@ class Login extends React.Component {
             .then(res => {
                 setUsernameToStorage(res.data.data.username);
                 setJwtToStorage(res.data.token);
-                console.log(res.data.data)
                 this.props.updateUserInfo(res.data.data);
                 this.setState(() => ({
                     redirectToReferrer: true
@@ -246,7 +250,8 @@ class Login extends React.Component {
 const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-    updateUserInfo: user => dispatch(receivedUserInfo(user))
+    updateUserInfo: user => dispatch(receivedUserInfo(user)),
+    onRestart: () => dispatch(onRestart())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
