@@ -4,22 +4,35 @@ import $ from "jquery";
 class Modal extends React.Component {
     componentDidMount() {
         let parentsClass = this.props.parentsClass;
-        $(document).on("opening", `[data-remodal-id=${this.props.id}]`, function() {
-            let overlay = document.querySelector(".remodal-overlay");
-            let wrapper = document.querySelector(".remodal-wrapper");
-            let board = document.querySelector(`${parentsClass}`);
-            overlay.style.top = "0px";
-            overlay.style.right = "0px";
-            overlay.style.left = "1px";
-            overlay.style.bottom = "0px";
-            board.appendChild(overlay);
-            board.appendChild(wrapper);
-        });
+        console.log(parentsClass);
+        $(document).on(
+            "opening",
+            `[data-remodal-id=${this.props.id}]`,
+            function() {
+                let overlays = document.querySelectorAll(".remodal-overlay");
+                let wrappers = document.querySelectorAll(".remodal-wrapper");
+                let board = document.querySelector(`${parentsClass}`);
+                overlays.forEach(overlay => {
+                    overlay.style.top = "0px";
+                    overlay.style.right = "0px";
+                    overlay.style.left = "1px";
+                    overlay.style.bottom = "0px";
+                    board.appendChild(overlay);
+                });
+                wrappers.forEach(wrapper => {
+                    board.appendChild(wrapper);
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
-        document.querySelector(".remodal-overlay").remove();
-        document.querySelector(".remodal-wrapper").remove();
+        document.querySelectorAll(".remodal-overlay").forEach(overlay => {
+            overlay.remove();
+        });
+        document.querySelectorAll(".remodal-wrapper").forEach(wrapper => {
+            wrapper.remove();
+        });
     }
 
     render() {

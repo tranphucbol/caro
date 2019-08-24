@@ -11,10 +11,8 @@ import { initialSocketIO, onLogOut } from "../actions/room";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import BackgroundIcon from "../components/background-icon";
-
+import ErrorModal from "../components/error-modal";
 class DashBoard extends React.Component {
-
-
     componentDidMount() {
         this.props.initialSocketIO();
     }
@@ -24,11 +22,14 @@ class DashBoard extends React.Component {
             return (
                 <Main>
                     <div className="min-vh-100 flex-center">
-                        <div className="spinner-border text-primary" role="status">
+                        <div
+                            className="spinner-border text-primary"
+                            role="status"
+                        >
                             <span className="sr-only">Loading...</span>
                         </div>
                     </div>
-                    {this.props.authenticated === 1 && <Redirect to="/login"/>}
+                    {this.props.authenticated === 1 && <Redirect to="/login" />}
                 </Main>
             );
         }
@@ -56,8 +57,18 @@ class DashBoard extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div><NewRoomModal/></div>
-                   
+                    <div>
+                        <NewRoomModal />
+                    </div>
+
+                    {this.props.error && (
+                        <div key={this.props.n_error}>
+                            <ErrorModal
+                                parentsClass=".db-listroomscroll"
+                                content={this.props.error}
+                            />
+                        </div>
+                    )}
                 </div>
                 {this.props.roomId !== "" && <Redirect to="/play" />}
                 {this.props.logout && <Redirect to="/login" />}
@@ -70,7 +81,9 @@ class DashBoard extends React.Component {
 const mapStateToProps = state => ({
     roomId: state.room.roomId,
     authenticated: state.room.authenticated,
-    logout: state.room.logout
+    logout: state.room.logout,
+    error: state.listRoom.error,
+    n_error: state.listRoom.n_error
 });
 
 const mapDispatchToProps = dispatch => ({

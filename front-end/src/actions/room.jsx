@@ -1,8 +1,12 @@
-import { getJwtFromStorage, getUsernameFromStorage, clearStorage } from "../utils/utils";
+import {
+    getJwtFromStorage,
+    getUsernameFromStorage,
+    clearStorage
+} from "../utils/utils";
 import socketIOClient from "socket.io-client";
 import { store } from "../index";
 import { api } from "../api/api";
-import { onRoomPolling } from "./list-room";
+import { onRoomPolling, LROM_JOIN_ERROR } from "./list-room";
 
 export const TICK = "ROOM.TICK";
 export const TIME_UP = "ROOM.TIME_UP";
@@ -31,10 +35,11 @@ export const PLAY_AGAIN = "ROOM.PLAY_AGAIN";
 export const GUEST_PLAY_AGAIN = "ROOM.GUEST_PLAY_AGAIN";
 export const USER_DISCONNECT = "ROOM.USER_DISCONNECT";
 export const QUIT = "ROOM.QUIT";
-export const AUTHENTICATION_ERROR = 'ROOM.AUTHENTICATION_ERROR'
-export const AUTHENTICATION_RESPONSE = 'ROOM.AUTHENTICATION_RESPONSE'
-export const LOGOUT = 'ROOM.LOGOUT';
-export const RESTART = 'ROOM.RESTART'
+export const AUTHENTICATION_ERROR = "ROOM.AUTHENTICATION_ERROR";
+export const AUTHENTICATION_RESPONSE = "ROOM.AUTHENTICATION_RESPONSE";
+export const LOGOUT = "ROOM.LOGOUT";
+export const RESTART = "ROOM.RESTART";
+export const ERROR = "ROOM.ERROR";
 
 export const tickTile = id => {
     let { roomId, socket, chess } = store.getState().room;
@@ -288,12 +293,12 @@ export const initialSocketIO = () => {
     });
 
     socket.on("AUTHENTICATION_RESPONSE", data => {
-        console.log('hello')
-        store.dispatch({type: AUTHENTICATION_RESPONSE})
-    })
+        console.log("hello");
+        store.dispatch({ type: AUTHENTICATION_RESPONSE });
+    });
 
     socket.on("AUTHENTICATION_ERROR", error => {
-        store.dispatch({type: AUTHENTICATION_ERROR, error: error})
+        store.dispatch({ type: AUTHENTICATION_ERROR, error: error });
     });
 
     socket.on("disconnect", data => {
@@ -314,8 +319,12 @@ export const initialSocketIO = () => {
         store.dispatch({ type: JOIN_ROOM, data });
     });
 
-    socket.on("JOIN_ROOM_ERROR", err => {
-        console.log(err);
+    socket.on("JOIN_ROOM_ERROR", data => {
+        console.log(data);
+        store.dispatch({
+            type: LROM_JOIN_ERROR,
+            error: data.error
+        });
     });
 
     socket.on("START_GAME_RESPONSE", data => {
@@ -328,6 +337,11 @@ export const initialSocketIO = () => {
             type: RESULT,
             result: data.result
         });
+    });
+
+    socket.on("START_GAME_ERROR", data => {
+        console.log(data);
+        store.dispatch({ type: ERROR, error: data.error });
     });
 
     socket.on("PLAY_AGAIN_RESPONSE", data => {
@@ -446,12 +460,12 @@ export const onQuit = () => {
 };
 
 export const onLogOut = () => {
-    clearStorage()
+    clearStorage();
     return {
         type: LOGOUT
-    }
-}
+    };
+};
 
 export const onRestart = () => ({
     type: RESTART
-})
+});
