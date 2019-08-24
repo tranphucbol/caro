@@ -49,7 +49,7 @@ setInterval(async () => {
         io.of("/").emit("ROOM_POLLING_RESPONSE", rooms);
         await roomPollingService.clearRoomPolling();
     }
-}, 10000);
+}, 10000 * 50);
 
 _.each(io.nsps, function(nsp) {
     nsp.on("connect", function(socket) {
@@ -151,8 +151,14 @@ io.on("connection", function(socket) {
     socket.on("START_GAME_REQUEST", async data => {
         try {
             let room = await roomService.getValidGame(data.roomId, socket.username);
-            roomService.changeStatus(data.roomId, "ROOM_PLAYING");
-            io.of('/').in(room.roomId).emit("START_GAME_RESPONSE", {});
+            let host = await userService.getUserByUsername(room.host);
+            let guest = await userService.getUserByUsername(room.guest);
+            if(host.point >= room.point && guest.point >= room.point) {
+                roomService.changeStatus(data.roomId, "ROOM_PLAYING");
+                io.of('/').in(room.roomId).emit("START_GAME_RESPONSE", {});
+            } else {
+                io.of('/').in(room.roomId).emit("START_GAME_ERROR", {error: 'The player does not have enough money'});
+            }
         } catch (err) {
             socket.emit("START_GAME_ERROR", err);
         }

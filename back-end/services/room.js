@@ -38,7 +38,8 @@ class Room {
             if (user.point < room.point) {
                 return Promise.reject({ error: "Your point is not enough" });
             }
-            if (redisClient.hsetnxAsync(roomKey, "guest", user.username)) {
+            const existed = await redisClient.hsetnxAsync(roomKey, "guest", user.username)
+            if (!existed) {
                 roomPollingService.setRoomPolling(roomId, 'DELETE')
                 return room;
             } else {
@@ -99,7 +100,6 @@ class Room {
     async getValidGame(roomId, username) {
         try {
             const room = await this.getRoomById(roomId);
-            console.log(room);
 
             if (room.host === username) {
                 if ("guest" in room) {
