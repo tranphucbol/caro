@@ -535,7 +535,7 @@ input {
 
 .db-ranking-item:hover {
     z-index: 1;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 .db-ranking-item-rank {
@@ -573,7 +573,6 @@ input {
 }
 
 .db-ranking-item-username {
-
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
@@ -597,11 +596,12 @@ input {
     );
 } */
 
-.db-ranking-item-username, .db-ranking-item-info, .db-ranking-item-rank {
-
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; /* text-overflow: clip; */
+.db-ranking-item-username,
+.db-ranking-item-info,
+.db-ranking-item-rank {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* text-overflow: clip; */
 }
 
 .db-ranking-item-info {
@@ -1031,4 +1031,9 @@ input {
 .db-ranking {
     border-left: 1px #1183b43a solid;
     height: 50%;
+}
+
+.spinner-border_custom {
+    height: 1.1rem;
+    width: 1.1rem;
 }

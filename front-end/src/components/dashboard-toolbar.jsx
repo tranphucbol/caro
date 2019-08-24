@@ -8,11 +8,11 @@ import {
     faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import $ from 'jquery'
+import $ from "jquery";
 // import { openRemodalCreateRoom } from "../actions/listRoom";
 // import { connect } from "react-redux";
 import { change_filter } from "../actions/filter";
-import { listroom_load } from "../actions/listRoom";
+import { listroom_load } from "../actions/list-room";
 import { connect } from "react-redux";
 
 class DBToolBar extends React.Component {
@@ -109,12 +109,23 @@ class DBToolBar extends React.Component {
                         className="mx-3"
                         variant="outline-primary"
                     >
-                        <FontAwesomeIcon icon={faSyncAlt} />
+                        {this.props.room_load ? (
+                            <div
+                                className="spinner-border spinner-border_custom"
+                                role="status"
+                            ></div>
+                        ) : (
+                            <FontAwesomeIcon icon={faSyncAlt} />
+                        )}
                     </Button>
                 </div>
 
                 <div data-remodal-target="newroom" href="#">
-                    <Button className={`font-weight-bold d-flex align-items-center${this.state.showing ? ' disabled' : ''}`}>
+                    <Button
+                        className={`font-weight-bold d-flex align-items-center${
+                            this.state.showing ? " disabled" : ""
+                        }`}
+                    >
                         {this.state.showing ? (
                             <div
                                 className="spinner-border text-white spinner-border-sm mr-1"
@@ -135,7 +146,8 @@ class DBToolBar extends React.Component {
 
 const mapStateToProps = state => ({
     attribute: state.filter.attribute,
-    order: state.filter.order
+    order: state.filter.order,
+    room_load: state.listRoom.load
 });
 
 const mapDispatchToProps = dispatch => ({
