@@ -49,7 +49,7 @@ setInterval(async () => {
         io.of("/").emit("ROOM_POLLING_RESPONSE", rooms);
         await roomPollingService.clearRoomPolling();
     }
-}, 10000 * 50);
+}, 10000);
 
 _.each(io.nsps, function(nsp) {
     nsp.on("connect", function(socket) {
