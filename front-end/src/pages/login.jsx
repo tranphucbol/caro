@@ -13,6 +13,7 @@ import { setJwtToStorage, setUsernameToStorage } from "../utils/utils";
 import { api } from "../api/api";
 import { receivedUserInfo } from "../actions/user";
 import { onRestart } from "../actions/room";
+import { toast } from 'react-toastify';
 
 const styleTitle = {
     fontSize: "1.5rem",
@@ -58,7 +59,8 @@ class Login extends React.Component {
                 }));
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
+                toast.error('Wrong username or password')
             });
     };
 
@@ -86,6 +88,7 @@ class Login extends React.Component {
 
         return (
             <Main>
+                {/* <ToastContainer /> */}
                 <Row noGutters="true" className="min-vh-100 flex-center">
                     <Col lg="8" className="py-3">
                         <Card className="overflow-hidden">

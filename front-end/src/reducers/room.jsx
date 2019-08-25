@@ -162,6 +162,7 @@ const onJoinRoom = (state, { roomId, role, user, pet }) => {
 };
 
 const onUserDisconnect = state => {
+    console.log("onUserDisconnect")
     state.key = true;
     state.userWin = 0;
     state.opponentWin = 0;

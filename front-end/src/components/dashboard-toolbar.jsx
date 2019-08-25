@@ -60,10 +60,9 @@ class DBToolBar extends React.Component {
             <div className="db-toolbar p-3">
                 <div className="d-flex align-items-center">
                     <h1 className="db-title">Caro Game</h1>key
-                    <Dropdown className="mx-2">
+                    <Dropdown className="mx-3">
                         <Dropdown.Toggle
-                            variant="outline-primary"
-                            className="db-tool-button"
+                            className="db-tool-button btn-falcon-primary"
                         >
                             <FontAwesomeIcon
                                 icon={faSlidersH}
@@ -98,16 +97,14 @@ class DBToolBar extends React.Component {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Button
-                        className="mx-2"
-                        variant="outline-primary"
+                        className="mr-3 btn-falcon-primary"
                         onClick={this.onClickOrder}
                     >
                         {btnOrder}
                     </Button>
                     <Button
                         onClick={() => this.props.reload()}
-                        className="mx-3"
-                        variant="outline-primary"
+                        className="btn-falcon-primary"
                     >
                         {this.props.room_load ? (
                             <div

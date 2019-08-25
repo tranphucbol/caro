@@ -70,7 +70,7 @@ class Play extends React.Component {
                             </div>
                             <div
                                 className="game-right-side"
-                                style={{ width: '15vw' }}
+                                style={{ minWidth: '15vw' }}
                             >
                                 <GameInfo />
                                 <Chat />

@@ -6,14 +6,18 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import "remodal/dist/remodal.js";
 import "remodal/dist/remodal.css";
 import "remodal/dist/remodal-default-theme.css";
+import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
+import { toast } from 'react-toastify';
 import App from "./components/App";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
 import rootReducer from "./reducers";
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+toast.configure()
+export const store = createStore(rootReducer,  composeWithDevTools(applyMiddleware(thunkMiddleware)));
 
 ReactDOM.render(
     <Provider store={store}>

@@ -8,6 +8,13 @@ import {
     faFacebookSquare
 } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
+import { api } from "../api/api";
+import { setUsernameToStorage, setJwtToStorage } from "../utils/utils";
+import { Redirect } from "react-router-dom";
+import { receivedUserInfo } from "../actions/user";
+import { onRestart } from "../actions/room";
+import { connect } from "react-redux";
+import { toast } from "react-toastify";
 
 const styleTitle = {
     fontSize: "1.5rem",
@@ -28,7 +35,69 @@ const styleSignInTitle = {
 };
 
 class Register extends React.Component {
+    state = {
+        redirectToReferrer: false,
+        usernameInput: "",
+        passwordInput: "",
+        rePasswordInput: ""
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+        console.log(this.state)
+        if(this.state.usernameInput === '') {
+            toast.error("Username is empty")
+        }
+        else if (
+            this.state.passwordInput !== "" &&
+            this.state.rePasswordInput !== "" &&
+            this.state.passwordInput === this.state.rePasswordInput
+        ) {
+            api.post("/register", {
+                username: this.state.usernameInput,
+                password: this.state.passwordInput,
+                rePassword: this.state.rePasswordInput
+            })
+                .then(res => {
+                    setUsernameToStorage(res.data.data.username);
+                    setJwtToStorage(res.data.token);
+                    this.props.updateUserInfo(res.data.data);
+                    this.setState(() => ({
+                        redirectToReferrer: true
+                    }));
+                })
+                .catch(err => {
+                    toast.error("Username exsited");
+                });
+        } else {
+            toast.error("Password does not match re-password");
+        }
+    };
+
+    handleUsernameInput = e => {
+        this.setState({
+            usernameInput: e.target.value
+        });
+    };
+
+    handlePasswordInput = e => {
+        this.setState({
+            passwordInput: e.target.value
+        });
+    };
+
+    handleRePasswordInput = e => {
+        this.setState({
+            rePasswordInput: e.target.value
+        });
+    };
+
     render() {
+        const { redirectToReferrer } = this.state;
+
+        if (redirectToReferrer === true) {
+            return <Redirect to="/" />;
+        }
         return (
             <Main>
                 <Row noGutters="true" className="min-vh-100 flex-center">
@@ -44,9 +113,7 @@ class Register extends React.Component {
                                             <div
                                                 className="bg-holder bg-auth-card-shape"
                                                 style={{
-                                                    backgroundImage: `url(${
-                                                        process.env.PUBLIC_URL
-                                                    }/images/half-circle.png)`
+                                                    backgroundImage: `url(${process.env.PUBLIC_URL}/images/half-circle.png)`
                                                 }}
                                             />
                                             <div className="position-relative z-index-1">
@@ -80,25 +147,58 @@ class Register extends React.Component {
                                     <Col md="7" className="flex-center">
                                         <div className="px-4 py-5 flex-grow-1">
                                             <h3 style={styleTitle}>Register</h3>
-                                            <Form>
+                                            <Form onSubmit={this.handleSubmit}>
                                                 <Form.Group>
                                                     <Form.Label>
                                                         Username
                                                     </Form.Label>
-                                                    <Form.Control type="text" />
+                                                    <Form.Control
+                                                        required
+                                                        value={
+                                                            this.state
+                                                                .usernameInput
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .handleUsernameInput
+                                                        }
+                                                        type="text"
+                                                    />
                                                 </Form.Group>
                                                 <Form.Row>
                                                     <Form.Group className="col-6">
                                                         <Form.Label>
                                                             Password
                                                         </Form.Label>
-                                                        <Form.Control type="password" />
+                                                        <Form.Control
+                                                            required
+                                                            value={
+                                                                this.state
+                                                                    .passwordInput
+                                                            }
+                                                            onChange={
+                                                                this
+                                                                    .handlePasswordInput
+                                                            }
+                                                            type="password"
+                                                        />
                                                     </Form.Group>
                                                     <Form.Group className="col-6">
                                                         <Form.Label>
                                                             Confirm Password
                                                         </Form.Label>
-                                                        <Form.Control type="password" />
+                                                        <Form.Control
+                                                            required
+                                                            value={
+                                                                this.state
+                                                                    .rePasswordInput
+                                                            }
+                                                            onChange={
+                                                                this
+                                                                    .handleRePasswordInput
+                                                            }
+                                                            type="password"
+                                                        />
                                                     </Form.Group>
                                                 </Form.Row>
 
@@ -117,6 +217,7 @@ class Register extends React.Component {
                                                         className="btn-block"
                                                         variant="primary"
                                                         style={styleButton}
+                                                        type="submit"
                                                     >
                                                         Register
                                                     </Button>
@@ -184,5 +285,14 @@ class Register extends React.Component {
         );
     }
 }
+const mapStateToProps = state => ({});
 
-export default Register;
+const mapDispatchToProps = dispatch => ({
+    updateUserInfo: user => dispatch(receivedUserInfo(user)),
+    onRestart: () => dispatch(onRestart())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Register);

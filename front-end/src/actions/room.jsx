@@ -304,6 +304,10 @@ export const initialSocketIO = () => {
         store.dispatch({ type: TICK, id: data.id });
     });
 
+    socket.on("START_GAME_ERROR", error => {
+        console.log(error);
+    })
+
     socket.on("CREATE_ROOM_RESPONSE", data => {
         console.log(data.roomId);
         store.dispatch({ type: CREATE_ROOM, data });
