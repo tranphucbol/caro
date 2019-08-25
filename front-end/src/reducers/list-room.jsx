@@ -1,4 +1,9 @@
-import { ROOM_POLLING, LROM_LOAD, LROM_LOADING } from "../actions/list-room";
+import {
+    ROOM_POLLING,
+    LROM_LOAD,
+    LROM_LOADING,
+    LROM_JOIN_ERROR
+} from "../actions/list-room";
 
 const onRoomPolling = (oldRooms, rooms) => {
     let jointRoom = [...rooms, ...oldRooms];
@@ -14,8 +19,17 @@ const onRoomPolling = (oldRooms, rooms) => {
     return jointRoomFilter;
 };
 
-const listRoom = (state = { filter: "", rooms: [], load: false }, action) => {
+const listRoom = (
+    state = { filter: "", rooms: [], load: false, error: false, n_error: 0 },
+    action
+) => {
     switch (action.type) {
+        case LROM_JOIN_ERROR:
+            return {
+                ...state,
+                error: action.error,
+                n_error: state.n_error + 1
+            };
         case LROM_LOADING:
             return { ...state, load: true };
         case LROM_LOAD:

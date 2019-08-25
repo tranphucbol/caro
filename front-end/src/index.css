@@ -1041,6 +1041,42 @@ input {
     width: 1.1rem;
 }
 
+.error-modal {
+    width: 55%;
+    height: 35%;
+}
+
+.error-modal h3 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 1rem 0;
+}
+
+.error-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e74c3c;
+}
+
+.error-header i {
+    font-size: 2rem;
+}
+
+.error-modal p {
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.error-modal button {
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.error-modal button:hover {
+    transform: scale(1.2);
+}
+
 .Toastify__toast {
     border-radius: 0.375rem;
 }

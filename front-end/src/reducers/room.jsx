@@ -25,7 +25,8 @@ import {
     AUTHENTICATION_ERROR,
     AUTHENTICATION_RESPONSE,
     LOGOUT,
-    RESTART
+    RESTART,
+    ERROR
 } from "../actions/room";
 
 const initUser = () => {
@@ -75,7 +76,9 @@ const initState = (rows, cols, isHost) => {
         result: RESULT_NONE,
         chats: [],
         opponentQuit: false,
-        guestContinue: false
+        guestContinue: false,
+        error: false,
+        n_error: 0
     };
 
     return state;
@@ -238,7 +241,9 @@ const room = (state = initState(25, 30, true), action) => {
         case USER_DISCONNECT:
             return onUserDisconnect({ ...state });
         case QUIT:
-            return Object.assign({}, state, initState(25, 30, true), {authenticated: 2});
+            return Object.assign({}, state, initState(25, 30, true), {
+                authenticated: 2
+            });
         case AUTHENTICATION_ERROR:
             return { ...state, authenticated: 1 };
         case AUTHENTICATION_RESPONSE:
@@ -247,6 +252,12 @@ const room = (state = initState(25, 30, true), action) => {
             return { ...state, authenticated: 0, logout: true };
         case RESTART:
             return Object.assign({}, initState(25, 30, true));
+        case ERROR:
+            return {
+                ...state,
+                error: action.error,
+                n_error: state.n_error + 1
+            };
         default:
             return state;
     }

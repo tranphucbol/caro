@@ -15,6 +15,7 @@ import TimeProgress from "../components/time-progress";
 import Chat from "../components/chat";
 import ResultModal from "../components/result-modal";
 import Main from "./main";
+import ErrorModal from "../components/error-modal";
 import { Redirect } from "react-router-dom";
 
 class Play extends React.Component {
@@ -83,7 +84,15 @@ class Play extends React.Component {
                         </div>
                     )}
                 </div>
-                {this.props.roomId === "" && <Redirect to="/" /> }
+                {this.props.roomId === "" && <Redirect to="/" />}
+                {this.props.error && (
+                    <div key={this.props.n_error}>
+                        <ErrorModal
+                            parentsClass=".board"
+                            content={this.props.error}
+                        />
+                    </div>
+                )}
             </Main>
         );
     }
@@ -97,7 +106,9 @@ const mapStateToProps = state => ({
     status: state.room.status,
     roomId: state.room.roomId,
     result: state.room.result,
-    pet: state.room.pet
+    pet: state.room.pet,
+    error: state.room.error,
+    n_error: state.room.n_error
 });
 
 const mapDispatchToProps = dispatch => ({
