@@ -59,7 +59,6 @@ class Login extends React.Component {
                 }));
             })
             .catch(err => {
-                // console.log(err);
                 toast.error('Wrong username or password')
             });
     };

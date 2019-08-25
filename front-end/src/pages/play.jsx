@@ -9,14 +9,16 @@ import {
     RESULT_NONE,
     RESULT_WIN,
     onPlayAgain,
-    onQuit
+    onQuit,
+    onClearError
 } from "../actions/room";
 import TimeProgress from "../components/time-progress";
 import Chat from "../components/chat";
 import ResultModal from "../components/result-modal";
 import Main from "./main";
-import ErrorModal from "../components/error-modal";
+// import ErrorModal from "../components/error-modal";
 import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 
 class Play extends React.Component {
     // constructor(props) {
@@ -32,6 +34,12 @@ class Play extends React.Component {
         // });
 
         this.timerID = setInterval(() => this.props.descrementTime(), 1000);
+    }
+
+    componentDidUpdate() {
+        if(this.props.error && this.props.error !== '') {
+            toast.error(this.props.error)
+        }
     }
 
     componentWillUnmount() {
@@ -51,6 +59,7 @@ class Play extends React.Component {
             pet,
             onQuit
         } = this.props;
+
         return (
             <Main>
                 <div className="min-vh-100 flex-center">
@@ -85,14 +94,14 @@ class Play extends React.Component {
                     )}
                 </div>
                 {this.props.roomId === "" && <Redirect to="/" />}
-                {this.props.error && (
+                {/* {this.props.error && (
                     <div key={this.props.n_error}>
                         <ErrorModal
                             parentsClass=".board"
                             content={this.props.error}
                         />
                     </div>
-                )}
+                )} */}
             </Main>
         );
     }
@@ -115,7 +124,8 @@ const mapDispatchToProps = dispatch => ({
     descrementTime: () => dispatch(descrementTime()),
     onStartGame: () => dispatch(onStartGame()),
     onPlayAgain: () => dispatch(onPlayAgain()),
-    onQuit: () => dispatch(onQuit())
+    onQuit: () => dispatch(onQuit()),
+    onClearError: () => dispatch(onClearError)
 });
 
 export default connect(

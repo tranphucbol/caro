@@ -5,7 +5,7 @@ import {
 } from "../utils/utils";
 import socketIOClient from "socket.io-client";
 import { store } from "../index";
-import { api } from "../api/api";
+import { api, host } from "../api/api";
 import { onRoomPolling, LROM_JOIN_ERROR } from "./list-room";
 
 export const TICK = "ROOM.TICK";
@@ -40,6 +40,7 @@ export const AUTHENTICATION_RESPONSE = "ROOM.AUTHENTICATION_RESPONSE";
 export const LOGOUT = "ROOM.LOGOUT";
 export const RESTART = "ROOM.RESTART";
 export const ERROR = "ROOM.ERROR";
+export const CLEAR_ERROR = "ROOM.CLEAR_ERROR"
 
 export const tickTile = id => {
     let { roomId, socket, chess } = store.getState().room;
@@ -55,11 +56,12 @@ export const tickTile = id => {
 };
 
 export const onCheckWin = () => {
-    let lastTick = store.getState().room.board.lastTick;
-    if (lastTick !== -1 && checkWin()) {
+    let {lock, lastTick} = store.getState().room.board
+    if (!lock && lastTick !== -1 && checkWin()) {
         let socket = store.getState().room.socket;
         let roomId = store.getState().room.roomId;
         socket.emit("RESULT_LOSE_REQUEST", { roomId, result: RESULT_LOSE });
+        console.log('beng beng beng')
         return {
             type: RESULT,
             result: RESULT_WIN
@@ -286,7 +288,7 @@ export const initialSocketIO = () => {
     if (store.getState().room.socket !== undefined) return { type: EMPTY };
     console.log("connection");
     const jwt = getJwtFromStorage();
-    const socket = socketIOClient("http://localhost:3001");
+    const socket = socketIOClient(host);
 
     socket.on("connect", function() {
         socket.emit("AUTHENTICATION_REQUEST", { token: jwt });
@@ -473,3 +475,7 @@ export const onLogOut = () => {
 export const onRestart = () => ({
     type: RESTART
 });
+
+export const onClearError = () => ({
+    type: CLEAR_ERROR
+})

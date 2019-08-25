@@ -25,16 +25,16 @@ class Profile extends React.Component {
                     <span>{this.props.point}</span>
                 </div>
                 <div className="db-profile-info">
-                    <div className="db-profile-info-el">
+                    <div className="db-profile-info-el db-profile-info-el-ranking">
                         <img
-                            src={`${process.env.PUBLIC_URL}/images/star.gif`}
+                            src={`${process.env.PUBLIC_URL}/images/crown.svg`}
                             alt="caro"
                         />
                         <span>{this.props.rank}</span>
                     </div>
-                    <div className="db-profile-info-el">
+                    <div className="db-profile-info-el db-profile-info-el-ratio">
                         <img
-                            src={`${process.env.PUBLIC_URL}/images/trophy.gif`}
+                            src={`${process.env.PUBLIC_URL}/images/sword.svg`}
                             alt="caro"
                         />
                         <span>{this.props.ratioWinning}</span>

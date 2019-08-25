@@ -1,12 +1,13 @@
 import axios from 'axios'
 import {getJwtFromStorage, isEmptyString} from "../utils/utils";
 
-export const host = 'http://localhost:3001/api/';
+export const host = 'http://192.168.1.36:3001'
+export const host_api = `${host}/api/`;
 // export const ws_host = 'ws://localhost:3001/';
 const auth_type = 'Bearer';
 
 const instance = axios.create({
-    baseURL: host
+    baseURL: host_api
 })
 
 export const api = {

@@ -26,7 +26,8 @@ import {
     AUTHENTICATION_RESPONSE,
     LOGOUT,
     RESTART,
-    ERROR
+    ERROR,
+    CLEAR_ERROR
 } from "../actions/room";
 
 const initUser = () => {
@@ -258,6 +259,11 @@ const room = (state = initState(25, 30, true), action) => {
                 error: action.error,
                 n_error: state.n_error + 1
             };
+        case CLEAR_ERROR:
+            return {
+                ...state,
+                error: ''
+            }
         default:
             return state;
     }

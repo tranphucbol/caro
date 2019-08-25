@@ -2,10 +2,11 @@ import {
     ROOM_POLLING,
     LROM_LOAD,
     LROM_LOADING,
-    LROM_JOIN_ERROR
+    LROM_JOIN_ERROR,
+    CLEAR_ERROR
 } from "../actions/list-room";
 
-const onRoomPolling = (oldRooms, rooms) => {
+const onRoomPolling = (oldRooms, rooms, username) => {
     let jointRoom = [...rooms, ...oldRooms];
     let jointRoomFilter = jointRoom
         .filter(
@@ -14,7 +15,8 @@ const onRoomPolling = (oldRooms, rooms) => {
         )
         .filter(
             room => room.modified === undefined || room.modified === "UPDATE"
-        );
+        )
+        .filter(room => !(room.host === username || room.guest === username));
 
     return jointRoomFilter;
 };
@@ -37,8 +39,10 @@ const listRoom = (
         case ROOM_POLLING:
             return {
                 ...state,
-                rooms: onRoomPolling(state.rooms, action.rooms)
+                rooms: onRoomPolling(state.rooms, action.rooms, action.username)
             };
+        case CLEAR_ERROR:
+            return {...state, error: ''}
         default:
             return state;
     }

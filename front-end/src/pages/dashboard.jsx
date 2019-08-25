@@ -11,10 +11,19 @@ import { initialSocketIO, onLogOut } from "../actions/room";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import BackgroundIcon from "../components/background-icon";
-import ErrorModal from "../components/error-modal";
+// import ErrorModal from "../components/error-modal";
+import { toast } from "react-toastify";
+import { onClearError } from "../actions/list-room";
 class DashBoard extends React.Component {
     componentDidMount() {
         this.props.initialSocketIO();
+    }
+
+    componentDidUpdate() {
+        if(this.props.error && this.props.error !== '') {
+            toast.error(this.props.error)
+            this.props.onClearError()
+        }
     }
 
     render() {
@@ -61,14 +70,14 @@ class DashBoard extends React.Component {
                         <NewRoomModal />
                     </div>
 
-                    {this.props.error && (
+                    {/* {this.props.error && (
                         <div key={this.props.n_error}>
                             <ErrorModal
                                 parentsClass=".db-listroomscroll"
                                 content={this.props.error}
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
                 {this.props.roomId !== "" && <Redirect to="/play" />}
                 {this.props.logout && <Redirect to="/login" />}
@@ -88,7 +97,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     initialSocketIO: () => dispatch(initialSocketIO()),
-    onLogOut: () => dispatch(onLogOut())
+    onLogOut: () => dispatch(onLogOut()),
+    onClearError: () => dispatch(onClearError())
 });
 
 export default connect(
