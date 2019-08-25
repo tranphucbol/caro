@@ -2,6 +2,7 @@
 
 - [Caro](#caro)
   - [Các tính năng](#c%c3%a1c-t%c3%adnh-n%c4%83ng)
+  - [](#)
   - [Use case](#use-case)
   - [Mô hình triển khai](#m%c3%b4-h%c3%acnh-tri%e1%bb%83n-khai)
   - [Database Design](#database-design)
@@ -10,6 +11,7 @@
   - [Restful API Specification](#restful-api-specification)
   - [Game Flow](#game-flow)
   - [Sequence Diagram](#sequence-diagram)
+  - [Hướng dẫn triển khai](#h%c6%b0%e1%bb%9bng-d%e1%ba%abn-tri%e1%bb%83n-khai)
 
 ## Các tính năng
 
@@ -21,6 +23,8 @@
 - Chat lúc chơi game
 - Hiển thị thông tin người dùng
 - Ranking
+
+## 
 
 ## Use case
 
@@ -63,3 +67,9 @@
 <div align="center">
     <img src="/docs/Play.jpg" alt="caro"/>
 </div>
+
+## Hướng dẫn triển khai
+
+[Tham khảo](deployment.md)
+
+
