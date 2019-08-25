@@ -86,7 +86,7 @@ io.on("connection", function(socket) {
             socket.emit('AUTHENTICATION_ERROR', {error: 'eng'})
             socket.disconnect("unauthorized");
         }
-    }, 1000);
+    }, 2000);
 
     socket.once("disconnecting", async () => {
         let rooms = socket.rooms;
@@ -186,6 +186,7 @@ io.on("connection", function(socket) {
     socket.on("USER_QUIT_REQUEST", async data => {
         try {
             socket.to(data.roomId).emit("USER_QUIT_RESPONSE", {});
+            socket.leave(data.roomId)
             let room = await roomService.getRoomById(data.roomId);
             try {
                 await userService.handleResult(
