@@ -2,12 +2,14 @@ import React from "react";
 import Modal from "./modal";
 import $ from "jquery";
 import confetti from "canvas-confetti";
+import { updateMyPoint } from "../actions/user";
+import { connect } from "react-redux";
 
 class ResultModal extends React.Component {
     componentDidMount() {
-        this.modal = $("[data-remodal-id=modal-result]")
-            .remodal()
-        this.modal.open()
+        this.modal = $("[data-remodal-id=modal-result]").remodal();
+        this.modal.open();
+        this.props.updateMyPoint();
         if (this.props.winning) {
             let end = Date.now() + 60 * 1000;
             this.confettiId = setInterval(function() {
@@ -30,15 +32,23 @@ class ResultModal extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        this.props.updateMyPoint();
+    }
+
     componentWillUnmount() {
-        clearInterval(this.confettiId)
+        clearInterval(this.confettiId);
         // this.modal.destroy()
     }
 
     render() {
         let { winning } = this.props;
         return (
-            <Modal custom="remodal-result" id="modal-result" parentsClass=".board">
+            <Modal
+                custom="remodal-result"
+                id="modal-result"
+                parentsClass=".board"
+            >
                 <div className={`modal-result ${winning ? "winner" : "loser"}`}>
                     <i className={`fa${winning ? "s" : "r"} fa-star`} />
                     <span className="px-1">{winning ? "Winner" : "Loser"}</span>
@@ -48,4 +58,12 @@ class ResultModal extends React.Component {
         );
     }
 }
-export default ResultModal;
+
+const mapDispatchToProps = dispatch => ({
+    updateMyPoint: () => dispatch(updateMyPoint())
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(ResultModal);

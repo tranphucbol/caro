@@ -1,4 +1,4 @@
-import { USER_INFO } from "../actions/user";
+import { USER_INFO, USER_UPDATEPOINT } from "../actions/user";
 
 const initUser = () => {
     return {
@@ -12,6 +12,12 @@ const initUser = () => {
 
 const user = (state = initUser(), action) => {
     switch (action.type) {
+        case USER_UPDATEPOINT:
+            console.log(action);
+            return {
+                ...state,
+                point: state.point + action.point
+            };
         case USER_INFO:
             return action.user;
         default:
