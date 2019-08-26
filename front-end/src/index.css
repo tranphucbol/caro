@@ -942,6 +942,22 @@ input {
         0 20px 20px rgba(173, 172, 168, 0.15);
 }
 
+.draw {
+    color: rgb(133, 178, 238);
+    text-shadow: 0 1px 0 rgb(117, 159, 214),
+    0 2px 0 rgb(95, 132, 182),
+    0 3px 0 rgb(88, 129, 184),
+    0 4px 0 rgb(68, 105, 153),
+    0 5px 0 rgb(63, 103, 155),
+    0 6px 1px rgba(133, 178, 238,.1),
+    0 0 5px rgba(133, 178, 238,.1),
+    0 1px 3px rgba(133, 178, 238,.3),
+    0 3px 5px rgba(133, 178, 238,.2),
+    0 5px 10px rgba(133, 178, 238,.25),
+    0 10px 10px rgba(133, 178, 238,.2),
+    0 20px 20px rgba(133, 178, 238,.15);
+}
+
 .btn-danger {
     color: #fff;
     background-color: #e63757;

@@ -1,4 +1,4 @@
-import { USER_INFO } from "../actions/user";
+import { USER_INFO, USER_ERROR, USER_CLEAR_ERROR } from "../actions/user";
 
 const initUser = () => {
     return {
@@ -14,6 +14,10 @@ const user = (state = initUser(), action) => {
     switch (action.type) {
         case USER_INFO:
             return action.user;
+        case USER_ERROR:
+            return {...state, error: action.error}
+        case USER_CLEAR_ERROR:
+            return {...state, error: ''}
         default:
             return state;
     }

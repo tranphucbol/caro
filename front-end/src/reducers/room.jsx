@@ -27,7 +27,8 @@ import {
     LOGOUT,
     RESTART,
     ERROR,
-    CLEAR_ERROR
+    CLEAR_ERROR,
+    RESULT_DRAW
 } from "../actions/room";
 
 const initUser = () => {
@@ -45,6 +46,13 @@ const initTiles = (rows, cols) => {
     for (let i = 0; i < rows * cols; i++) {
         tiles.push({ value: 0 });
     }
+
+    // let is = true;
+    // for(let i = 0; i < rows * cols - 1; i++) {
+    //     tiles[i].value = is ? CHESS_X : CHESS_O;
+    //     is = !is
+    // }
+
     return tiles;
 };
 
@@ -71,7 +79,9 @@ const initState = (rows, cols, isHost) => {
             tiles: tiles,
             turn: CHESS_X,
             lastTick: -1,
-            lock: true
+            lock: true,
+            // count: rows * cols - 1
+            count: 0
         },
         status: STATUS_WATTING,
         result: RESULT_NONE,
@@ -92,13 +102,18 @@ const restartState = state => {
         tiles: initTiles(state.board.rows, state.board.cols),
         lock: true,
         lastTick: -1,
-        turn: CHESS_X
+        turn: CHESS_X,
+        count: 0
     };
     state.status =
         state.guestContinue && state.key ? STATUS_START_GAME : STATUS_WATTING;
     state.guestContinue = false;
     state.chess =
-        state.result === RESULT_WIN && !state.opponentQuit ? CHESS_O : CHESS_X;
+        state.result === RESULT_DRAW
+            ? state.chess
+            : state.result === RESULT_WIN && !state.opponentQuit
+            ? CHESS_O
+            : CHESS_X;
     state.opponentQuit = false;
     state.result = RESULT_NONE;
     return state;
@@ -114,6 +129,7 @@ const onTick = (state, id) => {
         state.board.turn = changeTurn(state.board.turn);
         state.board.lastTick = id;
         state.board.time = state.timeout;
+        state.board.count++;
     }
     return state;
 };
@@ -136,7 +152,7 @@ const descrementTime = state => {
     state.board.time--;
     if (state.board.time < 0) {
         state.board.time = state.timeout;
-        if (state.chess === state.board.turn) {
+        if (state.chess === state.board.turn && state.board.count < state.board.rows * state.board.cols) {
             let id = randomTiles([...state.board.tiles]);
             state = onTick({ ...state }, id);
             state.socket.emit("TICK_REQUEST", {
@@ -166,7 +182,7 @@ const onJoinRoom = (state, { roomId, role, user, pet }) => {
 };
 
 const onUserDisconnect = state => {
-    console.log("onUserDisconnect")
+    // console.log("onUserDisconnect");
     state.key = true;
     state.userWin = 0;
     state.opponentWin = 0;
@@ -222,10 +238,11 @@ const room = (state = initState(25, 30, true), action) => {
                 opponent: {
                     ...state.opponent,
                     point:
-                        state.opponent.point +
-                        (action.result === RESULT_WIN
+                        state.opponent.point + action.result === RESULT_DRAW
+                            ? 0
+                            : action.result === RESULT_WIN
                             ? -state.pet
-                            : state.pet + 100)
+                            : state.pet + 100
                 }
             };
         case PLAY_AGAIN:
@@ -246,7 +263,7 @@ const room = (state = initState(25, 30, true), action) => {
                 authenticated: 2
             });
         case AUTHENTICATION_ERROR:
-            return { ...state, authenticated: 1 };
+            return { ...state, authenticated: 1, error: action.error };
         case AUTHENTICATION_RESPONSE:
             return { ...state, authenticated: 2 };
         case LOGOUT:
@@ -262,8 +279,8 @@ const room = (state = initState(25, 30, true), action) => {
         case CLEAR_ERROR:
             return {
                 ...state,
-                error: ''
-            }
+                error: ""
+            };
         default:
             return state;
     }

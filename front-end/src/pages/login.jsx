@@ -11,7 +11,7 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import { setJwtToStorage, setUsernameToStorage } from "../utils/utils";
 import { api } from "../api/api";
-import { receivedUserInfo } from "../actions/user";
+import { receivedUserInfo, clearError } from "../actions/user";
 import { onRestart } from "../actions/room";
 import { toast } from 'react-toastify';
 
@@ -42,6 +42,13 @@ class Login extends React.Component {
 
     componentDidMount() {
         this.props.onRestart()
+    }
+
+    componentDidUpdate() {
+        if(this.props.error && this.props.error !== '') {
+            toast.error(this.props.error)
+            this.props.onClearError()
+        }
     }
 
     handleSubmit = e => {
@@ -253,11 +260,14 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    error: state.user.error
+})
 
 const mapDispatchToProps = dispatch => ({
     updateUserInfo: user => dispatch(receivedUserInfo(user)),
-    onRestart: () => dispatch(onRestart())
+    onRestart: () => dispatch(onRestart()),
+    onClearError: () => dispatch(clearError())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

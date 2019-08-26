@@ -7,6 +7,7 @@ import socketIOClient from "socket.io-client";
 import { store } from "../index";
 import { api, host } from "../api/api";
 import { onRoomPolling, LROM_JOIN_ERROR } from "./list-room";
+import { receivedError } from "./user";
 
 export const TICK = "ROOM.TICK";
 export const TIME_UP = "ROOM.TIME_UP";
@@ -30,6 +31,7 @@ export const GUEST = "ROOM.GUEST";
 export const RESULT = "ROOM.RESULT";
 export const RESULT_WIN = "ROOM.RESULT_WIN";
 export const RESULT_LOSE = "ROOM.RESULT_LOSE";
+export const RESULT_DRAW = "ROOM.RESULT_DRAW";
 export const RESULT_NONE = "ROOM.RESULT_NONE";
 export const PLAY_AGAIN = "ROOM.PLAY_AGAIN";
 export const GUEST_PLAY_AGAIN = "ROOM.GUEST_PLAY_AGAIN";
@@ -40,7 +42,7 @@ export const AUTHENTICATION_RESPONSE = "ROOM.AUTHENTICATION_RESPONSE";
 export const LOGOUT = "ROOM.LOGOUT";
 export const RESTART = "ROOM.RESTART";
 export const ERROR = "ROOM.ERROR";
-export const CLEAR_ERROR = "ROOM.CLEAR_ERROR"
+export const CLEAR_ERROR = "ROOM.CLEAR_ERROR";
 
 export const tickTile = id => {
     let { roomId, socket, chess } = store.getState().room;
@@ -56,16 +58,24 @@ export const tickTile = id => {
 };
 
 export const onCheckWin = () => {
-    let {lock, lastTick} = store.getState().room.board
-    if (!lock && lastTick !== -1 && checkWin()) {
+    let { lock, lastTick, count, rows, cols } = store.getState().room.board;
+    // console.log(rows, cols, count)
+    if (!lock && lastTick !== -1) {
         let socket = store.getState().room.socket;
         let roomId = store.getState().room.roomId;
-        socket.emit("RESULT_LOSE_REQUEST", { roomId, result: RESULT_LOSE });
-        console.log('beng beng beng')
-        return {
-            type: RESULT,
-            result: RESULT_WIN
-        };
+        if (checkWin()) {
+            socket.emit("RESULT_REQUEST", { roomId, result: RESULT_LOSE });
+            return {
+                type: RESULT,
+                result: RESULT_WIN
+            };
+        } else if (count === rows * cols) {
+            socket.emit("RESULT_REQUEST", { roomId, result: RESULT_DRAW });
+            return {
+                type: RESULT,
+                result: RESULT_DRAW
+            };
+        }
     }
     return {
         type: EMPTY
@@ -286,7 +296,7 @@ export const onPushChat = chat => {
 
 export const initialSocketIO = () => {
     if (store.getState().room.socket !== undefined) return { type: EMPTY };
-    console.log("connection");
+    // console.log("connection");
     const jwt = getJwtFromStorage();
     const socket = socketIOClient(host);
 
@@ -295,38 +305,35 @@ export const initialSocketIO = () => {
     });
 
     socket.on("AUTHENTICATION_RESPONSE", data => {
-        console.log("hello");
+        // console.log("hello");
         store.dispatch({ type: AUTHENTICATION_RESPONSE });
     });
 
     socket.on("AUTHENTICATION_ERROR", error => {
-        store.dispatch({ type: AUTHENTICATION_ERROR, error: error });
+        store.dispatch({ type: AUTHENTICATION_ERROR, error });
+        store.dispatch(receivedError(error));
     });
 
     socket.on("disconnect", data => {
-        console.log(data);
+        // console.log(data);
     });
     socket.on("TICK_RESPONSE", data => {
-        console.log("TICK_RESPONSE:", data);
+        // console.log("TICK_RESPONSE:", data);
         store.dispatch({ type: TICK, id: data.id });
     });
 
-    socket.on("START_GAME_ERROR", error => {
-        console.log(error);
-    })
-
     socket.on("CREATE_ROOM_RESPONSE", data => {
-        console.log(data.roomId);
+        // console.log(data.roomId);
         store.dispatch({ type: CREATE_ROOM, data });
     });
 
     socket.on("JOIN_ROOM_RESPONSE", data => {
-        console.log(data);
+        // console.log(data);
         store.dispatch({ type: JOIN_ROOM, data });
     });
 
     socket.on("JOIN_ROOM_ERROR", data => {
-        console.log(data);
+        // console.log(data);
         store.dispatch({
             type: LROM_JOIN_ERROR,
             error: data.error
@@ -337,8 +344,8 @@ export const initialSocketIO = () => {
         store.dispatch({ type: START_GAME });
     });
 
-    socket.on("RESULT_LOSE_RESPONSE", data => {
-        console.log(data);
+    socket.on("RESULT_RESPONSE", data => {
+        // console.log(data);
         store.dispatch({
             type: RESULT,
             result: data.result
@@ -346,12 +353,12 @@ export const initialSocketIO = () => {
     });
 
     socket.on("START_GAME_ERROR", data => {
-        console.log(data);
+        // console.log(data);
         store.dispatch({ type: ERROR, error: data.error });
     });
 
     socket.on("PLAY_AGAIN_RESPONSE", data => {
-        console.log(data);
+        // console.log(data);
         store.dispatch({
             type: GUEST_PLAY_AGAIN
         });
@@ -478,4 +485,4 @@ export const onRestart = () => ({
 
 export const onClearError = () => ({
     type: CLEAR_ERROR
-})
+});

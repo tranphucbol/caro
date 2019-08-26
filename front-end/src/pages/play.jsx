@@ -7,7 +7,6 @@ import {
     descrementTime,
     onStartGame,
     RESULT_NONE,
-    RESULT_WIN,
     onPlayAgain,
     onQuit,
     onClearError
@@ -89,7 +88,7 @@ class Play extends React.Component {
                     </div>
                     {result !== RESULT_NONE && (
                         <div>
-                            <ResultModal winning={result === RESULT_WIN} />
+                            <ResultModal result={result} />
                         </div>
                     )}
                 </div>
