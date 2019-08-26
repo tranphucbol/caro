@@ -1,12 +1,10 @@
 import { getUsernameFromStorage } from "../utils/utils";
 import { api } from "../api/api";
 import { store } from "../index";
-
 export const USER_INFO = "USER_INFO";
 export const USER_ERROR = "USER_ERROR";
 export const USER_CLEAR_ERROR = "USER.CLEAR_ERROR";
 export const USER_UPDATEPOINT = "USER_UPDATEPOINT";
-
 
 export const receivedUserInfo = user => ({
     type: USER_INFO,

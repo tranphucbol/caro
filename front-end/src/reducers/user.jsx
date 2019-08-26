@@ -1,9 +1,5 @@
-import {
-    USER_INFO,
-    USER_ERROR,
-    USER_CLEAR_ERROR,
-    USER_UPDATEPOINT
-} from "../actions/user";
+
+import { USER_INFO, USER_ERROR, USER_CLEAR_ERROR, USER_UPDATEPOINT } from "../actions/user";
 
 const initUser = () => {
     return {

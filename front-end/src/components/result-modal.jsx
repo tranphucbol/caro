@@ -80,6 +80,10 @@ class ResultModal extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        this.props.updateMyPoint();
+    }
+
     componentWillUnmount() {
         clearInterval(this.confettiId);
         cancelAnimationFrame(this.requestId);
@@ -108,6 +112,7 @@ class ResultModal extends React.Component {
         );
     }
 }
+
 const mapDispatchToProps = dispatch => ({
     updateMyPoint: () => dispatch(updateMyPoint())
 });
