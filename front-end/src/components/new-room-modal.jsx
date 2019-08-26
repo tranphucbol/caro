@@ -50,7 +50,9 @@ class NewRoomModal extends React.Component {
     onCreateRoom = () => {
         let point = parseInt(this.state.inputPoint);
         let name = this.state.inputName;
-        this.props.onCreateRoom(point, name);
+        if(name.trim().length > 0) {
+            this.props.onCreateRoom(point, name.trim());
+        }
     };
 
     componentDidMount() {
@@ -82,7 +84,6 @@ class NewRoomModal extends React.Component {
                             </div>
                             <input
                                 required
-                                pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                 className="form-control"
                                 type="text"
                                 value={this.state.inputName}
