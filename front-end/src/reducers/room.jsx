@@ -238,11 +238,11 @@ const room = (state = initState(25, 30, true), action) => {
                 opponent: {
                     ...state.opponent,
                     point:
-                        state.opponent.point + action.result === RESULT_DRAW
+                        state.opponent.point + (action.result === RESULT_DRAW
                             ? 0
                             : action.result === RESULT_WIN
                             ? -state.pet
-                            : state.pet + 100
+                            : state.pet + 100)
                 }
             };
         case PLAY_AGAIN:

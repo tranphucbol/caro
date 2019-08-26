@@ -3,11 +3,11 @@ import React from "react";
 import { connect } from "react-redux";
 import Main from "./main";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faGooglePlusG,
-    faFacebookSquare
-} from "@fortawesome/free-brands-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//     faGooglePlusG,
+//     faFacebookSquare
+// } from "@fortawesome/free-brands-svg-icons";
 import { Link, Redirect } from "react-router-dom";
 import { setJwtToStorage, setUsernameToStorage } from "../utils/utils";
 import { api } from "../api/api";
@@ -29,9 +29,9 @@ const styleLogo = {
     fontSize: "2rem"
 };
 
-const styleSignInTitle = {
-    color: "#9da9bb"
-};
+// const styleSignInTitle = {
+//     color: "#9da9bb"
+// };
 
 class Login extends React.Component {
     state = {
@@ -197,7 +197,7 @@ class Login extends React.Component {
                                                     </Button>
                                                 </Form.Group>
                                             </Form>
-                                            <div className="w-100 position-relative mt-5">
+                                            {/* <div className="w-100 position-relative mt-5">
                                                 <hr className="text-300" />
                                                 <div
                                                     className="position-absolute absolute-centered t-0 px-3 bg-white text-500 text-nowrap"
@@ -247,7 +247,7 @@ class Login extends React.Component {
                                                         </a>
                                                     </Col>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </Col>
                                 </Row>

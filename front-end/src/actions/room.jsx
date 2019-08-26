@@ -395,17 +395,7 @@ export const initialSocketIO = () => {
 
 export const receivedOpponentInfo = user => ({
     type: OPPONENT_INFO,
-    opponent: {
-        username: user.username,
-        avatar: user.avatar,
-        point: user.point,
-        rank: user.rank,
-        ratioWinning: `${
-            user.gameCount === 0
-                ? 0
-                : (user.winningCount / user.gameCount).toFixed(1) * 100
-        }%`
-    }
+    opponent: user
 });
 
 export const getOpponentInfo = username => {
