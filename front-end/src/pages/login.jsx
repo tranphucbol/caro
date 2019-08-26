@@ -145,7 +145,9 @@ class Login extends React.Component {
                                                         Username
                                                     </Form.Label>
                                                     <Form.Control
+                                                        required
                                                         type="text"
+                                                        pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                                         value={
                                                             this.state
                                                                 .usernameInput
@@ -161,7 +163,9 @@ class Login extends React.Component {
                                                         Password
                                                     </Form.Label>
                                                     <Form.Control
+                                                        required
                                                         type="password"
+                                                        pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                                         value={
                                                             this.state
                                                                 .passwordInput

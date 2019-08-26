@@ -81,6 +81,8 @@ class NewRoomModal extends React.Component {
                                 </span>
                             </div>
                             <input
+                                required
+                                pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                 className="form-control"
                                 type="text"
                                 value={this.state.inputName}
@@ -99,6 +101,7 @@ class NewRoomModal extends React.Component {
                                 </span>
                             </div>
                             <input
+                                required
                                 className="form-control"
                                 type="number"
                                 value={this.state.inputPoint}

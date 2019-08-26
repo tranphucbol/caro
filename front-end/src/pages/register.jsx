@@ -154,6 +154,7 @@ class Register extends React.Component {
                                                     </Form.Label>
                                                     <Form.Control
                                                         required
+                                                        pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                                         value={
                                                             this.state
                                                                 .usernameInput
@@ -181,6 +182,7 @@ class Register extends React.Component {
                                                                     .handlePasswordInput
                                                             }
                                                             type="password"
+                                                            pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                                         />
                                                     </Form.Group>
                                                     <Form.Group className="col-6">
@@ -198,6 +200,7 @@ class Register extends React.Component {
                                                                     .handleRePasswordInput
                                                             }
                                                             type="password"
+                                                            pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
                                                         />
                                                     </Form.Group>
                                                 </Form.Row>
