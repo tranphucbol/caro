@@ -3,6 +3,8 @@ import Modal from "./modal";
 import $ from "jquery";
 import confetti from "canvas-confetti";
 import { RESULT_WIN, RESULT_LOSE, RESULT_DRAW } from "../actions/room";
+import { updateMyPoint } from "../actions/user";
+import { connect } from "react-redux";
 
 class ResultModal extends React.Component {
     componentDidMount() {
@@ -10,6 +12,7 @@ class ResultModal extends React.Component {
         this.modal.open();
         let component = this;
         let end = Date.now() + 60 * 1000;
+        this.props.updateMyPoint();
         if (this.props.result === RESULT_WIN) {
             this.confettiId = setInterval(function() {
                 if (Date.now() > end) {
@@ -77,6 +80,10 @@ class ResultModal extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        this.props.updateMyPoint();
+    }
+
     componentWillUnmount() {
         clearInterval(this.confettiId);
         cancelAnimationFrame(this.requestId);
@@ -105,4 +112,12 @@ class ResultModal extends React.Component {
         );
     }
 }
-export default ResultModal;
+
+const mapDispatchToProps = dispatch => ({
+    updateMyPoint: () => dispatch(updateMyPoint())
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(ResultModal);

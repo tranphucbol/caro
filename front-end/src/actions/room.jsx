@@ -7,6 +7,7 @@ import socketIOClient from "socket.io-client";
 import { store } from "../index";
 import { api, host } from "../api/api";
 import { onRoomPolling, LROM_JOIN_ERROR } from "./list-room";
+import { updateMyPoint } from "./user";
 import { receivedError } from "./user";
 
 export const TICK = "ROOM.TICK";
