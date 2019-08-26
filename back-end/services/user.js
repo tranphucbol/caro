@@ -29,6 +29,7 @@ class UserService {
     }
 
     async register(username, password, rePassword) {
+        const avatars  = ['shocked', 'smile', 'sad', 'laughing', 'grinning']
         let user = new User({
             username: username,
             password: password,
@@ -36,7 +37,7 @@ class UserService {
             winningCount: 0,
             gameCount: 0,
             point: 30000,
-            avatar: "/images/shocked.svg"
+            avatar: `/images/${avatars[Math.floor(Math.random() * 5)]}.svg`
         });
 
         if (password.trim().length !== 0 && password !== rePassword) {
@@ -80,7 +81,7 @@ class UserService {
         if (user) {
             user.point += point;
 
-            if (result === 0) {
+            if (result === 1) {
                 user.winningCount++;
             }
             user.gameCount++;
@@ -94,7 +95,7 @@ class UserService {
         }
     }
 
-    async handleResult(roomId, winner) {
+    async handleResult(roomId, winner, result) {
         try {
             let room = await roomService.getRoomById(roomId);
             if (room.status === "ROOM_WAITING")
@@ -102,10 +103,12 @@ class UserService {
                     error: "Status of room is ROOM_WAITING"
                 });
             let point = parseInt(room.point);
-            await this.updateGame(winner, point + 100, 0);
+            let isDraw = result === false ? 0 : 1
+
+            await this.updateGame(winner, isDraw * (point + 100), isDraw);
             console.log("inc", winner);
             let loser = winner === room.host ? room.guest : room.host;
-            await this.updateGame(loser, -point);
+            await this.updateGame(loser, isDraw * -point);
             console.log("des", loser);
         } catch (err) {
             return Promise.reject(err);

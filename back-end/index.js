@@ -12,7 +12,7 @@ let jwt = require("jsonwebtoken");
 let userService = require("./services/user");
 let roomService = require("./services/room");
 let roomPollingService = require("./services/room-polling");
-let rankService = require('./services/rank')
+let rankService = require("./services/rank");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,7 +24,7 @@ let userApi = require("./api/user");
 let leaderBoardApi = require("./api/leader-board");
 let roomApi = require("./api/room");
 
-let redisClient = require('./redis')
+let redisClient = require("./redis");
 
 app.use("/api/auth", authApi);
 app.use("/api/register", registerApi);
@@ -33,14 +33,14 @@ app.use("/api/leader-boards", leaderBoardApi);
 app.use("/api/rooms", roomApi);
 
 (async () => {
-    let users = await userService.getPointAllUser()
+    let users = await userService.getPointAllUser();
     let points = [];
     users.forEach(user => {
-        points.push(user.point)
-        points.push(user.username)
-    })
-    redisClient.zadd('leader_board', points)
-})()
+        points.push(user.point);
+        points.push(user.username);
+    });
+    redisClient.zadd("leader_board", points);
+})();
 
 setInterval(async () => {
     // console.log('polling ...')
@@ -63,18 +63,26 @@ io.on("connection", function(socket) {
     socket.auth = false;
     socket.on("AUTHENTICATION_REQUEST", async data => {
         try {
-            
             let { sub } = jwt.verify(data.token, config.jwtSecret);
             let user = await userService.getUserByUsername(sub);
             if (user) {
-                socket.emit('AUTHENTICATION_RESPONSE', {})
-                socket.username = sub;
-                socket.auth = true;
+                let existed = false;
                 _.each(io.nsps, function(nsp) {
-                    if (_.findWhere(nsp.sockets, { id: socket.id })) {
-                        nsp.connected[socket.id] = socket;
+                    if (_.findWhere(nsp.sockets, { username: sub })) {
+                        existed = true;
+                        socket.error = 'You have already logged in'
                     }
                 });
+                if (!existed) {
+                    socket.emit("AUTHENTICATION_RESPONSE", {});
+                    socket.auth = true;
+                    socket.username = sub;
+                    _.each(io.nsps, function(nsp) {
+                        if (_.findWhere(nsp.sockets, { id: socket.id })) {
+                            nsp.connected[socket.id] = socket;
+                        }
+                    });
+                }
             }
         } catch (err) {
             // return next(new Error("authentication error"));
@@ -83,7 +91,7 @@ io.on("connection", function(socket) {
 
     setTimeout(() => {
         if (!socket.auth) {
-            socket.emit('AUTHENTICATION_ERROR', {error: 'eng'})
+            socket.emit("AUTHENTICATION_ERROR", socket.error ? socket.error : "Login failed!");
             socket.disconnect("unauthorized");
         }
     }, 2000);
@@ -97,7 +105,8 @@ io.on("connection", function(socket) {
                 try {
                     await userService.handleResult(
                         roomId,
-                        socket.username === room.host ? room.guest : room.host
+                        socket.username === room.host ? room.guest : room.host,
+                        true
                     );
                 } catch (err) {}
                 await roomService.quitRoom(roomId, socket.username);
@@ -150,24 +159,37 @@ io.on("connection", function(socket) {
 
     socket.on("START_GAME_REQUEST", async data => {
         try {
-            let room = await roomService.getValidGame(data.roomId, socket.username);
+            let room = await roomService.getValidGame(
+                data.roomId,
+                socket.username
+            );
             let host = await userService.getUserByUsername(room.host);
             let guest = await userService.getUserByUsername(room.guest);
-            if(host.point >= room.point && guest.point >= room.point) {
+            if (host.point >= room.point && guest.point >= room.point) {
                 roomService.changeStatus(data.roomId, "ROOM_PLAYING");
-                io.of('/').in(room.roomId).emit("START_GAME_RESPONSE", {});
+                io.of("/")
+                    .in(room.roomId)
+                    .emit("START_GAME_RESPONSE", {});
             } else {
-                io.of('/').in(room.roomId).emit("START_GAME_ERROR", {error: 'The player does not have enough money'});
+                io.of("/")
+                    .in(room.roomId)
+                    .emit("START_GAME_ERROR", {
+                        error: "The player does not have enough money"
+                    });
             }
         } catch (err) {
             socket.emit("START_GAME_ERROR", err);
         }
     });
 
-    socket.on("RESULT_LOSE_REQUEST", async data => {
-        await userService.handleResult(data.roomId, socket.username);
+    socket.on("RESULT_REQUEST", async data => {
+        await userService.handleResult(
+            data.roomId,
+            socket.username,
+            data.result === "ROOM.RESULT_LOSE" ? true : false
+        );
         roomService.changeStatus(data.roomId, "ROOM_WAITING");
-        socket.to(data.roomId).emit("RESULT_LOSE_RESPONSE", data);
+        socket.to(data.roomId).emit("RESULT_RESPONSE", data);
     });
 
     socket.on("TICK_REQUEST", data => {
@@ -186,12 +208,13 @@ io.on("connection", function(socket) {
     socket.on("USER_QUIT_REQUEST", async data => {
         try {
             socket.to(data.roomId).emit("USER_QUIT_RESPONSE", {});
-            socket.leave(data.roomId)
+            socket.leave(data.roomId);
             let room = await roomService.getRoomById(data.roomId);
             try {
                 await userService.handleResult(
                     data.roomId,
-                    socket.username === room.host ? room.guest : room.host
+                    socket.username === room.host ? room.guest : room.host,
+                    true
                 );
             } catch (err) {}
             await roomService.quitRoom(data.roomId, socket.username);
