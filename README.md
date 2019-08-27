@@ -13,6 +13,10 @@
   - [Sequence Diagram](#sequence-diagram)
   - [Hướng dẫn triển khai](#h%c6%b0%e1%bb%9bng-d%e1%ba%abn-tri%e1%bb%83n-khai)
 
+<div align="center">
+    <img src="/docs/demo.gif" alt="caro">
+</div>
+
 ## Các tính năng
 
 - Đăng nhập/ Đăng xuất
