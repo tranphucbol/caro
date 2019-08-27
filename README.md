@@ -1,6 +1,7 @@
-# Caro
+# Caro ZaloPay
 
-- [Caro](#caro)
+- [Caro ZaloPay](#caro-zalopay)
+  - [Demo](#demo)
   - [Các tính năng](#c%c3%a1c-t%c3%adnh-n%c4%83ng)
   - [](#)
   - [Use case](#use-case)
@@ -17,7 +18,7 @@
     <img src="/docs/demo.gif" alt="caro">
 </div>
 
-##Demo
+## Demo
 
 [A demo is worth a thousand words](https://caro-zalopay.herokuapp.com)
 
