@@ -269,6 +269,8 @@ const room = (state = initState(25, 30, true), action) => {
         case LOGOUT:
             return { ...state, authenticated: 0, logout: true };
         case RESTART:
+            if(state.socket !== undefined) 
+                state.socket.close()
             return Object.assign({}, initState(25, 30, true));
         case ERROR:
             return {
