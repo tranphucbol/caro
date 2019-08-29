@@ -38,6 +38,7 @@ class Play extends React.Component {
     componentDidUpdate() {
         if(this.props.error && this.props.error !== '') {
             toast.error(this.props.error)
+            this.props.onClearError()
         }
     }
 

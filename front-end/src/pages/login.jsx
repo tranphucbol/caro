@@ -122,12 +122,22 @@ class Login extends React.Component {
                                                     caro
                                                 </Link>
                                                 <p className="text-100 mt-3">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of the printing and
-                                                    typesetting industry. Lorem
-                                                    Ipsum has been the
-                                                    industry's standard dummy
-                                                    text ever since the 1500s
+                                                This caro game is a product
+                                                    with our enthusiasm. Hope you
+                                                    have a great time with this
+                                                    game. I sincerely apologize
+                                                    if the error occurred during
+                                                    the game. This is the first
+                                                    product we apply new
+                                                    technology such as React,
+                                                    Redux.
+                                                    <br/>
+                                                    <b>
+                                                    Made by
+                                                    </b>
+                                                    <br/> 
+                                                    <b><i>Tran Trong
+                                                    Phuc - Nguyen Hong Ky</i></b>
                                                 </p>
                                             </div>
                                         </div>
