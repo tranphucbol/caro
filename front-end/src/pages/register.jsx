@@ -130,7 +130,7 @@ class Register extends React.Component {
                                                     this game. I sincerely
                                                     apologize if the error
                                                     occurred during the
-                                                    game.First product that we
+                                                    game. First product that we
                                                     apply new technology such as
                                                     React, Redux.
                                                     <br />
