@@ -125,8 +125,8 @@ class Register extends React.Component {
                                                 </a>
                                                 <p className="text-100 mt-3">
                                                     This caro game is a product
-                                                    with our enthusiasm. Hope
-                                                    you have a great time with
+                                                    with our enthusiasm. Hopefully
+                                                    you will have a great time with
                                                     this game. I sincerely
                                                     apologize if the error
                                                     occurred during the

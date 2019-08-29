@@ -123,14 +123,14 @@ class Login extends React.Component {
                                                 </Link>
                                                 <p className="text-100 mt-3">
                                                 This caro game is a product
-                                                    with our enthusiasm. Hope you
-                                                    have a great time with this
-                                                    game. I sincerely apologize
-                                                    if the error occurred during
-                                                    the game. First
-                                                    product that we apply new
-                                                    technology such as React,
-                                                    Redux.
+                                                    with our enthusiasm. Hopefully
+                                                    you will have a great time with
+                                                    this game. I sincerely
+                                                    apologize if the error
+                                                    occurred during the
+                                                    game. First product that we
+                                                    apply new technology such as
+                                                    React, Redux.
                                                     <br/>
                                                     <b>
                                                     Made by
