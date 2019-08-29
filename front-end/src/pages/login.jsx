@@ -127,8 +127,8 @@ class Login extends React.Component {
                                                     have a great time with this
                                                     game. I sincerely apologize
                                                     if the error occurred during
-                                                    the game. This is the first
-                                                    product we apply new
+                                                    the game. First
+                                                    product that we apply new
                                                     technology such as React,
                                                     Redux.
                                                     <br/>
