@@ -44,7 +44,6 @@ class Register extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state);
         if (this.state.usernameInput === "") {
             toast.error("Username is empty");
         } else if (
@@ -66,7 +65,8 @@ class Register extends React.Component {
                     }));
                 })
                 .catch(err => {
-                    toast.error("Username exsited");
+                    // toast.error("Username exsited");
+                    toast.error(err.response.data.error)
                 });
         } else {
             toast.error("Password does not match re-password");

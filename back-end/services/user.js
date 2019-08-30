@@ -25,11 +25,16 @@ class UserService {
                     error: "Wrong username or password"
                 });
             }
+        } else {
+            return Promise.reject({
+                code: 403,
+                error: "Wrong username or password"
+            });
         }
     }
 
     async register(username, password, rePassword) {
-        const avatars  = ['shocked', 'smile', 'sad', 'laughing', 'grinning']
+        const avatars = ["shocked", "smile", "sad", "laughing", "grinning"];
         let user = new User({
             username: username,
             password: password,
@@ -58,7 +63,7 @@ class UserService {
             );
             return { token, data: new UserDTO(user) };
         } catch (err) {
-            return Promise.reject({ code: 400, error: "username existed" });
+            return Promise.reject({ code: 400, error: "Username existed" });
         }
     }
 
@@ -103,7 +108,7 @@ class UserService {
                     error: "Status of room is ROOM_WAITING"
                 });
             let point = parseInt(room.point);
-            let isDraw = result === false ? 0 : 1
+            let isDraw = result === false ? 0 : 1;
 
             await this.updateGame(winner, isDraw * (point + 100), isDraw);
             console.log("inc", winner);
