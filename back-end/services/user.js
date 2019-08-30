@@ -61,6 +61,8 @@ class UserService {
                 },
                 config.jwtSecret
             );
+            rankService.updatePointInLeaderBoard(user.username, user.point);
+            user.rank = await rankService.getRankByUsername(user.username)
             return { token, data: new UserDTO(user) };
         } catch (err) {
             return Promise.reject({ code: 400, error: "Username existed" });
